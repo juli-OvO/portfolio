@@ -1,0 +1,56 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wireframe Portfolio Skeleton</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="site-header" id="siteHeader">
+    <h1>Julianne Jin</h1>
+  </header>
+
+  <div class="stage" id="stage">
+    <!-- LEFT: book set -->
+    <aside class="shelf" aria-label="Sections">
+      <div class="bookstack" id="bookstack">
+        <button class="book" data-section="bio" aria-controls="panel" aria-expanded="false">
+          <span class="spine-text">BIO</span>
+        </button>
+
+        <button class="book" data-section="works" aria-controls="panel" aria-expanded="false">
+          <span class="spine-text">WORKS</span>
+        </button>
+
+        <button class="book" data-section="cv" aria-controls="panel" aria-expanded="false">
+          <span class="spine-text">CV</span>
+        </button>
+
+        <button class="book" data-section="contact" aria-controls="panel" aria-expanded="false">
+          <span class="spine-text">CONTACT</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- RIGHT: preview + open panel -->
+    <main class="panel" id="panel" aria-live="polite">
+      <div class="panel-tab" id="panelTab">Text</div>
+
+      <div class="panel-body">
+        <div class="wire-line short"></div>
+        <div class="wire-line long"></div>
+        <div class="wire-line long"></div>
+        <div class="wire-line long"></div>
+      </div>
+
+      <!-- big "page" X (step 3) -->
+      <div class="panel-x" aria-hidden="true"></div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

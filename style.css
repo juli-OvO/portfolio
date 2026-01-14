@@ -1,0 +1,56 @@
+ #welcome {
+            color: blue;
+            font-family: Arial, sans-serif;
+        }
+        #background {
+            background-color: orange;
+        }
+        .one{
+            font-size:10px;
+        }
+        .two{
+            font-size:20px;
+        }
+        .three{
+            font-size:30px;
+        }
+        .four{  
+            font-size:40px;
+        }
+        .five{
+            font-size:50px;
+        }
+        #container1{
+            flex-wrap: wrap;
+            background-color: rgb(255, 255, 255);
+            width: 600px;
+            height:600px;
+            overflow-y: scroll;
+        }
+        #container1 > div {
+            flex:1;
+            width:500px;
+            border: 2px solid black;
+        }
+        #container2 {
+            background-color: rgb(0, 0, 0);
+            height: 300px;
+            overflow-y: scroll;
+        }
+        #container3 {
+            background-color: rgb(255, 255, 255);
+            height: 200px;
+
+            overflow-y: scroll;
+        }
+        #container4 {
+            background-color: rgb(0, 0, 0);
+            height: 100px;
+            overflow-y: scroll;
+        }
+        .cat{
+            transition: transform 0.5s;
+        }
+        .cat:hover{
+            transform: scale(2);
+        }
