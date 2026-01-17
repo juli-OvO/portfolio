@@ -1,0 +1,88 @@
+*{
+    box-sizing: border-box;
+
+}
+
+body{
+    margin:10px;
+    background-color: darksalmon;
+    transition: background-color 0.5s;
+    /* transition value means add animation that 
+    takes 0.5 seconds to change the 
+    background color */
+
+}
+
+body.dark{
+    background-color:darkgreen;
+}
+
+body.glow{
+    background-color: floralwhite;
+}
+.box{
+    width:200px;
+    height: 200px;
+    background-color: lightblue;
+    border: 1px solid black;
+    animation: spin 10s linear infinite;
+    animation-play-state:paused;
+    transition: background-color 0.5s box-shadow 0.5s;
+}
+
+.box.dark{
+    background-color: coral;
+}
+
+.box.glow{
+    background-color: violet;
+}
+.box.spin{
+    animation-play-state: running;
+}
+.flex{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top:20px;
+}
+
+button{
+    padding: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: lightgreen;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+button:hover{
+    background-color: greenyellow;
+}
+button:active{
+    background-color: limegreen;
+}
+
+.draggable{
+  position: absolute;       
+  cursor: grab;
+  user-select: none;         
+  touch-action: none;        
+}
+
+.chair{
+    width:200px;
+    position: fixed;
+    opacity:0%;
+}
+.chair.visible{
+    opacity:100%;
+    transition: opacity 1s;
+}
+
+@keyframes spin{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}

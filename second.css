@@ -49,3 +49,52 @@ a{
     border-radius: 50%;
     opacity: 0.7;
 }
+
+
+.smiley {
+    position:fixed;
+    background:yellow;
+    border:1px red;
+    width:300px;
+    height:300px;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+}
+
+.eye {
+    background:white;
+    border:1px purple;
+    width:48px;
+    height:48px;
+    position:absolute;
+    top:50px;
+}
+
+.left {
+    left:80px;
+
+}
+
+.right {
+    right:80px;
+
+}
+
+.mouth {
+    background: lightcyan;
+    border:1px solid orange;
+    width:50px;
+    height:30px;
+    left:25%;
+    bottom:50px;
+    position:absolute;
+}
+.nose {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid black;
+bottom:
+}

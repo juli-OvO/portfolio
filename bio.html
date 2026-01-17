@@ -1,0 +1,120 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <title>Julianne</title>
+     <link rel="stylesheet" href="three.css">
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h2 id="overlay">Say something!</h2>
+    <button id="listen">listen</button>
+        <button id="dark">dark</button>
+        <button id="glow">glow</button>
+        <button id="spin">spin</button>
+        <button id="reveal">reveal</button>
+
+        <div class="flex">
+                <div class="box draggable"></div>
+                <div class="box draggable"></div>
+                <div class="box draggable"></div>
+        </div>
+        <img class="chair draggable" src="4-2-lemon-png-clipart.png" alt="chair">
+        <script>
+
+               function toggleClassOnElements(selector, className) {
+                document.querySelectorAll(selector).forEach(element => {
+                    element.classList.toggle(className);
+                });
+                // resuable function of toggling class withbuttons 
+               }
+               //dark mode button
+                document.getElementById('dark').addEventListener('click', () => {
+                    //toggleClassOnElements('body', 'dark');
+                    document.body.classList.toggle('dark');
+                    //only works when one of this is on?
+                });
+                document.getElementById('reveal').addEventListener('click', () => {
+                    toggleClassOnElements('.chair', 'visible');
+                });
+                document.getElementById('glow').addEventListener('click', () => {
+                    toggleClassOnElements('.box', 'glow');
+                });
+                document.getElementById('spin').addEventListener('click', () => {
+                    toggleClassOnElements('.box', 'spin');
+                });
+
+                //qeury selector all for multiple elements
+                document.querySelectorAll('.draggable').forEach(element => {
+                    let offsetX, offsetY, isDragging = false;
+                    //dragging state was fase
+                    element.addEventListener('pointerdown', (event) => {
+                    //dragging state becomes true when pointer is down
+                        isDragging = true;
+                        offsetX = event.clientX - element.getBoundingClientRect().left;
+                        offsetY = event.clientY - element.getBoundingClientRect().top;
+                        //calculate offset, where it is dragged to 
+                        element.style.position = 'absolute';
+                        element.style.zIndex = "1000";
+                    })
+                    document.addEventListener('pointermove', (event) => {
+                        if (!isDragging) return;
+                        //if not dragging, return
+                        element.style.left = `${(event.clientX - offsetX)}px`;
+                        element.style.top = `${(event.clientY - offsetY)}px`;
+                        //move the element to new position
+                    });
+                    document.addEventListener('pointerup', () => {
+                        isDragging = false;
+                        //when pointer is up, dragging state becomes false
+                });
+                });
+
+
+        //speech recognition 
+        const textDisplay = document.getElementById('overlay');
+
+// Initialize SpeechRecognition
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+
+recognition.lang = 'en-US'; // English (United States)
+// recognition.lang = 'ko-KR'; // Korean (Korea)
+
+recognition.interimResults = true;
+recognition.continuous = true;
+
+// Display recognized text
+recognition.onresult = function(event) {
+    const transcript = event.results[event.results.length - 1][0].transcript;
+    textDisplay.textContent = transcript;
+};
+
+// Error handling
+recognition.onerror = function(event) {
+    console.error('Speech recognition error:', event.error);
+};
+
+// Start speech recognition
+let isListening = false;
+const listenBtn = document.getElementById('listen');
+
+listenBtn.addEventListener('click', () => {
+  if (!isListening) {
+    recognition.start();
+    listenBtn.textContent = "stop";
+    isListening = true;
+  } else {
+    recognition.stop();
+    listenBtn.textContent = "listen";
+    isListening = false;
+  }
+});
+        </script>
+
+
+    </body>
+</html>
+
