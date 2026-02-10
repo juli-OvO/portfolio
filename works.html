@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Works</title>
+  <style>
+    :root{
+      --ink: #111;
+      --accent: #f28c1b;
+      --preview-bg-start: #ffffff;
+      --preview-bg-end: #cfcfcf;
+    }
+    *{ box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: "Times New Roman", Times, serif;
+      color: var(--ink);
+      background: #fff;
+      min-height: 100vh;
+    }
+    .works-page{
+      display: grid;
+      grid-template-columns: minmax(260px, 32%) 1fr;
+      gap: 32px;
+      align-items: center;
+      padding: 28px 32px 40px;
+      min-height: 100vh;
+    }
+    .radial-wrap{
+      position: relative;
+      height: 100%;
+      min-height: 520px;
+      display: grid;
+      align-items: center;
+    }
+    .radial-disk{
+      position: relative;
+      width: 520px;
+      height: 520px;
+      transform-origin: left center;
+      transform: rotate(-16deg);
+      transition: transform 0.2s ease;
+    }
+    .radial-list{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    .radial-item{
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: rotate(var(--angle)) translateX(var(--radius));
+      transform-origin: left center;
+    }
+    .radial-header{
+      font-weight: 700;
+      text-transform: lowercase;
+      letter-spacing: 0.02em;
+      font-size: 20px;
+      cursor: default;
+    }
+    .topic-item{
+      border: none;
+      background: transparent;
+      font-size: 18px;
+      color: var(--ink);
+      padding: 0;
+      cursor: pointer;
+      transition: transform 220ms ease, color 220ms ease;
+    }
+    .radial-list.is-hovering .topic-item{
+      transform: scale(0.9);
+    }
+    .radial-list.is-hovering .topic-item.is-active{
+      transform: scale(1.2);
+      color: var(--accent);
+    }
+    .preview-panel{
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      border: 2px solid #111;
+      overflow: hidden;
+      background: #e8e8e8;
+    }
+    .preview-panel::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--preview-bg-start), var(--preview-bg-end));
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+    .preview-layer{
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 320ms ease;
+    }
+    .preview-layer.is-active{
+      opacity: 1;
+    }
+    .preview-layer img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .preview-placeholder{
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      color: #222;
+      z-index: 1;
+      pointer-events: none;
+    }
+    @media (max-width: 900px){
+      .works-page{
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+      .radial-wrap{
+        min-height: 380px;
+      }
+      .radial-disk{
+        width: 420px;
+        height: 420px;
+      }
+      .preview-panel{
+        min-height: 360px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="works-page">
+    <section class="radial-wrap" aria-label="Works menu">
+      <div class="radial-disk" id="radialDisk">
+        <ul class="radial-list" id="radialList">
+          <li class="radial-item radial-header" style="--angle:-60deg; --radius: 120px;">art and computation</li>
+          <li class="radial-item" style="--angle:-42deg; --radius: 160px;">
+            <button class="topic-item" data-topic="music-boids" type="button">music boids</button>
+          </li>
+          <li class="radial-item" style="--angle:-24deg; --radius: 180px;">
+            <button class="topic-item" data-topic="archive" type="button">archive</button>
+          </li>
+          <li class="radial-item" style="--angle:-6deg; --radius: 200px;">
+            <button class="topic-item" data-topic="tree-growth" type="button">tree growth</button>
+          </li>
+          <li class="radial-item" style="--angle:12deg; --radius: 220px;">
+            <button class="topic-item" data-topic="blender" type="button">blender</button>
+          </li>
+          <li class="radial-item radial-header" style="--angle:40deg; --radius: 140px;">fine art</li>
+          <li class="radial-item" style="--angle:58deg; --radius: 170px;">
+            <button class="topic-item" data-topic="drawing" type="button">drawing</button>
+          </li>
+          <li class="radial-item" style="--angle:76deg; --radius: 190px;">
+            <button class="topic-item" data-topic="illustration" type="button">illustration</button>
+          </li>
+          <li class="radial-item" style="--angle:96deg; --radius: 210px;">
+            <button class="topic-item" data-topic="photography" type="button">photography</button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="preview-panel" aria-live="polite">
+      <div class="preview-layer is-active" id="previewA"><img src="portfolio/images/16fd1705-9e10-436b-9255-53d879187edd.jpg" alt="Preview" /></div>
+      <div class="preview-layer" id="previewB"><img src="portfolio/images/88774859-3f23-4a6e-9b62-1c0dda6000ea.jpg" alt="Preview" /></div>
+      <div class="preview-placeholder">Hover over a topic to preview.</div>
+    </section>
+  </main>
+
+  <script>
+    const disk = document.getElementById("radialDisk");
+    const list = document.getElementById("radialList");
+    const topics = Array.from(document.querySelectorAll(".topic-item"));
+    const previewA = document.getElementById("previewA");
+    const previewB = document.getElementById("previewB");
+
+    const topicImages = {
+      "music-boids": "portfolio/images/16fd1705-9e10-436b-9255-53d879187edd.jpg",
+      "archive": "portfolio/images/88774859-3f23-4a6e-9b62-1c0dda6000ea.jpg",
+      "tree-growth": "portfolio/images/bf61c19b-a292-4155-a760-69d30730e2af.jpg",
+      "blender": "portfolio/images/e1ff05b8-7209-490e-9bca-9150f1c94561.jpg",
+      "drawing": "portfolio/images/16fd1705-9e10-436b-9255-53d879187edd.jpg",
+      "illustration": "portfolio/images/88774859-3f23-4a6e-9b62-1c0dda6000ea.jpg",
+      "photography": "portfolio/images/bf61c19b-a292-4155-a760-69d30730e2af.jpg",
+    };
+
+    let rotation = -16;
+    let velocity = 0;
+
+    function animate() {
+      rotation += velocity;
+      velocity *= 0.9;
+      if (Math.abs(velocity) < 0.001) velocity = 0;
+      disk.style.transform = `rotate(${rotation}deg)`;
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener("wheel", (event) => {
+      velocity += event.deltaY * 0.02;
+      event.preventDefault();
+    }, { passive: false });
+
+    function setPreview(src) {
+      const active = previewA.classList.contains("is-active") ? previewA : previewB;
+      const next = active === previewA ? previewB : previewA;
+      next.querySelector("img").src = src;
+      active.classList.remove("is-active");
+      next.classList.add("is-active");
+    }
+
+    topics.forEach((topic) => {
+      topic.addEventListener("mouseenter", () => {
+        list.classList.add("is-hovering");
+        topics.forEach((item) => item.classList.toggle("is-active", item === topic));
+        const key = topic.dataset.topic;
+        if (topicImages[key]) {
+          setPreview(topicImages[key]);
+        }
+      });
+      topic.addEventListener("mouseleave", () => {
+        list.classList.remove("is-hovering");
+        topics.forEach((item) => item.classList.remove("is-active"));
+      });
+    });
+  </script>
+</body>
+</html>

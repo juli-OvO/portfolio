@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music Boids</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="boid-sequencer">
+  <div class="boid-bg" aria-hidden="true"></div>
+  <div class="boid-bg-overlay" aria-hidden="true"></div>
+
+  <a class="boid-back" href="index.html" aria-label="Back to portfolio">
+    <span class="boid-back__arrow" aria-hidden="true"></span>
+  </a>
+
+  <main class="boid-content">
+    <section class="boid-hero" aria-labelledby="boid-title">
+      <div class="boid-hero__left">
+        <p class="boid-hero__label">Live Version</p>
+        <h1 id="boid-title" class="boid-hero__title">BOID SEQUENCER</h1>
+        <a class="boid-hero__link" href="https://juli-ovo.github.io/BoidSequencer1.0/" target="_blank" rel="noreferrer">Launch Project</a>
+      </div>
+    </section>
+
+    <div class="boid-spacer" aria-hidden="true"></div>
+
+    <section class="boid-details" aria-labelledby="boid-details-title">
+      <div class="boid-details__content" id="boid-details-title">
+        <h2 class="boid-details__heading">About The Project</h2>
+        <p class="boid-details__text">
+          A music-driven boids experiment where movement, rhythm, and interaction blend into a
+          living sequencer. Built to explore how flocking behavior can translate into sound and
+          tempo, with a focus on playful, responsive visuals.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script src="music-boids.js"></script>
+</body>
+</html>
