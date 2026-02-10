@@ -10,6 +10,10 @@ html, body {
 body * {
   cursor: none !important;
 }
+body.cursor-disabled,
+body.cursor-disabled *{
+  cursor: auto !important;
+}
 body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -155,15 +159,14 @@ a, button, [role="button"], input, textarea, select {
   width: 30px;
   height: 30px;
   background: orange;
-  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  transform: translate(var(--cursor-x, 0px), var(--cursor-y, 0px)) translate(-50%, -50%) scale(var(--cursor-scale, 1));
   pointer-events: none;
   z-index: 9999;
-  transition: width 0.2s ease, height 0.2s ease, border-radius 0.2s ease;
+  transition: opacity 200ms ease;
 }
 #cursor.is-hover{
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
+  border-radius: 0;
 }
 #cursorTrail{
   position: fixed;
@@ -172,6 +175,7 @@ a, button, [role="button"], input, textarea, select {
   height: 100vh;
   z-index: 9998;
   pointer-events: none;
+  display: none;
 }
 .mode-toggle{
   position: fixed;
@@ -532,12 +536,20 @@ body.boid-sequencer{
   overflow-y: auto;
   overflow-x: hidden;
 }
-body.boid-sequencer,
-body.boid-sequencer *{
-  cursor: auto !important;
+body.boid-sequencer.is-entering .boid-bg,
+body.boid-sequencer.is-entering .boid-hero{
+  opacity: 1;
+  transform: translateX(0);
 }
-body.boid-sequencer #cursor,
-body.boid-sequencer #cursorTrail,
+body.boid-sequencer .boid-bg{
+  opacity: 0;
+  transition: opacity 1400ms cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+body.boid-sequencer .boid-hero{
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 1200ms cubic-bezier(0.22, 0.8, 0.24, 1), transform 1200ms cubic-bezier(0.22, 0.8, 0.24, 1);
+}
 body.boid-sequencer #intro,
 body.boid-sequencer #bubbleWipe,
 body.boid-sequencer #boids,
@@ -679,6 +691,7 @@ body.boid-sequencer #main{
   line-height: 1.7;
   margin: 0;
   color: var(--boid-muted);
+  font-family: "Inter", "Space Grotesk", system-ui, sans-serif;
   max-width: 380px;
   position: absolute;
   opacity: 0;
@@ -697,7 +710,7 @@ body.boid-sequencer #main{
   transform: translateX(40px);
 }
 .boid-details__text--bottom{
-  bottom: calc(10% + 40px);
+  bottom: calc(10% + 60px);
   left: 80px;
   max-width: 810px;
   transform: translateX(-40px);
@@ -727,15 +740,15 @@ body.boid-sequencer #main{
 }
 .boid-line--top{
   height: 2px;
-  left: 0;
+  left: -40px;
   top: calc(var(--anchor1-y) - var(--img1-h));
-  width: calc(var(--anchor1-x) + var(--img1-w) + 320px);
+  width: calc(var(--anchor1-x) + var(--img1-w) + 200px);
 }
 .boid-line--mid{
   height: 2px;
-  left: 0;
+  left: 300px;
   top: var(--anchor1-y);
-  width: calc(var(--anchor1-x) + var(--img3-w) + 120px);
+  width: calc(var(--anchor1-x) + var(--img3-w) + 420px);
 }
 .boid-line--lower{
   display: none;
@@ -754,7 +767,7 @@ body.boid-sequencer #main{
 .boid-line--v2{
   width: 2px;
   left: 2%;
-  top: calc(var(--anchor1-y) + var(--img2-h) - 20px);
+  top: calc(var(--anchor1-y) + var(--img2-h) - 40px);
   height: 440px;
   transform: scaleY(0);
   transform-origin: top center;
@@ -762,9 +775,9 @@ body.boid-sequencer #main{
 .boid-line--v2::after{
   content: "";
   position: absolute;
-  left: 0;
-  top: calc(100% - 10px);
-  width: 400px;
+  left: calc(-2% - 60px);
+  top: calc(100% - 40px);
+  width: calc(400px + 2%);
   height: 2px;
   background: rgba(255, 255, 255, 0.75);
   transform: scaleX(0);

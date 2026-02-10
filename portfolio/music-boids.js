@@ -12,3 +12,7 @@ if (detailsContent) {
 
   observer.observe(detailsContent);
 }
+
+window.requestAnimationFrame(() => {
+  document.body.classList.add('is-entering');
+});

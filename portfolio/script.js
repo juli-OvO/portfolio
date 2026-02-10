@@ -4,8 +4,6 @@ const bookstack = document.getElementById("bookstack");
 const books = Array.from(document.querySelectorAll(".book"));
 const panel = document.getElementById("panel");
 const panelBody = panel ? panel.querySelector(".panel-body") : null;
-const cursor = document.getElementById("cursor");
-const cursorTrail = document.getElementById("cursorTrail");
 const modeToggle = document.getElementById("modeToggle");
 const siteHeaderTitle = document.querySelector(".site-header h1");
 const defaultHeaderText = siteHeaderTitle ? siteHeaderTitle.textContent : "";
@@ -220,85 +218,6 @@ function labelFor(section) {
   }
 }
 
-if (cursor) {
-  window.addEventListener("mousemove", (e) => {
-    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-  });
-
-  const hoverTargets = Array.from(
-    document.querySelectorAll("a, button, [role='button'], input, textarea, select")
-  );
-
-  hoverTargets.forEach((el) => {
-    el.addEventListener("mouseenter", () => cursor.classList.add("is-hover"));
-    el.addEventListener("mouseleave", () => cursor.classList.remove("is-hover"));
-  });
-}
-
-if (cursorTrail) {
-  const ctx = cursorTrail.getContext("2d");
-  let trail = [];
-  let lastTime = performance.now();
-  let lastTrailAt = 0;
-
-  function resizeTrail() {
-    const dpr = window.devicePixelRatio || 1;
-    cursorTrail.width = Math.round(window.innerWidth * dpr);
-    cursorTrail.height = Math.round(window.innerHeight * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  function addTrailPoint(x, y) {
-    const shape = cursor && cursor.classList.contains("is-hover") ? "circle" : "square";
-    trail.push({
-      x,
-      y,
-      life: 1,
-      size: 18 + Math.random() * 14,
-      grow: 18 + Math.random() * 16,
-      shape,
-    });
-  }
-
-  function drawTrail(now) {
-    const dt = Math.min((now - lastTime) / 1000, 0.05);
-    lastTime = now;
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-    trail = trail.filter((p) => {
-      p.life -= dt * 1.4;
-      return p.life > 0;
-    });
-
-    ctx.lineWidth = 5;
-    trail.forEach((p) => {
-      const alpha = Math.max(p.life, 0);
-      const size = p.size + (1 - p.life) * p.grow;
-      ctx.strokeStyle = `rgba(255, 140, 0, ${alpha * 0.5})`;
-      if (p.shape === "circle") {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, size * 0.5, 0, Math.PI * 2);
-        ctx.stroke();
-      } else {
-        ctx.strokeRect(p.x - size * 0.5, p.y - size * 0.5, size, size);
-      }
-    });
-
-    requestAnimationFrame(drawTrail);
-  }
-
-  resizeTrail();
-  window.addEventListener("resize", resizeTrail);
-  window.addEventListener("mousemove", (e) => {
-    const now = performance.now();
-    if (now - lastTrailAt < 16) return;
-    lastTrailAt = now;
-    if (Math.random() > 0.7) return;
-    addTrailPoint(e.clientX, e.clientY);
-  });
-  window.addEventListener("click", (e) => addTrailPoint(e.clientX, e.clientY));
-  requestAnimationFrame(drawTrail);
-}
 
 if (modeToggle) {
   modeToggle.dataset.label = "MODE: day time";

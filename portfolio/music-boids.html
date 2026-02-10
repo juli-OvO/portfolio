@@ -8,8 +8,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+Symbols:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body class="boid-sequencer">
+  <div id="cursor" aria-hidden="true"></div>
+  <canvas id="cursorTrail" aria-hidden="true"></canvas>
   <div class="boid-bg" aria-hidden="true"></div>
   <div class="boid-bg-overlay" aria-hidden="true"></div>
 
@@ -73,7 +78,7 @@
           </figure>
           <figure class="boid-image boid-image--4">
             <span class="boid-image__line boid-image__line--left boid-image__line--img4"></span>
-            <span class="boid-image__stem boid-image__stem--img4"></span>
+            <!-- <span class="boid-image__stem boid-image__stem--img4"></span> -->
             <img src="images/boidgame/img4.png" alt="" />
           </figure>
         </div>
@@ -82,5 +87,6 @@
   </main>
 
   <script src="music-boids.js"></script>
+  <script src="cursor.js"></script>
 </body>
 </html>
