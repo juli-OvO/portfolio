@@ -1,17 +1,14 @@
-const description = document.querySelector('.boid-details__content');
+const detailsContent = document.querySelector('.boid-details__content');
 
-if (description) {
+if (detailsContent) {
   const observer = new IntersectionObserver(
-    (entries, obs) => {
+    (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          obs.unobserve(entry.target);
-        }
+        entry.target.classList.toggle('in-view', entry.isIntersecting);
       });
     },
     { threshold: 0.3 }
   );
 
-  observer.observe(description);
+  observer.observe(detailsContent);
 }

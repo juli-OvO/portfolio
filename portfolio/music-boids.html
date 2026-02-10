@@ -30,12 +30,53 @@
 
     <section class="boid-details" aria-labelledby="boid-details-title">
       <div class="boid-details__content" id="boid-details-title">
-        <h2 class="boid-details__heading">About The Project</h2>
-        <p class="boid-details__text">
-          A music-driven boids experiment where movement, rhythm, and interaction blend into a
-          living sequencer. Built to explore how flocking behavior can translate into sound and
-          tempo, with a focus on playful, responsive visuals.
+        <div class="boid-lines" aria-hidden="true">
+          <span class="boid-line boid-line--top"></span>
+          <span class="boid-line boid-line--mid"></span>
+          <span class="boid-line boid-line--lower"></span>
+          <span class="boid-line boid-line--bottom"></span>
+          <span class="boid-line boid-line--v1"></span>
+          <span class="boid-line boid-line--v2"></span>
+        </div>
+
+        <p class="boid-details__text boid-details__text--left">
+          This project is an interactive audiovisual sequencer that combines time-based instrument
+          scripts with spatial, event-driven sound generation.
         </p>
+
+        <p class="boid-details__text boid-details__text--right">
+          Each element can be toggled or isolated, allowing the system to function as both a
+          compositional tool and an experimental instrument for studying cause and effect in
+          generative sound.
+        </p>
+
+        <p class="boid-details__text boid-details__text--bottom">
+          At its core, each instrument follows an independent time-based sequence (e.g. eight-step
+          hi-hat and kick, seven-step piano and bass). On top of this baseline rhythm, boid-based
+          agents act as mobile sequencer elements: when they cross harmonic lines or segments, they
+          trigger additional sound events. Each system, temporal and spatial, can be isolated to
+          study its individual effect, or layered together to produce emergent rhythms.
+        </p>
+
+        <div class="boid-details__images" aria-hidden="true">
+          <figure class="boid-image boid-image--1">
+            <!-- <span class="boid-image__line boid-image__line--right boid-image__line--img1"></span> -->
+            <img src="images/boidgame/img1.png" alt="" />
+          </figure>
+          <figure class="boid-image boid-image--2">
+            <img src="images/boidgame/img2.png" alt="" />
+          </figure>
+          <figure class="boid-image boid-image--3">
+            <span class="boid-image__line boid-image__line--left boid-image__line--img3"></span>
+            <span class="boid-image__base boid-image__base--img3"></span>
+            <img src="images/boidgame/img3.png" alt="" />
+          </figure>
+          <figure class="boid-image boid-image--4">
+            <span class="boid-image__line boid-image__line--left boid-image__line--img4"></span>
+            <span class="boid-image__stem boid-image__stem--img4"></span>
+            <img src="images/boidgame/img4.png" alt="" />
+          </figure>
+        </div>
       </div>
     </section>
   </main>
