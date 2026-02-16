@@ -11,6 +11,22 @@ const defaultHeaderText = siteHeaderTitle ? siteHeaderTitle.textContent : "";
 let openSection = null;
 let previewExitTimer = null;
 let worksCleanup = null;
+const workTagSets = {
+  "music-boids": [
+    "Spatial-to-Sound Mapping |",
+    "Generative Audio |",
+    "Event-Driven Architecture |",
+    "Interactive Media |",
+    "Modular System Architecture |"
+  ],
+  "orbit-of-desire": [
+    "Character Design |",
+    "Visual Novel |",
+    "Indie Game Development |",
+    "Narrative Collaboration |",
+    "Game Production |"
+  ]
+};
 
 // cache original labels for quick restore
 books.forEach((btn) => {
@@ -66,7 +82,7 @@ const panelTemplates = {
           <div class="works-header">Game Design</div>
           <ul>
             <li><a class="topic-item" data-preview="images/gamedesign/draft1.jpg" href="#">Hell or Sell</a></li>
-            <li><a class="topic-item" data-preview="images/gamedesign/draft2.jpg" href="orbit-of-desire.html">Orbit of Desire</a></li>
+            <li><a class="topic-item" data-preview="images/gamedesign/TitleScreenFinalVersion.PNG" data-work-tags="orbit-of-desire" href="orbit-of-desire.html">Orbit of Desire</a></li>
           </ul>
         </div>
         <div class="works-group">
@@ -127,14 +143,17 @@ function initWorksPreview() {
     const enter = () => {
       const src = topic.dataset.preview;
       if (src) previewImg.src = src;
-      if (topic.dataset.workTags === "music-boids") {
+      const tagKey = topic.dataset.workTags;
+      if (tagKey && workTagSets[tagKey]) {
+        setWorkTags(tagKey);
         revealWorkTags();
       } else {
         hideWorkTags();
       }
     };
     const leave = () => {
-      if (topic.dataset.workTags === "music-boids") {
+      const tagKey = topic.dataset.workTags;
+      if (tagKey && workTagSets[tagKey]) {
         hideWorkTags();
       }
     };
@@ -192,6 +211,21 @@ function initLetterSwap(container) {
     });
 
     item.appendChild(wrapper);
+  });
+}
+
+function setWorkTags(tagKey) {
+  if (!panelBody) return;
+  const tagBlock = panelBody.querySelector("[data-work-tags]");
+  if (!tagBlock) return;
+  const lines = Array.from(tagBlock.querySelectorAll(".work-tags__line"));
+  const tags = workTagSets[tagKey];
+  if (!tags || !tags.length) return;
+
+  lines.forEach((line, index) => {
+    const text = tags[index] || "";
+    line.dataset.finalText = text;
+    line.textContent = text;
   });
 }
 

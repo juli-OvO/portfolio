@@ -282,8 +282,164 @@ body {
   background: #3f74e8;
 }
 
+.slide--drafts {
+  background: #ececec;
+  color: #111;
+  isolation: isolate;
+}
+
+.slide-four-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slide-four-copy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(31vw, 540px);
+  z-index: 12;
+  color: #111;
+  text-shadow: none;
+}
+
+.slide-four-title {
+  margin: 0 0 clamp(18px, 2.2vh, 34px);
+  text-align: center;
+  font-size: clamp(56px, 4vw, 86px);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: lowercase;
+}
+
+.slide-four-intro,
+.slide-four-list-title,
+.slide-four-list {
+  margin: 0;
+  font-size: clamp(24px, 1.8vw, 40px);
+  line-height: 1.22;
+}
+
+.slide-four-list-title {
+  margin-top: clamp(22px, 2.4vh, 40px);
+}
+
+.slide-four-list {
+  margin-top: clamp(6px, 1vh, 16px);
+  padding-left: 1.2em;
+}
+
+.slide-four-list li + li {
+  margin-top: clamp(5px, 0.9vh, 14px);
+}
+
+.draft-card {
+  position: absolute;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.draft-card__inner {
+  display: block;
+  animation: draft-float var(--float-dur, 7s) ease-in-out var(--float-delay, 0s) infinite alternate;
+}
+
+.draft-card img {
+  display: block;
+  height: auto;
+  width: auto;
+  max-height: min(var(--img-h, 340px), 400px);
+  max-width: none;
+  object-fit: contain;
+  border: 1px solid rgba(35, 35, 35, 0.35);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  transform-origin: center center;
+}
+
+.draft-card:hover img {
+  transform: scale(1.13);
+  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.26);
+}
+
+@keyframes draft-float {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(var(--rot-start, -1.5deg));
+  }
+  100% {
+    transform: translate3d(var(--float-x, 12px), var(--float-y, -14px), 0) rotate(var(--rot-end, 1.5deg));
+  }
+}
+
+@media (max-width: 1024px) {
+  .slide-four-copy {
+    width: min(40vw, 520px);
+  }
+
+  .draft-card img {
+    max-height: min(var(--img-h, 300px), 340px);
+  }
+}
+
+@media (max-width: 760px) {
+  .slide-four-copy {
+    width: min(84vw, 680px);
+    left: 50%;
+    top: 12vh;
+    transform: translateX(-50%);
+  }
+
+  .slide-four-title {
+    text-align: left;
+    font-size: clamp(44px, 9vw, 62px);
+  }
+
+  .slide-four-intro,
+  .slide-four-list-title,
+  .slide-four-list {
+    font-size: clamp(22px, 4.6vw, 34px);
+  }
+}
+
 .slide--purple {
   background: #8a52d7;
+}
+
+.slide--final {
+  background: url("images/gamedesign/(Uba_final) (1).jpg") center center / cover no-repeat;
+  color: #f2f4f8;
+}
+
+.slide-five-credit {
+  position: absolute;
+  left: clamp(22px, 3vw, 54px);
+  bottom: clamp(20px, 3vh, 44px);
+  z-index: 2;
+  margin: 0;
+  font-size: clamp(34px, 2.7vw, 60px);
+  line-height: 1.05;
+  color: rgba(246, 249, 255, 0.94);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.slide-five-home {
+  position: absolute;
+  right: clamp(22px, 3vw, 54px);
+  bottom: clamp(16px, 2.5vh, 34px);
+  z-index: 2;
+  color: rgba(246, 249, 255, 0.97);
+  text-decoration: none;
+  font-size: clamp(52px, 4vw, 96px);
+  line-height: 1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.52);
+}
+
+.slide-five-home:hover {
+  opacity: 0.88;
 }
 
 .wipe-overlay {
@@ -326,5 +482,11 @@ body {
   }
   .hero-bg {
     transform: scale(1.06) !important;
+  }
+  .draft-card__inner {
+    animation: none !important;
+  }
+  .draft-card:hover img {
+    transform: none;
   }
 }

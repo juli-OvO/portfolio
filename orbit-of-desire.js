@@ -153,5 +153,286 @@
     });
   }
 
+  function initDraftSlide() {
+    const draftCanvas = document.querySelector("[data-draft-canvas]");
+    const draftCopy = document.querySelector(".slide-four-copy");
+    if (!draftCanvas) return;
+
+    const draftImages = [
+      "draft1.jpg",
+      "draft2.jpg",
+      "draft3.jpg",
+      "draft4.jpg",
+      "draftboard.png",
+      "f6c861d0-693c-44d9-8320-42c79cefc27c.png",
+      "lineart.png",
+      "lineart2.png",
+      "lineart3.png"
+    ];
+
+    let hoverTopZ = 40;
+    let resizeTimer = null;
+
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function shuffle(list) {
+      const copy = list.slice();
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = copy[i];
+        copy[i] = copy[j];
+        copy[j] = temp;
+      }
+      return copy;
+    }
+
+    function intersects(a, b) {
+      return !(
+        a.right <= b.left ||
+        a.left >= b.right ||
+        a.bottom <= b.top ||
+        a.top >= b.bottom
+      );
+    }
+
+    function centerDistance(a, b) {
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function layoutDraftCards() {
+      const cards = Array.from(draftCanvas.querySelectorAll(".draft-card"));
+      if (!cards.length) return;
+
+      const canvasRect = draftCanvas.getBoundingClientRect();
+      const canvasWidth = canvasRect.width;
+      const canvasHeight = canvasRect.height;
+      if (!canvasWidth || !canvasHeight) return;
+
+      const floatPad = 24;
+      const hoverPad = 30;
+      const edgePad = floatPad + hoverPad + 8;
+      const textGap = 52;
+
+      let textRect = null;
+      if (draftCopy) {
+        const copyRect = draftCopy.getBoundingClientRect();
+        textRect = {
+          left: copyRect.left - canvasRect.left - textGap,
+          top: copyRect.top - canvasRect.top - textGap,
+          right: copyRect.right - canvasRect.left + textGap,
+          bottom: copyRect.bottom - canvasRect.top + textGap
+        };
+      }
+
+      const total = cards.length;
+      const minPerSide = Math.ceil(total * 0.4);
+      const maxLeft = total - minPerSide;
+      const leftCount = Math.floor(rand(minPerSide, maxLeft + 1));
+      const sideAssignments = shuffle(
+        Array.from({ length: total }, (_, i) => (i < leftCount ? "left" : "right"))
+      );
+      const placedCenters = [];
+      const minCenterGap = 100;
+
+      cards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect();
+        const cardWidth = rect.width;
+        const cardHeight = rect.height;
+        if (!cardWidth || !cardHeight) return;
+
+        const side = sideAssignments[index];
+        const xMinBase = edgePad;
+        const xMaxBase = canvasWidth - cardWidth - edgePad;
+        const yMin = edgePad;
+        const yMax = canvasHeight - cardHeight - edgePad;
+
+        let xMin = xMinBase;
+        let xMax = xMaxBase;
+        if (textRect) {
+          if (side === "left") {
+            xMax = Math.min(xMaxBase, textRect.left - cardWidth - edgePad);
+          } else {
+            xMin = Math.max(xMinBase, textRect.right + edgePad);
+          }
+        } else if (side === "left") {
+          xMax = Math.min(xMaxBase, canvasWidth * 0.33 - cardWidth);
+        } else {
+          xMin = Math.max(xMinBase, canvasWidth * 0.67);
+        }
+
+        if (xMax < xMin) {
+          xMin = xMinBase;
+          xMax = xMaxBase;
+        }
+
+        let x = xMin;
+        let y = yMin;
+        let placed = false;
+
+        function isValidSpot(trialRect) {
+          if (textRect && intersects(trialRect, textRect)) {
+            return false;
+          }
+          const trialCenter = {
+            x: trialRect.left + cardWidth / 2,
+            y: trialRect.top + cardHeight / 2
+          };
+          for (let i = 0; i < placedCenters.length; i += 1) {
+            if (centerDistance(trialCenter, placedCenters[i]) < minCenterGap) {
+              return false;
+            }
+          }
+          return true;
+        }
+
+        for (let attempt = 0; attempt < 220; attempt += 1) {
+          const trialX = rand(xMin, xMax);
+          const trialY = rand(yMin, Math.max(yMin, yMax));
+          const trialRect = {
+            left: trialX,
+            top: trialY,
+            right: trialX + cardWidth,
+            bottom: trialY + cardHeight
+          };
+
+          if (isValidSpot(trialRect)) {
+            x = trialX;
+            y = trialY;
+            placed = true;
+            break;
+          }
+        }
+
+        if (!placed && textRect) {
+          const aboveY = textRect.top - cardHeight - edgePad;
+          const belowY = textRect.bottom + edgePad;
+          const fallbackRects = [];
+          if (aboveY >= yMin) {
+            fallbackRects.push({
+              left: xMin,
+              top: aboveY,
+              right: xMin + cardWidth,
+              bottom: aboveY + cardHeight
+            });
+          }
+          if (belowY <= yMax) {
+            fallbackRects.push({
+              left: xMin,
+              top: belowY,
+              right: xMin + cardWidth,
+              bottom: belowY + cardHeight
+            });
+          }
+          for (let i = 0; i < fallbackRects.length; i += 1) {
+            if (isValidSpot(fallbackRects[i])) {
+              x = fallbackRects[i].left;
+              y = fallbackRects[i].top;
+              placed = true;
+              break;
+            }
+          }
+        }
+
+        if (!placed) {
+          for (let gx = xMin; gx <= xMax; gx += 18) {
+            let foundGridSpot = false;
+            for (let gy = yMin; gy <= yMax; gy += 18) {
+              const trialRect = {
+                left: gx,
+                top: gy,
+                right: gx + cardWidth,
+                bottom: gy + cardHeight
+              };
+              if (isValidSpot(trialRect)) {
+                x = gx;
+                y = gy;
+                placed = true;
+                foundGridSpot = true;
+                break;
+              }
+            }
+            if (foundGridSpot) break;
+          }
+        }
+
+        card.style.left = x.toFixed(1) + "px";
+        card.style.top = y.toFixed(1) + "px";
+        placedCenters.push({
+          x: x + cardWidth / 2,
+          y: y + cardHeight / 2
+        });
+      });
+    }
+
+    const imageReady = [];
+    draftImages.forEach((name, index) => {
+      const card = document.createElement("figure");
+      card.className = "draft-card";
+      card.style.margin = "0";
+      const baseZ = 2 + Math.floor(Math.random() * 8);
+      card.style.left = "0px";
+      card.style.top = "0px";
+      card.style.zIndex = String(baseZ);
+      card.style.visibility = "hidden";
+
+      const inner = document.createElement("div");
+      inner.className = "draft-card__inner";
+      inner.style.setProperty("--float-x", rand(-16, 16).toFixed(2) + "px");
+      inner.style.setProperty("--float-y", rand(-20, 20).toFixed(2) + "px");
+      inner.style.setProperty("--float-dur", rand(5.8, 10.2).toFixed(2) + "s");
+      inner.style.setProperty("--float-delay", rand(-3.5, 0).toFixed(2) + "s");
+      inner.style.setProperty("--rot-start", rand(-3.8, 3.8).toFixed(2) + "deg");
+      inner.style.setProperty("--rot-end", rand(-3.8, 3.8).toFixed(2) + "deg");
+
+      const image = document.createElement("img");
+      image.src = "images/gamedesign/draft/" + name;
+      image.alt = "Draft artwork " + (index + 1);
+      image.loading = "lazy";
+      image.style.setProperty("--img-h", rand(220, 400).toFixed(0) + "px");
+
+      card.addEventListener("mouseenter", () => {
+        hoverTopZ += 1;
+        card.style.zIndex = String(hoverTopZ);
+      });
+
+      inner.appendChild(image);
+      card.appendChild(inner);
+      draftCanvas.appendChild(card);
+
+      imageReady.push(
+        new Promise((resolve) => {
+          if (image.complete) {
+            resolve();
+            return;
+          }
+          image.addEventListener("load", resolve, { once: true });
+          image.addEventListener("error", resolve, { once: true });
+        })
+      );
+    });
+
+    Promise.all(imageReady).then(() => {
+      layoutDraftCards();
+      draftCanvas.querySelectorAll(".draft-card").forEach((card) => {
+        card.style.visibility = "visible";
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      if (resizeTimer) {
+        window.clearTimeout(resizeTimer);
+      }
+      resizeTimer = window.setTimeout(() => {
+        layoutDraftCards();
+        resizeTimer = null;
+      }, 120);
+    });
+  }
+
+  initDraftSlide();
   initHeroParallax();
 })();
