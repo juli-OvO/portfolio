@@ -47,13 +47,18 @@ const panelTemplates = {
   `,
   works: `
     <div class="panel-content panel-content--works">
+      <div class="work-tags" data-work-tags>
+        <p class="work-tags__line" data-final-text="Spatial-to-Sound Mapping |">Spatial-to-Sound Mapping |</p>
+        <p class="work-tags__line" data-final-text="Generative Audio |">Generative Audio |</p>
+        <p class="work-tags__line" data-final-text="Event-Driven Architecture |">Event-Driven Architecture |</p>
+        <p class="work-tags__line" data-final-text="Interactive Media |">Interactive Media |</p>
+        <p class="work-tags__line" data-final-text="Modular System Architecture |">Modular System Architecture |</p>
+      </div>
       <div class="works-list">
         <div class="works-group">
           <div class="works-header">Computational work</div>
           <ul>
-            <li><a class="topic-item" data-preview="images/boidgame/boid.png" href="music-boids.html">Music Boids</a></li>
-            <li><a class="topic-item" data-preview="artchiveTreemode.png" href="archive.html">Artchive</a></li>
-            <li><a class="topic-item" data-preview="images/bf61c19b-a292-4155-a760-69d30730e2af.jpg" href="tree-growth.html">Tree growth</a></li>
+            <li><a class="topic-item" data-preview="images/boidgame/boid.png" data-work-tags="music-boids" href="music-boids.html">Music Boids</a></li>
             <li><a class="topic-item" data-preview="images/e1ff05b8-7209-490e-9bca-9150f1c94561.jpg" href="blender.html">Modeling</a></li>
           </ul>
         </div>
@@ -61,7 +66,7 @@ const panelTemplates = {
           <div class="works-header">Game Design</div>
           <ul>
             <li><a class="topic-item" data-preview="images/gamedesign/draft1.jpg" href="#">Hell or Sell</a></li>
-            <li><a class="topic-item" data-preview="images/gamedesign/draft2.jpg" href="#">Orbit of Desire</a></li>
+            <li><a class="topic-item" data-preview="images/gamedesign/draft2.jpg" href="orbit-of-desire.html">Orbit of Desire</a></li>
           </ul>
         </div>
         <div class="works-group">
@@ -69,9 +74,9 @@ const panelTemplates = {
           <ul>
             <li><a class="topic-item" data-preview="images/16fd1705-9e10-436b-9255-53d879187edd.jpg" href="drawing.html">Drawing</a></li>
             <li><a class="topic-item" data-preview="images/88774859-3f23-4a6e-9b62-1c0dda6000ea.jpg" href="illustration.html">Illustration</a></li>
-            <li><a class="topic-item" data-preview="images/bf61c19b-a292-4155-a760-69d30730e2af.jpg" href="photography.html">PHOTOGRAPHY</a></li>
           </ul>
         </div>
+        <div class="works-footer">More works in progress...</div>
       </div>
       <div class="works-preview-slot">
         <img src="images/boidgame/boid.png" alt="Preview" data-works-preview />
@@ -122,17 +127,33 @@ function initWorksPreview() {
     const enter = () => {
       const src = topic.dataset.preview;
       if (src) previewImg.src = src;
+      if (topic.dataset.workTags === "music-boids") {
+        revealWorkTags();
+      } else {
+        hideWorkTags();
+      }
+    };
+    const leave = () => {
+      if (topic.dataset.workTags === "music-boids") {
+        hideWorkTags();
+      }
     };
     topic.addEventListener("mouseenter", enter);
     topic.addEventListener("focus", enter);
-    handlers.set(topic, enter);
+    topic.addEventListener("mouseleave", leave);
+    topic.addEventListener("blur", leave);
+    handlers.set(topic, { enter, leave });
   });
 
   return () => {
-    handlers.forEach((enter, topic) => {
+    handlers.forEach((fn, topic) => {
+      const { enter, leave } = fn;
       topic.removeEventListener("mouseenter", enter);
       topic.removeEventListener("focus", enter);
+      topic.removeEventListener("mouseleave", leave);
+      topic.removeEventListener("blur", leave);
     });
+    hideWorkTags();
   };
 }
 
@@ -172,6 +193,72 @@ function initLetterSwap(container) {
 
     item.appendChild(wrapper);
   });
+}
+
+function revealWorkTags() {
+  if (!panelBody) return;
+  const tagBlock = panelBody.querySelector("[data-work-tags]");
+  if (!tagBlock) return;
+
+  const lines = Array.from(tagBlock.querySelectorAll(".work-tags__line"));
+  lines.forEach((line) => {
+    const finalText = line.dataset.finalText || line.textContent || "";
+    line.textContent = finalText;
+  });
+
+  const reducedMotion = prefersReducedMotion();
+  if (reducedMotion) {
+    tagBlock.classList.add("is-entering");
+    return;
+  }
+
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+/";
+  const baseDuration = 700;
+  const staggerMs = 80;
+
+  tagBlock.classList.remove("is-entering");
+  window.requestAnimationFrame(() => {
+    tagBlock.classList.add("is-entering");
+  });
+
+  lines.forEach((line, index) => {
+    const finalText = line.dataset.finalText || line.textContent || "";
+    const startDelay = (lines.length - 1 - index) * staggerMs;
+    const startTime = performance.now() + startDelay;
+
+    const tick = (now) => {
+      if (now < startTime) {
+        window.requestAnimationFrame(tick);
+        return;
+      }
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / baseDuration, 1);
+      const revealCount = Math.floor(progress * finalText.length);
+
+      let scrambled = "";
+      for (let i = 0; i < finalText.length; i += 1) {
+        const ch = finalText[i];
+        const resolvedFromRight = i >= finalText.length - revealCount;
+        if (resolvedFromRight || ch === " ") {
+          scrambled += ch;
+        } else {
+          const randomIndex = Math.floor(Math.random() * chars.length);
+          scrambled += chars[randomIndex];
+        }
+      }
+      line.textContent = progress === 1 ? finalText : scrambled;
+      if (progress < 1) window.requestAnimationFrame(tick);
+    };
+
+    window.requestAnimationFrame(tick);
+  });
+}
+
+function hideWorkTags() {
+  if (!panelBody) return;
+  const tagBlock = panelBody.querySelector("[data-work-tags]");
+  if (!tagBlock) return;
+  tagBlock.classList.remove("is-entering");
 }
 
 // Step 2 (hover preview): show panel + change tab text

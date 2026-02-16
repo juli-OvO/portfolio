@@ -6,9 +6,38 @@
   <title>Drawing</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="drawing-page">
   <div id="cursor" aria-hidden="true"></div>
   <canvas id="cursorTrail" aria-hidden="true"></canvas>
+
+  <main class="drawing-stage" aria-live="polite">
+    <header class="drawing-header">
+      <h1>Drawings</h1>
+    </header>
+
+    <section class="drawing-slides" aria-label="Artwork slides">
+      <figure class="drawing-slide is-active" data-index="0">
+        <img src="images/drawing/ClassDrawing1 copy 2.jpeg" alt="Charcoal drawing of a scene with figures and a large bird sculpture." />
+        <figcaption class="drawing-caption">untitled (in class drawing), 2025</figcaption>
+      </figure>
+
+      <figure class="drawing-slide" data-index="1">
+        <img src="images/drawing/ClassDrawing2 copy 2.jpeg" alt="Charcoal drawing study with figures and draped fabric." />
+        <figcaption class="drawing-caption">untitled (in class drawing), 2025</figcaption>
+      </figure>
+    </section>
+
+    <aside class="drawing-panel" aria-live="polite">
+      <div class="drawing-panel__text is-active" data-index="0">
+        Observational gesture studies in charcoal, focusing on light and atmosphere.
+      </div>
+      <div class="drawing-panel__text" data-index="1">
+        Observational drawing exploring structure, space, and form.
+      </div>
+    </aside>
+  </main>
+
   <script src="cursor.js"></script>
+  <script src="drawing.js"></script>
 </body>
 </html>
