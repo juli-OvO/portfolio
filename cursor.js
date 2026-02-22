@@ -37,29 +37,48 @@
       hasMoved = true;
     });
 
-    const hoverTargets = Array.from(
-      document.querySelectorAll("a, button, [role='button'], input, textarea, select, .interactive")
-    );
+    const interactiveSelector = "a, button, [role='button'], input, textarea, select, .interactive";
+    const linkSelector = "a";
 
-    hoverTargets.forEach((el) => {
-      el.addEventListener("mouseenter", () => {
+    document.addEventListener("mouseover", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const interactive = target.closest(interactiveSelector);
+      if (interactive) {
         cursor.classList.add("is-hover");
         targetScale = 1;
-      });
-      el.addEventListener("mouseleave", () => {
-        cursor.classList.remove("is-hover");
-        targetScale = 1;
-      });
+      }
+
+      const link = target.closest(linkSelector);
+      if (link) {
+        cursor.classList.add("is-link-hover");
+        magnetTarget = link;
+      }
     });
 
-    const linkTargets = Array.from(document.querySelectorAll("a"));
-    linkTargets.forEach((link) => {
-      link.addEventListener("mouseenter", () => {
-        magnetTarget = link;
-      });
-      link.addEventListener("mouseleave", () => {
-        magnetTarget = null;
-      });
+    document.addEventListener("mouseout", (event) => {
+      const target = event.target;
+      const related = event.relatedTarget;
+      if (!(target instanceof Element)) return;
+
+      const fromInteractive = target.closest(interactiveSelector);
+      if (fromInteractive) {
+        const toInteractive = related instanceof Element ? related.closest(interactiveSelector) : null;
+        if (!toInteractive) {
+          cursor.classList.remove("is-hover");
+          targetScale = 1;
+        }
+      }
+
+      const fromLink = target.closest(linkSelector);
+      if (fromLink) {
+        const toLink = related instanceof Element ? related.closest(linkSelector) : null;
+        if (!toLink) {
+          cursor.classList.remove("is-link-hover");
+          magnetTarget = null;
+        }
+      }
     });
 
     function animate() {

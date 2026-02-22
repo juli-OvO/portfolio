@@ -52,19 +52,21 @@ function resetSpineText(btn) {
 
 const panelTemplates = {
   bio: `
-    <div class="panel-content panel-content--center">
-      <p>
-        Julianne Jin is a visual artist and designer studying Art and Computation at the Rhode Island School of
-        Design. Her practice bridges generative systems, and emotional storytelling, exploring how technology can
-        become a poetic and philosophical medium. Through code, installation, and digital imagery, she builds
-        worlds where algorithmic logic meets human imagination.
+    <div class="panel-content panel-content--bio">
+      <p class="bio-copy">
+        Julianne Jin is a visual artist and designer studying Art and
+        Computation at the Rhode Island School of Design. Her practice
+        spans generative systems, interactive media, web design, and
+        game development, exploring how technology can function as
+        both a conceptual and experiential medium. Through code,
+        interface design, and real-time digital environments, she builds
+        systems where algorithmic logic meets human imagination,
+        creating immersive, participatory worlds shaped by interaction
+        and narrative.
       </p>
-      <div class="panel-section">
-        <h3>Contact</h3>
-        <ul class="panel-list">
-          <li>name@email.com</li>
-          <li>LinkedIn</li>
-        </ul>
+      <div class="bio-links">
+        <a class="bio-link bio-link--left" href="mailto:jjin04@risd.edu">Contact</a>
+        <a class="bio-link bio-link--right" href="https://www.linkedin.com/in/chufan-jin-41b727311/" target="_blank" rel="noreferrer">LinkedIn</a>
       </div>
     </div>
   `,
@@ -82,46 +84,124 @@ const panelTemplates = {
           <div class="works-header">Computational work</div>
           <ul>
             <li><a class="topic-item" data-preview="images/boidgame/boid.png" data-work-tags="music-boids" href="music-boids.html">Music Boids</a></li>
-            <li><a class="topic-item" data-preview="images/e1ff05b8-7209-490e-9bca-9150f1c94561.jpg" href="blender.html">Modeling</a></li>
+            <li><a class="topic-item" data-preview="images/blender1/Scene5 copy.png" data-work-tags="coming-soon" data-disabled-link="true" href="#">Modeling</a></li>
           </ul>
         </div>
         <div class="works-group">
           <div class="works-header">Game Design</div>
           <ul>
-            <li><a class="topic-item" data-preview="images/hellorsell.png" data-work-tags="hell-or-sell" href="#">Hell or Sell</a></li>
+            <li><a class="topic-item" data-preview="images/hellorsell.png" data-work-tags="hell-or-sell" data-disabled-link="true" href="#">Hell or Sell</a></li>
             <li><a class="topic-item" data-preview="images/gamedesign/TitleScreenFinalVersion.PNG" data-work-tags="orbit-of-desire" href="orbit-of-desire.html">Orbit of Desire</a></li>
           </ul>
         </div>
         <div class="works-group">
           <div class="works-header">Fine Art</div>
           <ul>
-            <li><a class="topic-item" data-preview="images/16fd1705-9e10-436b-9255-53d879187edd.jpg" href="drawing.html">Drawing</a></li>
-            <li><a class="topic-item" data-preview="images/88774859-3f23-4a6e-9b62-1c0dda6000ea.jpg" href="illustration.html">Illustration</a></li>
+            <li><a class="topic-item" data-preview="images/drawing/ClassDrawing2 copy 2.jpeg" href="drawing.html">Drawing</a></li>
+            <li><a class="topic-item" data-preview="images/illustration/1-preview.jpg" href="illustration.html">Illustration</a></li>
           </ul>
         </div>
         <div class="works-footer">More works in progress...</div>
       </div>
       <div class="works-preview-slot">
-        <img src="images/boidgame/boid.png" alt="Preview" data-works-preview />
+        <img alt="Preview" data-works-preview aria-hidden="true" />
+        <p class="works-preview-note" aria-hidden="true" hidden>coming soon</p>
       </div>
     </div>
   `,
   cv: `
-    <div class="panel-content">
-      <div class="panel-section">
-        <h3>Education</h3>
-        <ul class="panel-list">
-          <li>School / Program</li>
-          <li>Workshops</li>
-        </ul>
-      </div>
-      <div class="panel-section">
-        <h3>Experience</h3>
-        <ul class="panel-list">
-          <li>Project A</li>
-          <li>Project B</li>
-        </ul>
-      </div>
+    <div class="panel-content panel-content--cv">
+      <section class="cv-col">
+        <div class="cv-block">
+          <h3 class="cv-heading">Education</h3>
+          <div class="cv-entry">
+            <div class="cv-entry__head">
+              <p class="cv-entry__title">Rhode Island School of Design, Providence, RI</p>
+              <p class="cv-entry__year">2024-2028</p>
+            </div>
+            <p class="cv-entry__line">BFA - Art and Computation</p>
+            <p class="cv-entry__line">Concentrating in Nature Culture Sustainability Studies</p>
+          </div>
+          <div class="cv-entry">
+            <div class="cv-entry__head">
+              <p class="cv-entry__title">Brown University, Providence, RI</p>
+              <p class="cv-entry__year">2024-2028</p>
+            </div>
+            <p class="cv-entry__line">Classes taken</p>
+            <p class="cv-entry__line">Mind and Perception</p>
+          </div>
+        </div>
+
+        <div class="cv-block">
+          <h3 class="cv-heading">Skills</h3>
+          <div class="cv-entry">
+            <p class="cv-entry__title">Technical</p>
+            <p class="cv-entry__line">Programing, web development, game design, Auduino, character design, AI image/video generation, 3D Modeling, UI</p>
+          </div>
+          <div class="cv-entry">
+            <p class="cv-entry__title">Software/Tools</p>
+            <p class="cv-entry__line">HTML, CSS, p5.js, Processing, Figma, Blender, Photoshop, After Effects, Illustrator</p>
+          </div>
+          <div class="cv-entry">
+            <p class="cv-entry__title">Fine Art</p>
+            <p class="cv-entry__line">Bookbinding, Cyanotype, Painting, Sculpture, Jewelry making</p>
+          </div>
+          <div class="cv-entry">
+            <p class="cv-entry__title">Language</p>
+            <p class="cv-entry__line">English, Chinese, French</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cv-col">
+        <div class="cv-block">
+          <h3 class="cv-heading">Experience</h3>
+          <div class="cv-entry">
+            <div class="cv-entry__head">
+              <p class="cv-entry__title">Rhode Island School of Design, Providence, RI<br>Teaching Assistant</p>
+              <p class="cv-entry__year">2026</p>
+            </div>
+            <ul class="cv-bullets">
+              <li>Assisted students with debugging HTML, CSS, and JavaScript</li>
+              <li>Gave feedback on interactive UIUX design</li>
+              <li>Reinforced lecture concepts through one-on-one and group support</li>
+            </ul>
+          </div>
+          <div class="cv-entry">
+            <div class="cv-entry__head">
+              <p class="cv-entry__title">NYC, NY/Providence, RI<br>Freelance Artist</p>
+              <p class="cv-entry__year">2024-2026</p>
+            </div>
+            <ul class="cv-bullets">
+              <li>Produce commissioned illustrations and digital assets for private clients</li>
+              <li>Translate client briefs into finished visual work</li>
+              <li>Manage client communication and iterative feedback cycles</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cv-block">
+          <h3 class="cv-heading">Awards & Exhibition</h3>
+          <div class="cv-entry">
+            <div class="cv-entry__head">
+              <p class="cv-entry__title">Group show art RISD - Reframing Representation</p>
+              <p class="cv-entry__year">2025</p>
+            </div>
+          </div>
+          <div class="cv-entry">
+            <div class="cv-entry__head">
+              <p class="cv-entry__title">Art and Computation Major Exhibition</p>
+              <p class="cv-entry__year">2025</p>
+            </div>
+          </div>
+          <div class="cv-entry">
+            <div class="cv-entry__head">
+              <p class="cv-entry__title">Mark Potter Studio Art Award</p>
+              <p class="cv-entry__year">2024</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   `,
 };
@@ -142,14 +222,39 @@ function updatePanel(section) {
 
 function initWorksPreview() {
   const previewImg = panelBody.querySelector("[data-works-preview]");
+  const previewNote = panelBody.querySelector(".works-preview-note");
   const topics = Array.from(panelBody.querySelectorAll(".topic-item"));
   if (!previewImg || topics.length === 0) return () => {};
+
+  function setPreviewImage(src) {
+    if (!panelBody || !previewImg) return;
+    if (src) {
+      previewImg.src = src;
+      panelBody.dataset.previewActive = "true";
+      previewImg.setAttribute("aria-hidden", "false");
+    } else {
+      previewImg.removeAttribute("src");
+      delete panelBody.dataset.previewActive;
+      previewImg.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  function setPreviewNote(note) {
+    const showComingSoon = note === "coming-soon";
+    if (!panelBody) return;
+    if (note) {
+      panelBody.dataset.previewNote = note;
+    } else {
+      delete panelBody.dataset.previewNote;
+    }
+    if (previewNote) previewNote.hidden = !showComingSoon;
+  }
 
   const handlers = new Map();
   topics.forEach((topic) => {
     const enter = () => {
       const src = topic.dataset.preview;
-      if (src) previewImg.src = src;
+      setPreviewImage(src || "");
       const tagKey = topic.dataset.workTags;
       if (tagKey && workTagSets[tagKey]) {
         setWorkTags(tagKey);
@@ -157,29 +262,41 @@ function initWorksPreview() {
       } else {
         hideWorkTags();
       }
+      setPreviewNote(tagKey === "hell-or-sell" || tagKey === "coming-soon" ? "coming-soon" : "");
     };
     const leave = () => {
       const tagKey = topic.dataset.workTags;
       if (tagKey && workTagSets[tagKey]) {
         hideWorkTags();
       }
+      setPreviewImage("");
+      setPreviewNote("");
+    };
+    const click = (event) => {
+      if (topic.dataset.disabledLink === "true") {
+        event.preventDefault();
+      }
     };
     topic.addEventListener("mouseenter", enter);
     topic.addEventListener("focus", enter);
     topic.addEventListener("mouseleave", leave);
     topic.addEventListener("blur", leave);
-    handlers.set(topic, { enter, leave });
+    topic.addEventListener("click", click);
+    handlers.set(topic, { enter, leave, click });
   });
 
   return () => {
     handlers.forEach((fn, topic) => {
-      const { enter, leave } = fn;
+      const { enter, leave, click } = fn;
       topic.removeEventListener("mouseenter", enter);
       topic.removeEventListener("focus", enter);
       topic.removeEventListener("mouseleave", leave);
       topic.removeEventListener("blur", leave);
+      topic.removeEventListener("click", click);
     });
     hideWorkTags();
+    setPreviewImage("");
+    setPreviewNote("");
   };
 }
 
@@ -254,7 +371,7 @@ function revealWorkTags() {
   }
 
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+/";
-  const baseDuration = 700;
+  const baseDuration = 300;
   const staggerMs = 80;
 
   tagBlock.classList.remove("is-entering");
