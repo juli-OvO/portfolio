@@ -101,10 +101,12 @@
     const heroBg = document.querySelector("[data-hero-bg]");
     const slideTwoBg = document.querySelector("[data-slide-two-bg]");
     const slideThreeBg = document.querySelector("[data-slide-three-bg]");
+    const slideFiveBg = document.querySelector("[data-slide-five-bg]");
     const layers = [
       { el: heroBg, xVar: "--hero-bg-x", yVar: "--hero-bg-y", factor: 1 },
       { el: slideTwoBg, xVar: "--slide2-bg-x", yVar: "--slide2-bg-y", factor: 0.97 },
-      { el: slideThreeBg, xVar: "--slide3-bg-x", yVar: "--slide3-bg-y", factor: 0.95 }
+      { el: slideThreeBg, xVar: "--slide3-bg-x", yVar: "--slide3-bg-y", factor: 0.95 },
+      { el: slideFiveBg, xVar: "--slide5-bg-x", yVar: "--slide5-bg-y", factor: 0.93 }
     ].filter((layer) => layer.el);
     if (!layers.length) return;
     if (prefersReduced) return;
@@ -229,14 +231,16 @@
       }
 
       const total = cards.length;
-      const minPerSide = Math.ceil(total * 0.4);
-      const maxLeft = total - minPerSide;
-      const leftCount = Math.floor(rand(minPerSide, maxLeft + 1));
+      const dominantSide = Math.random() < 0.5 ? "left" : "right";
+      const dominantCount = Math.min(total - 1, Math.max(4, Math.ceil(total * 0.55)));
       const sideAssignments = shuffle(
-        Array.from({ length: total }, (_, i) => (i < leftCount ? "left" : "right"))
+        Array.from({ length: total }, (_, i) => {
+          if (i < dominantCount) return dominantSide;
+          return dominantSide === "left" ? "right" : "left";
+        })
       );
       const placedCenters = [];
-      const minCenterGap = 100;
+      const minCenterGap = 40;
 
       cards.forEach((card, index) => {
         const rect = card.getBoundingClientRect();
@@ -391,7 +395,8 @@
       const image = document.createElement("img");
       image.src = "images/gamedesign/draft/" + name;
       image.alt = "Draft artwork " + (index + 1);
-      image.loading = "lazy";
+      image.loading = "eager";
+      image.decoding = "async";
       image.style.setProperty("--img-h", rand(220, 400).toFixed(0) + "px");
 
       card.addEventListener("mouseenter", () => {
@@ -405,12 +410,13 @@
 
       imageReady.push(
         new Promise((resolve) => {
+          const revealAndResolve = () => resolve();
           if (image.complete) {
-            resolve();
+            revealAndResolve();
             return;
           }
-          image.addEventListener("load", resolve, { once: true });
-          image.addEventListener("error", resolve, { once: true });
+          image.addEventListener("load", revealAndResolve, { once: true });
+          image.addEventListener("error", revealAndResolve, { once: true });
         })
       );
     });

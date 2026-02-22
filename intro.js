@@ -23,7 +23,7 @@
 
   setTimeout(() => {
     buildSpans(WORD);
-  }, 500);
+  }, 250);
 
   window.addEventListener("revealTitleReplay", replay);
 })();

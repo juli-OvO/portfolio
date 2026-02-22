@@ -25,6 +25,13 @@ const workTagSets = {
     "Indie Game Development |",
     "Narrative Collaboration |",
     "Game Production |"
+  ],
+  "hell-or-sell": [
+    "Game Systems Architecture |",
+    "UI/UX Design |",
+    "Visual Art Production |",
+    "Inventory Optimization |",
+    "Event-Driven Logic |"
   ]
 };
 
@@ -81,7 +88,7 @@ const panelTemplates = {
         <div class="works-group">
           <div class="works-header">Game Design</div>
           <ul>
-            <li><a class="topic-item" data-preview="images/gamedesign/draft1.jpg" href="#">Hell or Sell</a></li>
+            <li><a class="topic-item" data-preview="images/hellorsell.png" data-work-tags="hell-or-sell" href="#">Hell or Sell</a></li>
             <li><a class="topic-item" data-preview="images/gamedesign/TitleScreenFinalVersion.PNG" data-work-tags="orbit-of-desire" href="orbit-of-desire.html">Orbit of Desire</a></li>
           </ul>
         </div>
@@ -432,7 +439,7 @@ function runBubbleWipe() {
   let bubbles = [];
   let maxDelay = 0;
 
-  const baseDuration = 1100;
+  const baseDuration = 550;
 
   function rand(min, max) {
     return Math.random() * (max - min) + min;
@@ -457,8 +464,8 @@ function runBubbleWipe() {
       const radius = rand(120, 460);
       const startY = height + radius + rand(40, 160);
       const endY = -radius - rand(60, 220);
-      const delay = rand(0, 260);
-      const duration = baseDuration + rand(-160, 140);
+      const delay = rand(0, 130);
+      const duration = baseDuration + rand(-80, 70);
       const drift = rand(-60, 60);
       const hue = rand(28, 50);
       const light = rand(52, 64);
@@ -511,7 +518,7 @@ function runBubbleWipe() {
       mainShown = true;
     }
 
-    if (elapsed < baseDuration + maxDelay + 160) {
+    if (elapsed < baseDuration + maxDelay + 80) {
       requestAnimationFrame(draw);
     } else {
       window.removeEventListener("resize", resizeCanvas);
@@ -527,12 +534,12 @@ function startIntroSequence() {
   if (prefersReducedMotion()) {
     intro.classList.add("is-fading");
     main.classList.add("is-visible");
-    setTimeout(cleanupIntroLayers, 650);
+    setTimeout(cleanupIntroLayers, 325);
     return;
   }
   runBubbleWipe();
 }
 
 window.addEventListener("load", () => {
-  setTimeout(startIntroSequence, 2000);
+  setTimeout(startIntroSequence, 1000);
 });
