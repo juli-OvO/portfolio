@@ -519,7 +519,6 @@ body.night .mode-toggle::after{
 }
 .panel-content--works{
   padding: 20px;
-  position: relative;
   display: grid;
   grid-template-columns: minmax(220px, 1fr) minmax(300px, 1.2fr);
   align-items: start;
@@ -1828,8 +1827,8 @@ body.night .illus-page::before {
    Side cards overflow via overflow: visible. */
 .illus-scene {
   position: relative;
-  width: min(56vw, 580px);
-  height: clamp(260px, 52vh, 480px);
+  width: min(58vw, 660px);
+  height: clamp(280px, 54vh, 520px);
   overflow: visible;
 }
 
@@ -1845,8 +1844,8 @@ body.night .illus-page::before {
   top: 50%;
   margin: 0;
   /* Fixed dimensions so translate(-50%,-50%) always centers correctly */
-  width: min(56vw, 580px);
-  height: clamp(260px, 52vh, 480px);
+  width: min(58vw, 660px);
+  height: clamp(280px, 54vh, 520px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1897,11 +1896,27 @@ body.night .illus-arrow {
   color: #fff;
 }
 
-@media (max-width: 600px) {
-  .illus-scene {
-    width: 80vw;
-    height: 50vw;
+/* Large desktop: 1440px+ (1440p monitors, large 1080p screens) */
+@media (min-width: 1440px) {
+  .illus-scene,
+  .illus-card {
+    width: min(50vw, 800px);
+    height: clamp(340px, 56vh, 620px);
   }
+}
+
+/* Tablet portrait / small tablet: 601px–900px */
+@media (min-width: 601px) and (max-width: 900px) {
+  .illus-scene,
+  .illus-card {
+    width: min(72vw, 500px);
+    height: clamp(220px, 44vh, 400px);
+  }
+}
+
+/* Mobile: ≤600px */
+@media (max-width: 600px) {
+  .illus-scene,
   .illus-card {
     width: 80vw;
     height: 50vw;
