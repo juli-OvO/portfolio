@@ -3,11 +3,11 @@
 * { box-sizing: border-box; }
 html, body {
   height: 100%;
-  cursor: none; /* EDIT: hide native cursor everywhere */
 }
 
-/* EDIT: force-hide native cursor on all descendants */
-body * {
+/* Hide native cursor only after custom cursor is ready */
+body.cursor-ready,
+body.cursor-ready * {
   cursor: none !important;
 }
 body.cursor-disabled,
@@ -150,7 +150,12 @@ body.night .book{
 }
 
 /* EDIT: ensure native cursor stays hidden on interactive elements */
-a, button, [role="button"], input, textarea, select {
+body.cursor-ready a,
+body.cursor-ready button,
+body.cursor-ready [role="button"],
+body.cursor-ready input,
+body.cursor-ready textarea,
+body.cursor-ready select {
   cursor: none;
 }
 
@@ -197,7 +202,7 @@ a, button, [role="button"], input, textarea, select {
   display: grid;
   place-items: center;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  cursor: none;
+  cursor: pointer;
 }
 .mode-toggle::after{
   content: attr(data-label);
@@ -208,7 +213,7 @@ a, button, [role="button"], input, textarea, select {
   background: #000;
   color: #fff;
   padding: 6px 10px;
-  font-size: 12px;
+  font-size: clamp(10px, calc(12px + (100vw - 1440px) * 0.004), 15px); /* scales tooltip label text with viewport width */
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0;
@@ -265,7 +270,7 @@ body.night .mode-toggle::after{
 
 /* ========== HEADER (shrinks when open) ========== */
 .site-header {
-  padding: 36px 24px;
+  padding: clamp(26px, calc(36px + (100vw - 1440px) * 0.02), 44px) 24px; /* scales header vertical padding with viewport width */
   text-align: center;
   transition: padding 280ms ease, transform 280ms ease;
 }
@@ -281,18 +286,18 @@ body.night .mode-toggle::after{
 /* ========== LAYOUT ========== */
 .stage {
   display: grid;
-  grid-template-columns: 360px 1fr; /* left books + right panel */
+  grid-template-columns: clamp(280px, calc(360px + (100vw - 1440px) * 0.12), 460px) 1fr; /* scales left shelf column with viewport width */
   gap: 28px;
   align-items: start;
   justify-content: center;
-  padding: 10px 0px 40px;
+  padding: clamp(6px, calc(10px + (100vw - 1440px) * 0.01), 16px) 0px clamp(30px, calc(40px + (100vw - 1440px) * 0.02), 52px); /* scales structural top/bottom stage padding with viewport width */
   min-height: calc(100vh - 140px);
   transition: grid-template-columns 350ms ease;
 }
 
 /* optional: when open, give more room to the page panel */
 .stage.is-open {
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: clamp(220px, calc(280px + (100vw - 1440px) * 0.08), 360px) 1fr; /* scales open-state shelf column with viewport width */
 }
 
 /* ========== BOOKSTACK (wireframe) ========== */
@@ -303,9 +308,9 @@ body.night .mode-toggle::after{
 
 .bookstack {
   position: relative;
-  width: 320px; /* EDIT: larger container */
-  height: 760px; /* EDIT: larger container */
-  padding-top: 40px; /* EDIT: shift stack up slightly */
+  width: clamp(250px, calc(320px + (100vw - 1440px) * 0.1), 420px); /* scales bookstack width with viewport width */
+  height: clamp(610px, calc(760px + (100vh - 900px) * 0.25), 980px); /* scales bookstack height with viewport height */
+  padding-top: clamp(28px, calc(40px + (100vw - 1440px) * 0.02), 56px); /* scales bookstack top padding with viewport width */
  
 }
 
@@ -316,8 +321,8 @@ body.night .mode-toggle::after{
   content:"";
   position:absolute;
   top: 0;
-  right: 70px; /* EDIT: 20px right edge + 50px offset */
-  height: 700px; /* EDIT: line length (tweak) */
+  right: clamp(52px, calc(70px + (100vw - 1440px) * 0.03), 92px); /* scales spine line inset with viewport width */
+  height: clamp(560px, calc(700px + (100vh - 900px) * 0.22), 900px); /* scales spine line height with viewport height */
   border-left: 4px solid #000;
   transition: border-left-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -325,11 +330,11 @@ body.night .mode-toggle::after{
 /* each spine */
 .book{
   position: absolute;
-  right: 20px;
-  top: 140px; /* EDIT: base Y for all spines (tweak) */
+  right: clamp(14px, calc(20px + (100vw - 1440px) * 0.015), 28px); /* scales base right offset with viewport width */
+  top: clamp(108px, calc(140px + (100vh - 900px) * 0.05), 182px); /* scales base top offset with viewport height */
   display: block;
-  width: 600px;
-  height: 800px;
+  width: clamp(470px, calc(600px + (100vw - 1440px) * 0.18), 760px); /* scales book width with viewport width */
+  height: clamp(640px, calc(800px + (100vh - 900px) * 0.28), 1020px); /* scales book height with viewport height */
   border: 4px solid #000;
   border-bottom: none; /* EDIT: remove bottom horizontal line */
   background: linear-gradient(to right, rgba(236, 152, 121, 0.232) 0 88%, #fff 88% 100%); /* EDIT: white fill only on right 10% */
@@ -342,10 +347,10 @@ body.night .mode-toggle::after{
 }
 
 /* make them overlap like a set */
-.book:nth-child(1){ right: 200px; top: 170px; z-index: 4; } /* EDIT: lowest */
-.book:nth-child(2){ right: 140px; top: 160px; z-index: 3; }
-.book:nth-child(3){ right: 80px; top: 150px; z-index: 2; }
-.book:nth-child(4){ right: 20px; top: 140px; z-index: 1; } /* EDIT: highest */
+.book:nth-child(1){ right: clamp(150px, calc(200px + (100vw - 1440px) * 0.08), 260px); top: clamp(132px, calc(170px + (100vh - 900px) * 0.06), 220px); z-index: 4; } /* scales book 1 offset with viewport */
+.book:nth-child(2){ right: clamp(104px, calc(140px + (100vw - 1440px) * 0.06), 184px); top: clamp(124px, calc(160px + (100vh - 900px) * 0.055), 206px); z-index: 3; } /* scales book 2 offset with viewport */
+.book:nth-child(3){ right: clamp(58px, calc(80px + (100vw - 1440px) * 0.045), 108px); top: clamp(116px, calc(150px + (100vh - 900px) * 0.05), 192px); z-index: 2; } /* scales book 3 offset with viewport */
+.book:nth-child(4){ right: clamp(14px, calc(20px + (100vw - 1440px) * 0.015), 28px); top: clamp(108px, calc(140px + (100vh - 900px) * 0.05), 182px); z-index: 1; } /* scales book 4 offset with viewport */
 
 
 
@@ -367,7 +372,7 @@ body.night .mode-toggle::after{
   text-orientation: upright;
   letter-spacing: 0.12em;
 
-  font-size: 28px;
+  font-size: clamp(22px, calc(28px + (100vw - 1440px) * 0.02), 36px); /* scales spine label text with viewport width */
   font-weight: 700;
 }
 
@@ -386,10 +391,10 @@ body.night .mode-toggle::after{
 }
 .bookstack.is-open .book.active{
   transform: translateX(0); /* EDIT: keep active book in scene */
-  left: -500px; /* EDIT: snap active book to 10px from left border */
+  left: clamp(-620px, calc(-500px + (100vw - 1440px) * -0.18), -360px); /* scales active-book left shift with viewport width */
   right: auto;
-  top: 140px; /* EDIT: keep full height alignment when open */
-  height: 800px; /* EDIT: keep full height when open */
+  top: clamp(108px, calc(140px + (100vh - 900px) * 0.05), 182px); /* scales active-book top with viewport height */
+  height: clamp(640px, calc(800px + (100vh - 900px) * 0.28), 1020px); /* scales active-book height with viewport height */
   opacity: 1;
   pointer-events: auto;
 }
@@ -397,15 +402,15 @@ body.night .mode-toggle::after{
 /* ========== PANEL (wireframe) ========== */
 .panel{
   position: relative;
-  min-height: 600px;
-  max-height: 600px;
-  width:80%;
+  min-height: clamp(460px, calc(600px + (100vh - 900px) * 0.2), 760px); /* scales panel min-height with viewport height */
+  max-height: clamp(460px, calc(600px + (100vh - 900px) * 0.2), 760px); /* scales panel max-height with viewport height */
+  width: clamp(68%, calc(80% + (100vw - 1440px) * 0.005), 88%); /* scales panel width with viewport width */
   margin: 0 auto; /* EDIT: center panel horizontally */
   justify-self: center;
   border: 4px solid #000;
   opacity: 0;
   pointer-events: none;
-  --panel-offset: -180px;
+  --panel-offset: clamp(-240px, calc(-180px + (100vw - 1440px) * -0.1), -120px); /* scales panel horizontal offset with viewport width */
   transform: perspective(1200px) translateX(var(--panel-offset)) translateY(12px) scale(0.96) rotateY(-2deg);
   transform-origin: left top;
   transition: opacity 300ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1), min-height 350ms ease, border-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -439,7 +444,7 @@ body.night .mode-toggle::after{
   opacity: 1;
   pointer-events: auto;
   transform: perspective(1200px) translateX(var(--panel-offset)) translateY(0) scale(1.02) rotateY(0deg);
-  min-height: 500px;
+  min-height: clamp(390px, calc(500px + (100vh - 900px) * 0.16), 640px); /* scales open-state panel height with viewport height */
   background: var(--panel-fill);
 }
 
@@ -448,14 +453,14 @@ body.night .mode-toggle::after{
   padding: 30px;
   max-width: 980px;
   margin: 0 auto; /* EDIT: center panel content */
-  font-size: 18px;
+  font-size: clamp(14px, calc(18px + (100vw - 1440px) * 0.012), 24px); /* scales panel body text with viewport width */
   line-height: 1.7;
 }
 .panel-content--center{
   text-align: center;
 }
 .panel-content--center p{
-  font-size: 15px;
+  font-size: clamp(12px, calc(15px + (100vw - 1440px) * 0.01), 20px); /* scales centered panel paragraph text with viewport width */
   line-height: 1.85;
 }
 .panel-content--bio{
@@ -616,7 +621,7 @@ body.night .mode-toggle::after{
 }
 .work-tags__line{
   margin: 0;
-  font-size: 24px;
+  font-size: clamp(19px, calc(24px + (100vw - 1440px) * 0.018), 32px); /* scales work tag text with viewport width */
   line-height: 1.08;
   letter-spacing: 0.01em;
 }
@@ -647,14 +652,14 @@ body.night .mode-toggle::after{
   font-weight: 600;
   text-transform: none;
   letter-spacing: 0.01em;
-  font-size: 22px;
+  font-size: clamp(17px, calc(22px + (100vw - 1440px) * 0.016), 30px); /* scales works section header text with viewport width */
   margin-left: 0;
 }
 .topic-item{
   border: none;
   background: transparent;
   font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 28px;
+  font-size: clamp(22px, calc(28px + (100vw - 1440px) * 0.02), 36px); /* scales topic item text with viewport width */
   font-weight: 500;
   color: inherit;
   padding: 0;
@@ -665,7 +670,7 @@ body.night .mode-toggle::after{
 }
 .works-footer{
   font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 22px;
+  font-size: clamp(17px, calc(22px + (100vw - 1440px) * 0.016), 30px); /* scales works footer text with viewport width */
   font-weight: 600;
   margin-top: 12px;
 }
@@ -741,7 +746,7 @@ body.night .mode-toggle::after{
   z-index: 5;
   margin: 0;
   font-family: inherit;
-  font-size: 24px;
+  font-size: clamp(19px, calc(24px + (100vw - 1440px) * 0.018), 32px); /* scales preview note text with viewport width */
   line-height: 1.08;
   letter-spacing: 0.01em;
   font-weight: 700;
@@ -760,7 +765,7 @@ body.night .mode-toggle::after{
   bottom: 10px;
   margin: 0;
   font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 20px;
+  font-size: clamp(16px, calc(20px + (100vw - 1440px) * 0.014), 26px); /* scales fixed site credit text with viewport width */
   line-height: 1.2;
   color: rgba(0, 0, 0, 0.7);
   z-index: 10001;
@@ -853,7 +858,7 @@ body.boid-sequencer .boid-bg{
 }
 body.boid-sequencer .boid-hero{
   opacity: 0;
-  transform: translateX(-40px);
+  transform: translateX(clamp(-56px, calc(-40px + (100vw - 1440px) * -0.02), -28px)); /* scales hero entry offset with viewport width */
   transition: opacity 1200ms cubic-bezier(0.22, 0.8, 0.24, 1), transform 1200ms cubic-bezier(0.22, 0.8, 0.24, 1);
 }
 body.boid-sequencer #intro,
@@ -879,10 +884,10 @@ body.boid-sequencer #main{
 
 .boid-back{
   position: fixed;
-  top: 28px;
-  left: 28px;
-  width: 44px;
-  height: 44px;
+  top: clamp(20px, calc(28px + (100vw - 1440px) * 0.012), 40px); /* scales back button top inset with viewport width */
+  left: clamp(20px, calc(28px + (100vw - 1440px) * 0.012), 40px); /* scales back button left inset with viewport width */
+  width: clamp(36px, calc(44px + (100vw - 1440px) * 0.014), 58px); /* scales back button width with viewport width */
+  height: clamp(36px, calc(44px + (100vw - 1440px) * 0.014), 58px); /* scales back button height with viewport width */
   border-radius: 50%;
   border: 2px solid var(--boid-ink);
   display: grid;
@@ -891,6 +896,15 @@ body.boid-sequencer #main{
   background: var(--boid-overlay);
   backdrop-filter: blur(6px);
   z-index: 10;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.boid-back:hover {
+  transform: scale(1.12);
+  background: var(--boid-ink);
+  border-color: var(--boid-ink);
+}
+.boid-back:hover .boid-back__arrow {
+  border-color: var(--boid-light);
 }
 .boid-back__arrow{
   width: 14px;
@@ -899,16 +913,17 @@ body.boid-sequencer #main{
   border-bottom: 2px solid var(--boid-ink);
   transform: rotate(45deg) translateX(1px);
   display: block;
+  transition: border-color 0.25s ease;
 }
 
 .boid-content{
   position: relative;
   min-height: 100vh;
-  padding: 240px 8vw 0;
+  padding: clamp(170px, calc(240px + (100vh - 900px) * 0.18), 340px) clamp(5vw, 8vw, 10vw) 0; /* scales hero section padding with viewport size */
 }
 .boid-hero{
   display: grid;
-  grid-template-columns: minmax(220px, 420px) 1fr;
+  grid-template-columns: minmax(clamp(180px, calc(220px + (100vw - 1440px) * 0.06), 300px), clamp(340px, calc(420px + (100vw - 1440px) * 0.12), 540px)) 1fr; /* scales hero left column bounds with viewport width */
   gap: 6vw;
   align-items: center;
   min-height: 70vh;
@@ -916,10 +931,10 @@ body.boid-sequencer #main{
 .boid-hero__left{
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: clamp(14px, calc(18px + (100vw - 1440px) * 0.01), 24px); /* scales hero left stack spacing with viewport width */
 }
 .boid-hero__label{
-  font-size: 13px;
+  font-size: clamp(11px, calc(13px + (100vw - 1440px) * 0.005), 17px); /* scales boid hero label text with viewport width */
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin: 0;
@@ -932,8 +947,40 @@ body.boid-sequencer #main{
   margin: 0;
   letter-spacing: -0.02em;
 }
+.boid-hero__title-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  position: relative;
+}
+.boid-hero__title-link::after {
+  content: "↗";
+  font-size: 0.45em;
+  position: absolute;
+  bottom: 0.2em;
+  left: 100%;
+  margin-left: 0.25em;
+  white-space: nowrap;
+  transition: transform 0.22s ease;
+}
+.boid-hero__title-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 3px;
+  background: currentColor;
+  transition: width 240ms ease;
+}
+.boid-hero__title-link:hover::before {
+  width: 100%;
+}
+.boid-hero__title-link:hover::after {
+  transform: translate(3px, -3px);
+}
 .boid-hero__link{
-  font-size: 18px;
+  font-size: clamp(14px, calc(18px + (100vw - 1440px) * 0.012), 24px); /* scales boid hero link text with viewport width */
   text-decoration: none;
   color: var(--boid-ink);
   display: inline-flex;
@@ -946,7 +993,7 @@ body.boid-sequencer #main{
 }
 .boid-hero__link::after{
   content: \"↗\";
-  font-size: 18px;
+  font-size: clamp(14px, calc(18px + (100vw - 1440px) * 0.012), 24px); /* scales boid hero link icon with viewport width */
 }
 .boid-hero__link::before{
   content: "";
@@ -963,7 +1010,7 @@ body.boid-sequencer #main{
 }
 
 .boid-spacer{
-  height: 300px;
+  height: clamp(220px, calc(300px + (100vh - 900px) * 0.24), 460px); /* scales boid spacer height with viewport height */
 }
 
 .boid-details{
@@ -974,7 +1021,7 @@ body.boid-sequencer #main{
   min-height: 135vh;
   display: flex;
   align-items: center;
-  margin-top: -100px;
+  margin-top: clamp(-140px, calc(-100px + (100vh - 900px) * -0.08), -70px); /* scales overlap offset with viewport height */
 }
 .boid-details__content{
   position: relative;
@@ -990,7 +1037,7 @@ body.boid-sequencer #main{
   --img2-h: calc(var(--img2-w) * 1184 / 1220);
   --img3-h: calc(var(--img3-w) * 262 / 1914);
   --img4-h: calc(var(--img4-w) * 794 / 988);
-  transform: translate(calc(-4vw + 30px), 3vh);
+  transform: translate(calc(-4vw + clamp(20px, calc(30px + (100vw - 1440px) * 0.015), 44px)), 3vh); /* scales content x-offset with viewport width */
 }
 .boid-details__text{
   font-size: clamp(16px, 1.8vw, 20px);
@@ -998,28 +1045,28 @@ body.boid-sequencer #main{
   margin: 0;
   color: var(--boid-muted);
   font-family: "Inter", "Space Grotesk", system-ui, sans-serif;
-  max-width: 380px;
+  max-width: clamp(300px, calc(380px + (100vw - 1440px) * 0.12), 500px); /* scales annotation block width with viewport width */
   position: absolute;
   opacity: 0;
   transform: translateX(0);
   transition: transform 700ms cubic-bezier(0.22, 0.8, 0.24, 1), opacity 700ms cubic-bezier(0.22, 0.8, 0.24, 1);
 }
 .boid-details__text--left{
-  top: calc(2% - 80px);
-  left: 80px;
-  transform: translateX(-40px);
+  top: calc(2% - clamp(56px, calc(80px + (100vh - 900px) * 0.1), 108px)); /* scales left note top offset with viewport height */
+  left: clamp(56px, calc(80px + (100vw - 1440px) * 0.04), 112px); /* scales left note horizontal inset with viewport width */
+  transform: translateX(clamp(-56px, calc(-40px + (100vw - 1440px) * -0.02), -28px)); /* scales left note entrance offset with viewport width */
 }
 .boid-details__text--right{
-  top: calc(34% - 80px - 30px);
-  right: 30px;
+  top: calc(34% - clamp(56px, calc(80px + (100vh - 900px) * 0.1), 108px) - clamp(22px, calc(30px + (100vh - 900px) * 0.04), 42px)); /* scales right note top offset with viewport height */
+  right: clamp(20px, calc(30px + (100vw - 1440px) * 0.02), 42px); /* scales right note inset with viewport width */
   text-align: right;
-  transform: translateX(40px);
+  transform: translateX(clamp(28px, calc(40px + (100vw - 1440px) * 0.02), 56px)); /* scales right note entrance offset with viewport width */
 }
 .boid-details__text--bottom{
-  bottom: calc(10% + 30px);
-  left: 80px;
-  max-width: 810px;
-  transform: translateX(-40px);
+  bottom: calc(10% + clamp(22px, calc(30px + (100vh - 900px) * 0.04), 42px)); /* scales bottom note vertical offset with viewport height */
+  left: clamp(56px, calc(80px + (100vw - 1440px) * 0.04), 112px); /* scales bottom note horizontal inset with viewport width */
+  max-width: clamp(620px, calc(810px + (100vw - 1440px) * 0.18), 1040px); /* scales bottom note width with viewport width */
+  transform: translateX(clamp(-56px, calc(-40px + (100vw - 1440px) * -0.02), -28px)); /* scales bottom note entrance offset with viewport width */
 }
 .boid-details__content.in-view .boid-details__text{
   opacity: 1;
@@ -1046,15 +1093,15 @@ body.boid-sequencer #main{
 }
 .boid-line--top{
   height: 2px;
-  left: -40px;
+  left: clamp(-56px, calc(-40px + (100vw - 1440px) * -0.02), -28px); /* scales top connector start offset with viewport width */
   top: calc(var(--anchor1-y) - var(--img1-h));
-  width: calc(var(--anchor1-x) + var(--img1-w) + 200px);
+  width: calc(var(--anchor1-x) + var(--img1-w) + clamp(150px, calc(200px + (100vw - 1440px) * 0.08), 280px)); /* scales top connector extension with viewport width */
 }
 .boid-line--mid{
   height: 2px;
-  left: 300px;
+  left: clamp(220px, calc(300px + (100vw - 1440px) * 0.12), 420px); /* scales mid connector x-position with viewport width */
   top: var(--anchor1-y);
-  width: calc(var(--anchor1-x) + var(--img3-w) + 420px);
+  width: calc(var(--anchor1-x) + var(--img3-w) + clamp(320px, calc(420px + (100vw - 1440px) * 0.14), 580px)); /* scales mid connector extension with viewport width */
 }
 .boid-line--lower{
   display: none;
@@ -1066,24 +1113,24 @@ body.boid-sequencer #main{
   width: 2px;
   left: calc(var(--anchor1-x) + var(--img1-w));
   top: calc(var(--anchor1-y) - var(--img1-h));
-  height: calc(var(--img1-h) + 220px);
+  height: calc(var(--img1-h) + clamp(160px, calc(220px + (100vh - 900px) * 0.2), 320px)); /* scales v1 connector length with viewport height */
   transform: scaleY(0);
   transform-origin: top center;
 }
 .boid-line--v2{
   width: 2px;
   left: 2%;
-  top: calc(var(--anchor1-y) + var(--img2-h) - 40px);
-  height: 440px;
+  top: calc(var(--anchor1-y) + var(--img2-h) - clamp(28px, calc(40px + (100vh - 900px) * 0.06), 56px)); /* scales v2 top pull-up with viewport height */
+  height: clamp(330px, calc(440px + (100vh - 900px) * 0.24), 620px); /* scales v2 connector length with viewport height */
   transform: scaleY(0);
   transform-origin: top center;
 }
 .boid-line--v2::after{
   content: "";
   position: absolute;
-  left: calc(-2% - 60px);
-  top: calc(100% - 40px);
-  width: calc(400px + 2%);
+  left: calc(-2% - clamp(44px, calc(60px + (100vw - 1440px) * 0.03), 84px)); /* scales v2 horizontal branch start offset with viewport width */
+  top: calc(100% - clamp(28px, calc(40px + (100vh - 900px) * 0.06), 56px)); /* scales v2 horizontal branch vertical offset with viewport height */
+  width: calc(clamp(300px, calc(400px + (100vw - 1440px) * 0.1), 560px) + 2%); /* scales v2 horizontal branch length with viewport width */
   height: 2px;
   background: rgba(255, 255, 255, 0.75);
   transform: scaleX(0);
@@ -1105,7 +1152,7 @@ body.boid-sequencer #main{
   position: absolute;
   margin: 0;
   opacity: 0;
-  --img-offset: 12px;
+  --img-offset: clamp(8px, calc(12px + (100vh - 900px) * 0.03), 18px); /* scales image entrance y-offset with viewport height */
   transition: opacity 700ms cubic-bezier(0.22, 0.8, 0.24, 1), transform 700ms cubic-bezier(0.22, 0.8, 0.24, 1);
   overflow: hidden;
   pointer-events: auto;
@@ -1135,7 +1182,7 @@ body.boid-sequencer #main{
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 14px;
+  font-size: clamp(11px, calc(14px + (100vw - 1440px) * 0.008), 18px); /* scales boid image caption text with viewport width */
   line-height: 1.5;
   color: #000;
   opacity: 0;
@@ -1167,7 +1214,7 @@ body.boid-sequencer #main{
   transform: translateY(-50%) translateX(var(--line-x, 0px)) scaleX(0);
   transform-origin: center;
   transition: transform 700ms cubic-bezier(0.22, 0.8, 0.24, 1);
-  width: var(--line-length, 220px);
+  width: var(--line-length, clamp(165px, calc(220px + (100vw - 1440px) * 0.08), 300px)); /* scales connector fallback length with viewport width */
 }
 .boid-image__line--right{
   left: 100%;
@@ -1182,20 +1229,20 @@ body.boid-sequencer #main{
 }
 
 .boid-image__line--img1{
-  --line-length: 340px;
+  --line-length: clamp(250px, calc(340px + (100vw - 1440px) * 0.12), 480px); /* scales img1 connector length with viewport width */
   --line-y: 0%;
 }
 .boid-image__line--img2{
-  --line-length: 220px;
+  --line-length: clamp(165px, calc(220px + (100vw - 1440px) * 0.08), 300px); /* scales img2 connector length with viewport width */
   --line-y: 0%;
-  --line-x: 100px;
+  --line-x: clamp(74px, calc(100px + (100vw - 1440px) * 0.04), 140px); /* scales img2 connector x-shift with viewport width */
 }
 .boid-image__line--img3{
-  --line-length: 580px;
+  --line-length: clamp(430px, calc(580px + (100vw - 1440px) * 0.2), 800px); /* scales img3 connector length with viewport width */
   --line-y: 0%;
 }
 .boid-image__line--img4{
-  --line-length: 200px;
+  --line-length: clamp(150px, calc(200px + (100vw - 1440px) * 0.08), 280px); /* scales img4 connector length with viewport width */
   --line-y: 0%;
 }
 
@@ -1225,14 +1272,14 @@ body.boid-sequencer #main{
   right: 100%;
   bottom: 0;
   height: 2px;
-  width: 250px;
+  width: clamp(190px, calc(250px + (100vw - 1440px) * 0.1), 350px); /* scales base connector length with viewport width */
   background: rgba(255, 255, 255, 0.75);
   transform: scaleX(0);
   transform-origin: right center;
   transition: transform 700ms cubic-bezier(0.22, 0.8, 0.24, 1);
 }
 .boid-image__base--img3{
-  width: 250px;
+  width: clamp(190px, calc(250px + (100vw - 1440px) * 0.1), 350px); /* scales img3 base connector length with viewport width */
 }
 .boid-details__content.in-view .boid-image__base{
   transform: scaleX(1);
@@ -1243,7 +1290,7 @@ body.boid-sequencer #main{
   left: 100%;
   bottom: 0;
   width: 2px;
-  height: 400px;
+  height: clamp(300px, calc(400px + (100vh - 900px) * 0.24), 560px); /* scales img4 vertical stem with viewport height */
   background: rgba(255, 255, 255, 0.75);
   transform: scaleY(0);
   transform-origin: bottom center;
@@ -1262,14 +1309,14 @@ body.boid-sequencer #main{
 
 @media (max-width: 768px) {
   .boid-content{
-    padding: 120px 7vw 0;
+    padding: clamp(92px, calc(120px + (100vw - 768px) * 0.12), 170px) 7vw 0; /* scales mobile hero top padding with viewport width */
   }
   .boid-hero{
     grid-template-columns: 1fr;
     min-height: 60vh;
   }
   .boid-details{
-    padding: 96px 7vw;
+    padding: clamp(72px, calc(96px + (100vw - 768px) * 0.1), 132px) 7vw; /* scales mobile details vertical padding with viewport width */
     margin: 0 -7vw;
   }
   .boid-details__content{
@@ -1282,14 +1329,14 @@ body.boid-sequencer #main{
     transform: none;
   }
   .boid-details__text + .boid-details__text{
-    margin-top: 28px;
+    margin-top: clamp(20px, calc(28px + (100vw - 768px) * 0.05), 40px); /* scales mobile text block spacing with viewport width */
   }
   .boid-details__images{
     position: static;
-    margin-top: 40px;
+    margin-top: clamp(28px, calc(40px + (100vw - 768px) * 0.06), 56px); /* scales mobile image grid top margin with viewport width */
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: clamp(14px, calc(20px + (100vw - 768px) * 0.04), 30px); /* scales mobile image grid gap with viewport width */
   }
   .boid-image{
     position: static;
@@ -1317,7 +1364,7 @@ body.boid-sequencer #main{
   align-items: center;
 }
 .panel-title{
-  font-size: 42px;
+  font-size: clamp(33px, calc(42px + (100vw - 1440px) * 0.03), 56px); /* scales panel title text with viewport width */
   font-weight: 700;
   margin: 0 0 24px;
 }
@@ -1326,7 +1373,7 @@ body.boid-sequencer #main{
 }
 .panel-section h3{
   margin: 0 0 8px;
-  font-size: 24px;
+  font-size: clamp(19px, calc(24px + (100vw - 1440px) * 0.018), 32px); /* scales panel section heading text with viewport width */
 }
 .panel-list{
   margin: 0;
@@ -1448,7 +1495,7 @@ body.boid-sequencer #main{
   mask-composite: intersect;
 }
 .drawing-caption{
-  font-size: 16px;
+  font-size: clamp(13px, calc(16px + (100vw - 1440px) * 0.01), 21px); /* scales drawing caption text with viewport width */
   letter-spacing: 0.04em;
   text-transform: lowercase;
   filter: blur(1.5px);
@@ -1511,6 +1558,352 @@ body.boid-sequencer #main{
     bottom: 20px;
   }
   .drawing-caption{
-    font-size: 14px;
+    font-size: clamp(11px, calc(14px + (100vw - 768px) * 0.01), 18px); /* scales mobile drawing caption text with viewport width */
+  }
+}
+
+/* ========== RESPONSIVE: MEDIUM SCREENS (≤ 1280px) ========== */
+/* Targets 13" laptops, iPads in landscape, and similar mid-range viewports */
+@media (max-width: 1280px) {
+  .stage {
+    grid-template-columns: clamp(190px, 25vw, 320px) 1fr;
+    gap: 16px;
+  }
+  .stage.is-open {
+    grid-template-columns: clamp(150px, 19vw, 260px) 1fr;
+  }
+  .bookstack {
+    width: clamp(190px, 23vw, 320px);
+    height: clamp(460px, 83vh, 760px);
+    padding-top: clamp(18px, 2.5vw, 40px);
+  }
+  .book {
+    width: clamp(320px, 36vw, 600px);
+    height: clamp(480px, 87vh, 800px);
+  }
+  .book::after {
+    right: clamp(32px, 3.8vw, 70px);
+    height: clamp(440px, 81vh, 700px);
+  }
+  .book:nth-child(1) { right: clamp(90px, 13.5vw, 200px); top: clamp(96px, 14vh, 170px); }
+  .book:nth-child(2) { right: clamp(62px, 9vw, 140px);    top: clamp(90px, 13vh, 160px); }
+  .book:nth-child(3) { right: clamp(34px, 4.8vw, 80px);   top: clamp(84px, 12vh, 150px); }
+  .book:nth-child(4) { right: clamp(10px, 1.5vw, 20px);   top: clamp(78px, 11vh, 140px); }
+  .bookstack.is-open .book { transform: translateX(-200px); }
+  .bookstack.is-open .book.active {
+    left: clamp(-400px, -34vw, -260px);
+    top: clamp(78px, 11vh, 140px);
+    height: clamp(480px, 87vh, 800px);
+  }
+  .spine-text { font-size: clamp(14px, 1.9vw, 28px); }
+  .panel {
+    min-height: clamp(360px, 66vh, 600px);
+    max-height: clamp(360px, 66vh, 600px);
+  }
+  .stage.is-open .panel {
+    min-height: clamp(300px, 58vh, 500px);
+  }
+  .panel-content--bio {
+    min-height: auto;
+    padding: 24px 36px 28px;
+  }
+  .bio-copy { font-size: clamp(15px, 1.7vw, 20px); }
+}
+
+/* ========== RESPONSIVE: SHORT VIEWPORTS (≤ 820px tall) ========== */
+/* Targets 13" MacBooks (~800px height), compact laptop screens */
+@media (max-height: 820px) {
+  .bookstack {
+    height: clamp(400px, 80vh, 760px);
+  }
+  .book {
+    height: clamp(420px, 85vh, 800px);
+  }
+  .book::after {
+    height: clamp(390px, 79vh, 700px);
+  }
+  .bookstack.is-open .book.active {
+    height: clamp(420px, 85vh, 800px);
+  }
+  .panel {
+    min-height: clamp(300px, 60vh, 600px);
+    max-height: clamp(300px, 60vh, 600px);
+  }
+  .stage.is-open .panel {
+    min-height: clamp(260px, 52vh, 500px);
+  }
+}
+
+/* ========== RESPONSIVE: TABLET / NARROW (≤ 860px wide) ========== */
+/* Supplements existing rule — adds book & panel sizing for narrow viewports */
+@media (max-width: 860px) {
+  .bookstack {
+    width: clamp(150px, 38vw, 280px);
+    height: clamp(340px, 66vh, 560px);
+    padding-top: 14px;
+  }
+  .book {
+    width: clamp(240px, 52vw, 420px);
+    height: clamp(360px, 70vh, 600px);
+  }
+  .book::after {
+    right: clamp(20px, 4.6vw, 46px);
+    height: clamp(330px, 64vh, 550px);
+  }
+  .book:nth-child(1) { right: clamp(62px, 13vw, 116px); top: clamp(72px, 12vh, 108px); }
+  .book:nth-child(2) { right: clamp(42px, 8.8vw, 80px); top: clamp(66px, 11vh, 100px); }
+  .book:nth-child(3) { right: clamp(22px, 4.6vw, 42px); top: clamp(60px, 10vh, 92px);  }
+  .book:nth-child(4) { right: clamp(6px, 1.4vw, 12px);  top: clamp(54px, 9vh, 84px);   }
+  .bookstack:not(.is-open) .book:hover { transform: translateY(-55px); }
+  .bookstack.is-open .book { transform: translateX(-130px); }
+  .bookstack.is-open .book.active {
+    left: clamp(-280px, -28vw, -160px);
+    top: clamp(54px, 9vh, 84px);
+    height: clamp(360px, 70vh, 600px);
+  }
+  .spine-text { font-size: clamp(11px, 2.8vw, 20px); }
+  .panel {
+    min-height: clamp(260px, 52vh, 440px);
+    max-height: clamp(260px, 52vh, 440px);
+    width: 94%;
+    --panel-offset: 0px;
+  }
+  .stage.is-open .panel {
+    min-height: clamp(220px, 44vh, 360px);
+  }
+  .panel-content--bio {
+    min-height: auto;
+    height: auto;
+    top: 0;
+    padding: 18px 22px;
+  }
+  .bio-copy { font-size: clamp(13px, 3.2vw, 18px); }
+  .bio-links {
+    position: relative;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    margin-top: 16px;
+  }
+  .bio-link { font-size: clamp(18px, 4.6vw, 30px); }
+  .panel-content { padding: 18px; }
+  .panel-content--cv {
+    transform: scale(0.55);
+    width: 181.8%;
+    padding: 28px 18px;
+  }
+}
+
+/* ========== RESPONSIVE: LARGE SCREENS (≥ 1440px wide) ========== */
+/* Lifts the hard height caps so books fill the full screen on big monitors */
+@media (min-width: 1440px) {
+  .bookstack {
+    height: clamp(780px, 95vh, 1500px);
+  }
+  .book {
+    height: clamp(800px, 93vh, 1480px);
+  }
+  .book::after {
+    height: clamp(750px, 87vh, 1420px);
+  }
+  .bookstack.is-open .book.active {
+    height: clamp(800px, 93vh, 1480px);
+  }
+
+  /* Drawing page – let images breathe on large monitors */
+  .drawing-slide img {
+    height: clamp(600px, 72vh, 1000px);
+  }
+}
+
+/* ========== RESPONSIVE: BOID PAGE — MEDIUM SCREENS (769px–1280px) ========== */
+/* Tightens hero layout and smooths text sizes in the gap between mobile and desktop */
+@media (max-width: 1280px) and (min-width: 769px) {
+  .boid-hero {
+    grid-template-columns: 1fr;
+    min-height: 50vh;
+  }
+  .boid-content {
+    padding-top: clamp(100px, 16vh, 200px);
+  }
+  .boid-details__text {
+    max-width: clamp(260px, 42vw, 500px);
+  }
+}
+
+/* ========== RESPONSIVE: BOID PAGE — LARGE SCREENS (≥ 1440px) ========== */
+@media (min-width: 1440px) {
+  .boid-content {
+    padding-top: clamp(200px, calc(240px + (100vh - 900px) * 0.22), 380px);
+  }
+  .boid-spacer {
+    height: clamp(280px, calc(340px + (100vh - 900px) * 0.28), 560px);
+  }
+}
+
+/* ========== SHARED BACK BUTTON (illustration, drawing, etc.) ========== */
+.page-back {
+  position: fixed;
+  top: clamp(20px, calc(28px + (100vw - 1440px) * 0.012), 40px);
+  left: clamp(20px, calc(28px + (100vw - 1440px) * 0.012), 40px);
+  width: clamp(36px, calc(44px + (100vw - 1440px) * 0.014), 58px);
+  height: clamp(36px, calc(44px + (100vw - 1440px) * 0.014), 58px);
+  border-radius: 50%;
+  border: 2px solid #0b0b0b;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.page-back:hover {
+  transform: scale(1.12);
+  background: #0b0b0b;
+  border-color: #0b0b0b;
+}
+.page-back:hover .page-back__arrow {
+  border-color: #fff;
+}
+.page-back__arrow {
+  width: 14px;
+  height: 14px;
+  border-left: 2px solid #0b0b0b;
+  border-bottom: 2px solid #0b0b0b;
+  transform: rotate(45deg) translateX(1px);
+  display: block;
+  transition: border-color 0.25s ease;
+}
+
+/* ========== ILLUSTRATION PAGE — 3D CAROUSEL ========== */
+.illus-page {
+  height: 100%;
+  overflow: hidden;
+}
+.illus-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 0;
+}
+body.night .illus-page::before {
+  background: #000;
+}
+
+.illus-stage {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(24px, 4vh, 48px) 0 clamp(24px, 4vh, 48px);
+}
+
+.illus-header {
+  text-align: center;
+  padding: 0 24px;
+  margin-bottom: clamp(24px, 5vh, 56px);
+}
+.illus-header h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 54px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.illus-carousel-wrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* The scene defines the space for the centered (active) card only.
+   Side cards overflow via overflow: visible. */
+.illus-scene {
+  position: relative;
+  width: min(56vw, 580px);
+  height: clamp(260px, 52vh, 480px);
+  overflow: visible;
+}
+
+.illus-track {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.illus-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  /* Fixed dimensions so translate(-50%,-50%) always centers correctly */
+  width: min(56vw, 580px);
+  height: clamp(260px, 52vh, 480px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.65s ease;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+.illus-card.is-active,
+.illus-card.is-adjacent {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.illus-card img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+.illus-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+  color: #000;
+  z-index: 20;
+  line-height: 0;
+  transition: opacity 0.2s ease;
+}
+.illus-arrow:hover {
+  opacity: 0.35;
+}
+.illus-arrow--prev {
+  left: clamp(10px, 2.5vw, 40px);
+}
+.illus-arrow--next {
+  right: clamp(10px, 2.5vw, 40px);
+}
+body.night .illus-arrow {
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .illus-scene {
+    width: 80vw;
+    height: 50vw;
+  }
+  .illus-card {
+    width: 80vw;
+    height: 50vw;
   }
 }

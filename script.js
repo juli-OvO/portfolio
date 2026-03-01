@@ -19,6 +19,12 @@ const workTagSets = {
     "Interactive Media |",
     "Modular System Architecture |"
   ],
+  modeling: [
+    "blender |",
+    "volumetrics |",
+    "rhino |",
+    "experimental |"
+  ],
   "orbit-of-desire": [
     "Character Design |",
     "Visual Novel |",
@@ -83,22 +89,22 @@ const panelTemplates = {
         <div class="works-group">
           <div class="works-header">Computational work</div>
           <ul>
-            <li><a class="topic-item" data-preview="images/boidgame/boid.png" data-work-tags="music-boids" href="music-boids.html">Music Boids</a></li>
-            <li><a class="topic-item" data-preview="images/blender1/Scene5 copy.png" data-work-tags="coming-soon" data-disabled-link="true" href="#">Modeling</a></li>
+            <li><a class="topic-item" data-preview="images/boidgame/boid.png" data-work-tags="music-boids" href="music-boids.html" target="_blank" rel="noreferrer">Music Boids</a></li>
+            <li><a class="topic-item" data-preview="images/blender1/Scene5 copy.png" data-work-tags="modeling" data-disabled-link="true" href="#">Modeling</a></li>
           </ul>
         </div>
         <div class="works-group">
           <div class="works-header">Game Design</div>
           <ul>
             <li><a class="topic-item" data-preview="images/hellorsell.png" data-work-tags="hell-or-sell" data-disabled-link="true" href="#">Hell or Sell</a></li>
-            <li><a class="topic-item" data-preview="images/gamedesign/TitleScreenFinalVersion.PNG" data-work-tags="orbit-of-desire" href="orbit-of-desire.html">Orbit of Desire</a></li>
+            <li><a class="topic-item" data-preview="images/gamedesign/TitleScreenFinalVersion.PNG" data-work-tags="orbit-of-desire" href="orbit-of-desire.html" target="_blank" rel="noreferrer">Orbit of Desire</a></li>
           </ul>
         </div>
         <div class="works-group">
           <div class="works-header">Fine Art</div>
           <ul>
-            <li><a class="topic-item" data-preview="images/drawing/ClassDrawing2 copy 2.jpeg" href="drawing.html">Drawing</a></li>
-            <li><a class="topic-item" data-preview="images/illustration/1-preview.jpg" href="illustration.html">Illustration</a></li>
+            <li><a class="topic-item" data-preview="images/drawing/ClassDrawing2 copy 2.jpeg" href="drawing.html" target="_blank" rel="noreferrer">Drawing</a></li>
+            <li><a class="topic-item" data-preview="images/illustration/1-preview.jpg" href="illustration.html" target="_blank" rel="noreferrer">Illustration</a></li>
           </ul>
         </div>
         <div class="works-footer">More works in progress...</div>

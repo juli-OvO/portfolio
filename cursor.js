@@ -11,16 +11,19 @@
 
   const cursor = document.getElementById("cursor");
   const cursorTrail = document.getElementById("cursorTrail");
+  if (!cursor) {
+    return;
+  }
+  document.body.classList.add("cursor-ready");
 
-  if (cursor) {
-    let mouseX = window.innerWidth * 0.5;
-    let mouseY = window.innerHeight * 0.5;
-    let currentX = mouseX;
-    let currentY = mouseY;
-    let currentScale = 1;
-    let targetScale = 1;
-    let magnetTarget = null;
-    let hasMoved = false;
+  let mouseX = window.innerWidth * 0.5;
+  let mouseY = window.innerHeight * 0.5;
+  let currentX = mouseX;
+  let currentY = mouseY;
+  let currentScale = 1;
+  let targetScale = 1;
+  let magnetTarget = null;
+  let hasMoved = false;
 
     function setCursorPosition(x, y) {
       cursor.style.setProperty("--cursor-x", `${x}px`);
@@ -112,10 +115,9 @@
       requestAnimationFrame(animate);
     }
 
-    setCursorPosition(currentX, currentY);
-    setCursorScale(currentScale);
-    requestAnimationFrame(animate);
-  }
+  setCursorPosition(currentX, currentY);
+  setCursorScale(currentScale);
+  requestAnimationFrame(animate);
 
   if (cursorTrail) {
     cursorTrail.style.display = "none";

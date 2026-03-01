@@ -549,3 +549,113 @@ body {
     transform: none;
   }
 }
+
+/* ========== RESPONSIVE: TABLET (≤ 1024px) ========== */
+@media (max-width: 1024px) {
+  /* Slide 3 – keep both cards but tighten them */
+  .slide-three-card--dialogue {
+    width: min(56vw, 800px);
+  }
+  .slide-three-card--finished {
+    max-width: min(40vw, 680px);
+  }
+  .slide-three-card--finished img {
+    max-height: 80vh;
+  }
+}
+
+/* ========== RESPONSIVE: MOBILE (≤ 760px) ========== */
+@media (max-width: 760px) {
+  /* Slide 1 – Hero */
+  .hero-title {
+    font-size: clamp(30px, 8vw, 56px);
+  }
+  .hero-subtitle {
+    font-size: clamp(14px, 3.5vw, 26px);
+  }
+  .hero-back {
+    font-size: clamp(20px, 4.5vw, 32px);
+  }
+
+  /* Slide 2 – text only */
+  .slide-two-copy {
+    width: min(88vw, 680px);
+    gap: clamp(20px, 5vh, 56px);
+  }
+  .slide-two-copy__lead {
+    font-size: clamp(18px, 4.2vw, 32px);
+    max-width: none;
+  }
+  .slide-two-copy__body {
+    font-size: clamp(16px, 3.8vw, 28px);
+    max-width: none;
+  }
+
+  /* Slide 3 – reflow to single centered card */
+  .slide-three-scene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide-three-card--dialogue {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: min(92vw, 580px);
+    margin: 0 auto;
+  }
+  .slide-three-card--dialogue img {
+    max-height: 58vh;
+  }
+  .slide-three-dialogue-text {
+    font-size: clamp(14px, 3.2vw, 24px);
+  }
+  .slide-three-card--finished {
+    display: none;
+  }
+  .slide-three-credit {
+    font-size: clamp(13px, 3vw, 22px);
+  }
+
+  /* Slide 5 – final */
+  .slide-five-credit {
+    font-size: clamp(18px, 4vw, 34px);
+  }
+  .slide-five-home {
+    font-size: clamp(28px, 7vw, 52px);
+  }
+}
+
+/* ========== RESPONSIVE: SMALL PHONES (≤ 480px) ========== */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: clamp(24px, 7.5vw, 40px);
+  }
+  .hero-subtitle {
+    font-size: clamp(12px, 3vw, 20px);
+  }
+  .slide-two-copy__lead {
+    font-size: clamp(15px, 4vw, 24px);
+  }
+  .slide-two-copy__body {
+    font-size: clamp(14px, 3.6vw, 22px);
+  }
+  .slide-three-dialogue-text {
+    font-size: clamp(12px, 2.8vw, 18px);
+  }
+  .slide-four-title {
+    font-size: clamp(28px, 8vw, 48px);
+  }
+  .slide-four-intro,
+  .slide-four-list-title,
+  .slide-four-list {
+    font-size: clamp(14px, 3.8vw, 24px);
+  }
+  .slide-five-credit {
+    font-size: clamp(14px, 3.5vw, 26px);
+  }
+  .slide-five-home {
+    font-size: clamp(22px, 6vw, 38px);
+  }
+}
