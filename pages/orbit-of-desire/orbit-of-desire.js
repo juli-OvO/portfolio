@@ -393,7 +393,7 @@
       inner.style.setProperty("--rot-end", rand(-3.8, 3.8).toFixed(2) + "deg");
 
       const image = document.createElement("img");
-      image.src = "images/gamedesign/draft/" + name;
+      image.src = "../../images/gamedesign/draft/" + name;
       image.alt = "Draft artwork " + (index + 1);
       image.loading = "eager";
       image.decoding = "async";

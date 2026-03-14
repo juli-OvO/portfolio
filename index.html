@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Julianne Jin</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
@@ -27,6 +27,9 @@
     </button>
     <header class="site-header" id="siteHeader">
       <h1 style="color:rgb(13, 27, 40)">JULIANNE JIN</h1>
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </header>
 
     <div class="stage" id="stage">
@@ -58,11 +61,21 @@
       </main>
     </div>
   </div>
+  <div class="mobile-nav-backdrop" id="mobileNavBackdrop" aria-hidden="true"></div>
+
+  <!-- Mobile notice overlay — visible only on phone-sized screens -->
+  <div class="mobile-notice" id="mobileNotice" role="dialog" aria-modal="true" aria-label="Mobile notice">
+    <div class="mobile-notice__box">
+      <p class="mobile-notice__title">mobile view</p>
+      <p class="mobile-notice__sub">coming soon</p>
+      <button class="mobile-notice__dismiss" id="mobileNoticeDismiss" aria-label="Dismiss">continue anyway</button>
+    </div>
+  </div>
 
   <p class="site-credit">This website was concepted, designed, and coded by Julianne Jin.</p>
-  <script src="boids.js"></script>
-  <script src="intro.js"></script>
-  <script src="script.js"></script>
-  <script src="cursor.js"></script>
+  <script src="js/boids.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/cursor.js"></script>
 </body>
 </html>

@@ -283,10 +283,46 @@ body.night .mode-toggle::after{
   padding: 16px 24px;
 }
 
+/* ========== HAMBURGER BUTTON ========== */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1100;
+}
+.hamburger-btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+  transition: transform 250ms ease, opacity 250ms ease;
+}
+.hamburger-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ========== MOBILE NAV BACKDROP ========== */
+.mobile-nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  background: rgba(0, 0, 0, 0.4);
+}
+.mobile-nav-backdrop.active { display: block; }
+
 /* ========== LAYOUT ========== */
 .stage {
   display: grid;
-  grid-template-columns: clamp(280px, calc(360px + (100vw - 1440px) * 0.12), 460px) 1fr; /* scales left shelf column with viewport width */
+  grid-template-columns: 320px 1fr;
   gap: 28px;
   align-items: start;
   justify-content: center;
@@ -297,7 +333,7 @@ body.night .mode-toggle::after{
 
 /* optional: when open, give more room to the page panel */
 .stage.is-open {
-  grid-template-columns: clamp(220px, calc(280px + (100vw - 1440px) * 0.08), 360px) 1fr; /* scales open-state shelf column with viewport width */
+  grid-template-columns: 260px 1fr;
 }
 
 /* ========== BOOKSTACK (wireframe) ========== */
@@ -1565,11 +1601,11 @@ body.boid-sequencer #main{
 /* Targets 13" laptops, iPads in landscape, and similar mid-range viewports */
 @media (max-width: 1280px) {
   .stage {
-    grid-template-columns: clamp(190px, 25vw, 320px) 1fr;
+    grid-template-columns: 240px 1fr;
     gap: 16px;
   }
   .stage.is-open {
-    grid-template-columns: clamp(150px, 19vw, 260px) 1fr;
+    grid-template-columns: 190px 1fr;
   }
   .bookstack {
     width: clamp(190px, 23vw, 320px);
@@ -1921,4 +1957,150 @@ body.night .illus-arrow {
     width: 80vw;
     height: 50vw;
   }
+}
+
+/* ========== RESPONSIVE: MOBILE (≤ 768px) — HAMBURGER MENU ========== */
+@media (max-width: 768px) {
+  .site-header { position: relative; }
+  .hamburger-btn { display: flex; }
+
+  /* Shelf becomes a fixed slide-in left drawer */
+  .shelf {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    z-index: 1050;
+    background: #fff;
+    flex-direction: column;
+    padding: 80px 24px 32px;
+    transform: translateX(-100%);
+    transition: transform 300ms ease;
+    border-right: 1px solid currentColor;
+  }
+  .shelf.mobile-open { transform: translateX(0); }
+
+  /* Reset bookstack to a simple vertical container */
+  .bookstack {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Reset books to simple horizontal list items */
+  .book,
+  .book:nth-child(1),
+  .book:nth-child(2),
+  .book:nth-child(3),
+  .book:nth-child(4) {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 52px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    border-bottom: 1px solid currentColor;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: none;
+    z-index: auto;
+  }
+  .book::after { display: none; }
+
+  /* Spine text horizontal on mobile */
+  .spine-text {
+    position: static;
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+  }
+
+  /* Stage single-column, panel full width */
+  .stage,
+  .stage.is-open {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Keep books visible in drawer even when bookstack has .is-open class */
+  .bookstack.is-open .book {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Night mode: dark drawer background */
+body.night .shelf { background: #000; }
+
+/* ========== MOBILE NOTICE OVERLAY ========== */
+.mobile-notice {
+  display: none; /* hidden by default; shown via media query */
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #fff;
+  align-items: center;
+  justify-content: center;
+}
+body.night .mobile-notice { background: #000; }
+
+.mobile-notice__box {
+  text-align: center;
+  padding: 40px 32px;
+  border: 3px solid #000;
+  max-width: 80vw;
+}
+body.night .mobile-notice__box { border-color: #fff; }
+
+.mobile-notice__title {
+  margin: 0 0 8px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(22px, 6vw, 32px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mobile-notice__sub {
+  margin: 0 0 32px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(13px, 4vw, 18px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.mobile-notice__dismiss {
+  background: none;
+  border: 1px solid currentColor;
+  color: inherit;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
+}
+.mobile-notice__dismiss:hover { opacity: 0.85; }
+
+/* Show on phone-sized screens */
+@media (max-width: 600px) {
+  .mobile-notice { display: flex; }
+  .mobile-notice.dismissed { display: none; }
 }

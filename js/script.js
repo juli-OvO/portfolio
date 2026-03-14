@@ -7,6 +7,9 @@ const panelBody = panel ? panel.querySelector(".panel-body") : null;
 const modeToggle = document.getElementById("modeToggle");
 const siteHeaderTitle = document.querySelector(".site-header h1");
 const defaultHeaderText = siteHeaderTitle ? siteHeaderTitle.textContent : "";
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const mobileNavBackdrop = document.getElementById("mobileNavBackdrop");
+const shelf = document.querySelector(".shelf");
 
 let openSection = null;
 let previewExitTimer = null;
@@ -89,7 +92,7 @@ const panelTemplates = {
         <div class="works-group">
           <div class="works-header">Computational work</div>
           <ul>
-            <li><a class="topic-item" data-preview="images/boidgame/boid.png" data-work-tags="music-boids" href="music-boids.html" target="_blank" rel="noreferrer">Music Boids</a></li>
+            <li><a class="topic-item" data-preview="images/boidgame/boid.png" data-work-tags="music-boids" href="pages/music-boids/music-boids.html" target="_blank" rel="noreferrer">Music Boids</a></li>
             <li><a class="topic-item" data-preview="images/blender1/Scene5 copy.png" data-work-tags="modeling" data-disabled-link="true" href="#">Modeling</a></li>
           </ul>
         </div>
@@ -97,14 +100,14 @@ const panelTemplates = {
           <div class="works-header">Game Design</div>
           <ul>
             <li><a class="topic-item" data-preview="images/hellorsell.png" data-work-tags="hell-or-sell" data-disabled-link="true" href="#">Hell or Sell</a></li>
-            <li><a class="topic-item" data-preview="images/gamedesign/TitleScreenFinalVersion.PNG" data-work-tags="orbit-of-desire" href="orbit-of-desire.html" target="_blank" rel="noreferrer">Orbit of Desire</a></li>
+            <li><a class="topic-item" data-preview="images/gamedesign/TitleScreenFinalVersion.PNG" data-work-tags="orbit-of-desire" href="pages/orbit-of-desire/orbit-of-desire.html" target="_blank" rel="noreferrer">Orbit of Desire</a></li>
           </ul>
         </div>
         <div class="works-group">
           <div class="works-header">Fine Art</div>
           <ul>
-            <li><a class="topic-item" data-preview="images/drawing/ClassDrawing2 copy 2.jpeg" href="drawing.html" target="_blank" rel="noreferrer">Drawing</a></li>
-            <li><a class="topic-item" data-preview="images/illustration/1-preview.jpg" href="illustration.html" target="_blank" rel="noreferrer">Illustration</a></li>
+            <li><a class="topic-item" data-preview="images/drawing/ClassDrawing2 copy 2.jpeg" href="pages/drawing/drawing.html" target="_blank" rel="noreferrer">Drawing</a></li>
+            <li><a class="topic-item" data-preview="images/illustration/1-preview.jpg" href="pages/illustration/illustration.html" target="_blank" rel="noreferrer">Illustration</a></li>
           </ul>
         </div>
         <div class="works-footer">More works in progress...</div>
@@ -467,6 +470,7 @@ books.forEach((btn) => {
     stage.classList.remove("is-preview");
     stage.classList.add("is-open");
     bookstack.classList.add("is-open");
+    closeMobileNav();
 
     books.forEach((b) => {
       const isActive = b.dataset.section === section;
@@ -485,8 +489,36 @@ books.forEach((btn) => {
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeAll();
+  if (e.key === "Escape") {
+    closeAll();
+    closeMobileNav();
+  }
 });
+
+function openMobileNav() {
+  if (!shelf) return;
+  shelf.classList.add("mobile-open");
+  if (mobileNavBackdrop) mobileNavBackdrop.classList.add("active");
+  if (hamburgerBtn) hamburgerBtn.setAttribute("aria-expanded", "true");
+}
+
+function closeMobileNav() {
+  if (!shelf) return;
+  shelf.classList.remove("mobile-open");
+  if (mobileNavBackdrop) mobileNavBackdrop.classList.remove("active");
+  if (hamburgerBtn) hamburgerBtn.setAttribute("aria-expanded", "false");
+}
+
+if (hamburgerBtn) {
+  hamburgerBtn.addEventListener("click", () => {
+    if (shelf.classList.contains("mobile-open")) closeMobileNav();
+    else openMobileNav();
+  });
+}
+
+if (mobileNavBackdrop) {
+  mobileNavBackdrop.addEventListener("click", closeMobileNav);
+}
 
 function closeAll() {
   openSection = null;
@@ -666,3 +698,12 @@ function startIntroSequence() {
 window.addEventListener("load", () => {
   setTimeout(startIntroSequence, 1000);
 });
+
+// Mobile notice dismiss
+const mobileNotice = document.getElementById("mobileNotice");
+const mobileNoticeDismiss = document.getElementById("mobileNoticeDismiss");
+if (mobileNotice && mobileNoticeDismiss) {
+  mobileNoticeDismiss.addEventListener("click", () => {
+    mobileNotice.classList.add("dismissed");
+  });
+}

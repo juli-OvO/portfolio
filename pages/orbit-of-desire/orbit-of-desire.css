@@ -72,7 +72,7 @@ body {
 .hero-bg {
   position: absolute;
   inset: -36px;
-  background: url("images/gamedesign/TitleScreenFinalVersion.PNG") center center / cover no-repeat;
+  background: url("../../images/gamedesign/TitleScreenFinalVersion.PNG") center center / cover no-repeat;
   transform: translate3d(var(--hero-bg-x, 0px), var(--hero-bg-y, 0px), 0) scale(1.06);
   transform-origin: center center;
   will-change: transform;
@@ -168,7 +168,7 @@ body {
 .slide-two-bg {
   position: absolute;
   inset: -36px;
-  background: url("images/gamedesign/TitleScreenFinalVersion.PNG") center center / cover no-repeat;
+  background: url("../../images/gamedesign/TitleScreenFinalVersion.PNG") center center / cover no-repeat;
   transform: translate3d(var(--slide2-bg-x, 0px), var(--slide2-bg-y, 0px), 0) scale(1.06);
   transform-origin: center center;
   will-change: transform;
@@ -218,7 +218,7 @@ body {
 .slide-three-bg {
   position: absolute;
   inset: -36px;
-  background: url("images/gamedesign/ubaLabFinal.png") center center / cover no-repeat;
+  background: url("../../images/gamedesign/ubaLabFinal.png") center center / cover no-repeat;
   transform: translate3d(var(--slide3-bg-x, 0px), var(--slide3-bg-y, 0px), 0) scale(1.06);
   transform-origin: center center;
   will-change: transform;
@@ -452,7 +452,7 @@ body {
 .slide-five-bg {
   position: absolute;
   inset: -36px;
-  background: url("images/gamedesign/(Uba_final) (1).jpg") center center / cover no-repeat;
+  background: url("../../images/gamedesign/(Uba_final) (1).jpg") center center / cover no-repeat;
   transform: translate3d(var(--slide5-bg-x, 0px), var(--slide5-bg-y, 0px), 0) scale(1.06);
   transform-origin: center center;
   will-change: transform;
