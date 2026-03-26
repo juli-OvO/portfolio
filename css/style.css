@@ -22,40 +22,13 @@ body {
   min-height: 100vh; /* EDIT: lock page to viewport height */
   overflow: hidden; /* EDIT: prevent leftover content below fold */
   transition: background-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  --panel-fill: rgba(255, 255, 255, 0.85);
 }
 body.night{
   color: #fff;
   background: #000;
-  --panel-fill: rgba(0, 0, 0, 0.6);
-}
-body.night .site-header h1{
-  color: #fff !important;
 }
 body.night .site-credit{
   color: rgba(255, 255, 255, 0.75);
-}
-body.night .book,
-body.night .panel,
-body.night .panel-image{
-  border-color: #fff;
-}
-body.night .spine-text{
-  color: #fff;
-}
-body.night .book::after{
-  border-left-color: #fff;
-}
-body.night .panel-x::before{
-  background:
-    linear-gradient( to bottom right, transparent 49.4%, #fff 49.4%, #fff 50.6%, transparent 50.6% );
-}
-body.night .panel-x::after{
-  background:
-    linear-gradient( to top right, transparent 49.4%, #fff 49.4%, #fff 50.6%, transparent 50.6% );
-}
-body.night .book{
-  background: linear-gradient(to right, rgba(255, 200, 140, 0.18) 0 88%, #000 88% 100%);
 }
 
 #intro{
@@ -268,447 +241,6 @@ body.night .mode-toggle::after{
   pointer-events: none;
 }
 
-/* ========== HEADER (shrinks when open) ========== */
-.site-header {
-  padding: clamp(26px, calc(36px + (100vw - 1440px) * 0.02), 44px) 24px; /* scales header vertical padding with viewport width */
-  text-align: center;
-  transition: padding 280ms ease, transform 280ms ease;
-}
-.site-header h1 {
-  margin: 0;
-  font-size: clamp(36px, 5vw, 72px);
-  font-weight: 700;
-}
-.stage.is-open .site-header {
-  padding: 16px 24px;
-}
-
-/* ========== HAMBURGER BUTTON ========== */
-.hamburger-btn {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  position: absolute;
-  right: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1100;
-}
-.hamburger-btn span {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: currentColor;
-  transition: transform 250ms ease, opacity 250ms ease;
-}
-.hamburger-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.hamburger-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-.hamburger-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-/* ========== MOBILE NAV BACKDROP ========== */
-.mobile-nav-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 1040;
-  background: rgba(0, 0, 0, 0.4);
-}
-.mobile-nav-backdrop.active { display: block; }
-
-/* ========== LAYOUT ========== */
-.stage {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 28px;
-  align-items: start;
-  justify-content: center;
-  padding: clamp(6px, calc(10px + (100vw - 1440px) * 0.01), 16px) 0px clamp(30px, calc(40px + (100vw - 1440px) * 0.02), 52px); /* scales structural top/bottom stage padding with viewport width */
-  min-height: calc(100vh - 140px);
-  transition: grid-template-columns 350ms ease;
-}
-
-/* optional: when open, give more room to the page panel */
-.stage.is-open {
-  grid-template-columns: 260px 1fr;
-}
-
-/* ========== BOOKSTACK (wireframe) ========== */
-.shelf {
-  display: flex;
-  justify-content: flex-start; /* EDIT: keep stack flush to left edge */
-}
-
-.bookstack {
-  position: relative;
-  width: clamp(250px, calc(320px + (100vw - 1440px) * 0.1), 420px); /* scales bookstack width with viewport width */
-  height: clamp(610px, calc(760px + (100vh - 900px) * 0.25), 980px); /* scales bookstack height with viewport height */
-  padding-top: clamp(28px, calc(40px + (100vw - 1440px) * 0.02), 56px); /* scales bookstack top padding with viewport width */
- 
-}
-
-
-
-/* EDIT: vertical line 50px left of the right edge */
-.book::after{
-  content:"";
-  position:absolute;
-  top: 0;
-  right: clamp(52px, calc(70px + (100vw - 1440px) * 0.03), 92px); /* scales spine line inset with viewport width */
-  height: clamp(560px, calc(700px + (100vh - 900px) * 0.22), 900px); /* scales spine line height with viewport height */
-  border-left: 4px solid #000;
-  transition: border-left-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* each spine */
-.book{
-  position: absolute;
-  right: clamp(14px, calc(20px + (100vw - 1440px) * 0.015), 28px); /* scales base right offset with viewport width */
-  top: clamp(108px, calc(140px + (100vh - 900px) * 0.05), 182px); /* scales base top offset with viewport height */
-  display: block;
-  width: clamp(470px, calc(600px + (100vw - 1440px) * 0.18), 760px); /* scales book width with viewport width */
-  height: clamp(640px, calc(800px + (100vh - 900px) * 0.28), 1020px); /* scales book height with viewport height */
-  border: 4px solid #000;
-  border-bottom: none; /* EDIT: remove bottom horizontal line */
-  background: linear-gradient(to right, rgba(236, 152, 121, 0.232) 0 88%, #fff 88% 100%); /* EDIT: white fill only on right 10% */
-  padding: 0;
-  cursor: pointer;
-
-  /* hover slide (step 2) */
-  transform: translateX(0);
-  transition: transform 260ms ease, outline-offset 260ms ease, opacity 220ms ease, border-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* make them overlap like a set */
-.book:nth-child(1){ right: clamp(150px, calc(200px + (100vw - 1440px) * 0.08), 260px); top: clamp(132px, calc(170px + (100vh - 900px) * 0.06), 220px); z-index: 4; } /* scales book 1 offset with viewport */
-.book:nth-child(2){ right: clamp(104px, calc(140px + (100vw - 1440px) * 0.06), 184px); top: clamp(124px, calc(160px + (100vh - 900px) * 0.055), 206px); z-index: 3; } /* scales book 2 offset with viewport */
-.book:nth-child(3){ right: clamp(58px, calc(80px + (100vw - 1440px) * 0.045), 108px); top: clamp(116px, calc(150px + (100vh - 900px) * 0.05), 192px); z-index: 2; } /* scales book 3 offset with viewport */
-.book:nth-child(4){ right: clamp(14px, calc(20px + (100vw - 1440px) * 0.015), 28px); top: clamp(108px, calc(140px + (100vh - 900px) * 0.05), 182px); z-index: 1; } /* scales book 4 offset with viewport */
-
-
-
-
-/* vertical spine label like your drawing */
-.spine-text{
-  position: absolute;
-  inset: 30px 0 18px 0; /* EDIT: start text 30px from top */
-  display: flex;
-  flex-direction:column;
-  justify-content: flex-start; /* EDIT: align to top */
-  align-items: flex-start; /* EDIT: push text to right edge */
-  padding-top: 30px; /* EDIT: right-side inset (tweak) */
-  padding-right: 15px;
-  z-index: 2; /* EDIT: ensure text sits above book fill */
-
-  /* vertical letters */
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  letter-spacing: 0.12em;
-
-  font-size: clamp(22px, calc(28px + (100vw - 1440px) * 0.02), 36px); /* scales spine label text with viewport width */
-  font-weight: 700;
-}
-
-
-
-/* HOVER behavior: slide outward (to the right) */
-.bookstack:not(.is-open) .book:hover{
-  transform: translateY(-90px);
-}
-
-/* ACTIVE (clicked) stays out and becomes "open" */
-.bookstack.is-open .book{
-  transform: translateX(-260px); /* EDIT: push non-active books off to the left */
-  opacity: 0;
-  pointer-events: none;
-}
-.bookstack.is-open .book.active{
-  transform: translateX(0); /* EDIT: keep active book in scene */
-  left: clamp(-620px, calc(-500px + (100vw - 1440px) * -0.18), -360px); /* scales active-book left shift with viewport width */
-  right: auto;
-  top: clamp(108px, calc(140px + (100vh - 900px) * 0.05), 182px); /* scales active-book top with viewport height */
-  height: clamp(640px, calc(800px + (100vh - 900px) * 0.28), 1020px); /* scales active-book height with viewport height */
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* ========== PANEL (wireframe) ========== */
-.panel{
-  position: relative;
-  min-height: clamp(460px, calc(600px + (100vh - 900px) * 0.2), 760px); /* scales panel min-height with viewport height */
-  max-height: clamp(460px, calc(600px + (100vh - 900px) * 0.2), 760px); /* scales panel max-height with viewport height */
-  width: clamp(68%, calc(80% + (100vw - 1440px) * 0.005), 88%); /* scales panel width with viewport width */
-  margin: 0 auto; /* EDIT: center panel horizontally */
-  justify-self: center;
-  border: 4px solid #000;
-  opacity: 0;
-  pointer-events: none;
-  --panel-offset: clamp(-240px, calc(-180px + (100vw - 1440px) * -0.1), -120px); /* scales panel horizontal offset with viewport width */
-  transform: perspective(1200px) translateX(var(--panel-offset)) translateY(12px) scale(0.96) rotateY(-2deg);
-  transform-origin: left top;
-  transition: opacity 300ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1), min-height 350ms ease, border-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* interior placeholder lines */
-.panel-body{
-  padding: 0;
-  flex: 1 1 auto;
-  overflow: hidden;
-}
-
-/* show panel on hover (step 2 preview) */
-.stage.is-preview .panel{
-  opacity: 1;
-  pointer-events: none;
-  transform: perspective(1200px) translateX(var(--panel-offset)) translateY(0) scale(0.98) rotateY(-1deg);
-  background: var(--panel-fill);
-}
-.stage.is-exiting .panel{
-  opacity: 0;
-  pointer-events: none;
-  transform: perspective(1200px) translateX(var(--panel-offset)) translateY(-8px) scale(0.98) rotateY(-1deg);
-}
-
-/* show panel on open (step 3 big open page) */
-.stage.is-open .panel{
-  opacity: 1;
-  pointer-events: auto;
-  transform: perspective(1200px) translateX(var(--panel-offset)) translateY(0) scale(1.02) rotateY(0deg);
-  min-height: clamp(390px, calc(500px + (100vh - 900px) * 0.16), 640px); /* scales open-state panel height with viewport height */
-  background: var(--panel-fill);
-}
-
-/* EDIT: preview content layout */
-.panel-content{
-  padding: 30px;
-  max-width: 980px;
-  margin: 0 auto; /* EDIT: center panel content */
-  font-size: clamp(14px, calc(18px + (100vw - 1440px) * 0.012), 24px); /* scales panel body text with viewport width */
-  line-height: 1.7;
-}
-.panel-content--center{
-  text-align: center;
-}
-.panel-content--center p{
-  font-size: clamp(12px, calc(15px + (100vw - 1440px) * 0.01), 20px); /* scales centered panel paragraph text with viewport width */
-  line-height: 1.85;
-}
-.panel-content--bio{
-  position: relative;
-  height: 110%;
-  top:-40px;
-  min-height: 560px;
-  padding: 40px 72px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.bio-copy{
-  margin: 0;
-  max-width: 700px;
-  text-align: center;
-  font-family: "Inter", "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: clamp(20px, 2.0vw, 20px);
-  line-height: 1.38;
-  font-weight: 700;
-  letter-spacing: 0.005em;
-}
-.bio-links{
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: -14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.bio-link{
-  position: relative;
-  color: inherit;
-  text-decoration: none;
-  font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: clamp(30px, 2.4vw, 54px);
-  font-weight: 700;
-  line-height: 1;
-}
-.bio-link::after{
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 100%;
-  height: 3px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 200ms ease;
-}
-.bio-link:hover::after,
-.bio-link:focus-visible::after{
-  transform: scaleX(1);
-}
-.panel-content--works{
-  padding: 20px;
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) minmax(300px, 1.2fr);
-  align-items: start;
-}
-.panel-content--cv{
-  max-width: none;
-  width: 100%;
-  height: 100%;
-  padding: 60px 38px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 44px;
-  font-family: "Inter", "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  transform: scale(0.7);
-  transform-origin: top left;
-  width: 142.86%;
-}
-.cv-col{
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-.cv-block{
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.cv-heading{
-  margin: 0;
-  color: #f28d2b;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: clamp(30px, 2.5vw, 48px);
-  line-height: 1;
-  font-weight: 800;
-}
-.cv-entry{
-  margin: 0;
-}
-.cv-entry + .cv-entry{
-  margin-top: 2px;
-}
-.cv-entry__head{
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  align-items: baseline;
-}
-.cv-entry__title{
-  margin: 0;
-  font-size: clamp(24px, 1.9vw, 36px);
-  line-height: 1.18;
-  font-weight: 700;
-}
-.cv-entry__year{
-  margin: 0;
-  font-size: clamp(20px, 1.6vw, 30px);
-  line-height: 1;
-  color: #555;
-  white-space: nowrap;
-}
-.cv-entry__line{
-  margin: 3px 0 0;
-  font-size: clamp(10px, 1.1vw, 23px);
-  line-height: 1;
-  color: #555;
-}
-.cv-bullets{
-  margin: 8px 0 0;
-  padding-left: 1.15em;
-}
-.cv-bullets li{
-  margin: 4px 0;
-  font-size: clamp(10px, 1.1vw, 28px);
-  line-height: 1.3;
-  color: #555;
-}
-.work-tags{
-  grid-column: 2;
-  grid-row: 1;
-  justify-self: end;
-  align-self: center;
-  text-align: right;
-  font-family: inherit;
-  font-weight: 700;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-  opacity: 0;
-  transform: translateX(40px);
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 2;
-  pointer-events: none;
-}
-.work-tags.is-entering{
-  opacity: 1;
-  transform: translateX(0);
-}
-.work-tags__line{
-  margin: 0;
-  font-size: clamp(19px, calc(24px + (100vw - 1440px) * 0.018), 32px); /* scales work tag text with viewport width */
-  line-height: 1.08;
-  letter-spacing: 0.01em;
-}
-.works-list{
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: flex-start;
-  position: relative;
-  z-index: 2;
-  margin-left: 30px;
-}
-.works-group{
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-}
-.works-group ul{
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-}
-.works-header{
-  font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: 0.01em;
-  font-size: clamp(17px, calc(22px + (100vw - 1440px) * 0.016), 30px); /* scales works section header text with viewport width */
-  margin-left: 0;
-}
-.topic-item{
-  border: none;
-  background: transparent;
-  font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: clamp(22px, calc(28px + (100vw - 1440px) * 0.02), 36px); /* scales topic item text with viewport width */
-  font-weight: 500;
-  color: inherit;
-  padding: 0;
-  cursor: pointer;
-  transition: transform 220ms ease, color 220ms ease;
-  transform-origin: left center;
-  text-decoration: none;
-}
-.works-footer{
-  font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: clamp(17px, calc(22px + (100vw - 1440px) * 0.016), 30px); /* scales works footer text with viewport width */
-  font-weight: 600;
-  margin-top: 12px;
-}
 .sr-only{
   position: absolute !important;
   width: 1px;
@@ -756,42 +288,22 @@ body.night .mode-toggle::after{
   transform: translateY(100%);
   color: rgb(245, 148, 83);
 }
+.topic-item{
+  border: none;
+  background: transparent;
+  font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 500;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 220ms ease, color 220ms ease;
+  transform-origin: left center;
+  text-decoration: none;
+}
 .topic-item:hover,
 .topic-item:focus-visible{
   transform: scale(1.5);
   color: inherit;
-}
-.works-preview-slot{
-  width: 100%;
-  height: 120%;
-  max-height: none;
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  pointer-events: none;
-  padding: 0px;
-}
-.works-preview-note{
-  position: absolute;
-  right: 18px;
-  top: 12px;
-  z-index: 5;
-  margin: 0;
-  font-family: inherit;
-  font-size: clamp(19px, calc(24px + (100vw - 1440px) * 0.018), 32px); /* scales preview note text with viewport width */
-  line-height: 1.08;
-  letter-spacing: 0.01em;
-  font-weight: 700;
-  color: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 120ms ease;
-}
-.panel-body[data-preview-note="coming-soon"] .works-preview-note{
-  opacity: 1;
 }
 
 .site-credit{
@@ -805,68 +317,6 @@ body.night .mode-toggle::after{
   color: rgba(0, 0, 0, 0.7);
   z-index: 10001;
   pointer-events: none;
-}
-.works-preview-slot img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: right top;
-  display: block;
-  opacity: 0;
-  transform: scale(0.9);
-  transform-origin: right top;
-  position: relative;
-  z-index: 0;
-  transition: opacity 140ms ease;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.5) 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.5) 100%
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-}
-.panel-body[data-preview-active="true"] .works-preview-slot img{
-  opacity: 1;
-}
-
-@supports not ((mask-image: linear-gradient(#000, transparent))) {
-  .works-preview-slot::before{
-    content: "";
-    position: absolute;
-    inset: 20px;
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.5) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .work-tags{
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-}
-.panel-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: center;
-  justify-content: center;
 }
 
 /* ========== MUSIC BOIDS PAGE ========== */
@@ -1027,7 +477,7 @@ body.boid-sequencer #main{
   position: relative;
 }
 .boid-hero__link::after{
-  content: \"↗\";
+  content: "↗";
   font-size: clamp(14px, calc(18px + (100vw - 1440px) * 0.012), 24px); /* scales boid hero link icon with viewport width */
 }
 .boid-hero__link::before{
@@ -1385,80 +835,6 @@ body.boid-sequencer #main{
     display: none;
   }
 }
-.panel-col{
-  display: flex;
-  justify-content: center;
-}
-.panel-text{
-  max-width: 360px;
-  text-align: left;
-}
-.panel-image-wrap{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.panel-title{
-  font-size: clamp(33px, calc(42px + (100vw - 1440px) * 0.03), 56px); /* scales panel title text with viewport width */
-  font-weight: 700;
-  margin: 0 0 24px;
-}
-.panel-section{
-  margin-bottom: 28px;
-}
-.panel-section h3{
-  margin: 0 0 8px;
-  font-size: clamp(19px, calc(24px + (100vw - 1440px) * 0.018), 32px); /* scales panel section heading text with viewport width */
-}
-.panel-list{
-  margin: 0;
-  padding-left: 22px;
-}
-.panel-list li{
-  margin: 10px 0;
-}
-.panel-image{
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  background: #d9d9d9;
-  border: 2px solid #000;
-  transition: border-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.stage.is-open .panel-x{
-  display: block;
-}
-.stage.is-open .panel-x::before,
-.stage.is-open .panel-x::after{
-  content:"";
-  position:absolute;
-  left: 0; top: 0;
-  width: 100%;
-  height: 100%;
-  border-top: 4px solid transparent;
-}
-.stage.is-open .panel-x::before{
-  transform: rotate(0deg);
-  background:
-    linear-gradient( to bottom right, transparent 49.4%, #000 49.4%, #000 50.6%, transparent 50.6% );
-  transition: background-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.stage.is-open .panel-x::after{
-  background:
-    linear-gradient( to top right, transparent 49.4%, #000 49.4%, #000 50.6%, transparent 50.6% );
-  transition: background-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@media (max-width: 860px){
-  .stage{
-    grid-template-columns: 1fr;
-  }
-  .shelf{ justify-content: flex-start; }
-  .panel{
-    min-height: 420px;
-    --panel-offset: 0px;
-  }
-}
 
 /* ========== DRAWING PAGE ========== */
 .drawing-page{
@@ -1517,7 +893,7 @@ body.boid-sequencer #main{
   height: 600px;
 
   max-height: 70vh;
- 
+
   object-fit: contain;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
   -webkit-mask-image:
@@ -1597,160 +973,6 @@ body.boid-sequencer #main{
   }
 }
 
-/* ========== RESPONSIVE: MEDIUM SCREENS (≤ 1280px) ========== */
-/* Targets 13" laptops, iPads in landscape, and similar mid-range viewports */
-@media (max-width: 1280px) {
-  .stage {
-    grid-template-columns: 240px 1fr;
-    gap: 16px;
-  }
-  .stage.is-open {
-    grid-template-columns: 190px 1fr;
-  }
-  .bookstack {
-    width: clamp(190px, 23vw, 320px);
-    height: clamp(460px, 83vh, 760px);
-    padding-top: clamp(18px, 2.5vw, 40px);
-  }
-  .book {
-    width: clamp(320px, 36vw, 600px);
-    height: clamp(480px, 87vh, 800px);
-  }
-  .book::after {
-    right: clamp(32px, 3.8vw, 70px);
-    height: clamp(440px, 81vh, 700px);
-  }
-  .book:nth-child(1) { right: clamp(90px, 13.5vw, 200px); top: clamp(96px, 14vh, 170px); }
-  .book:nth-child(2) { right: clamp(62px, 9vw, 140px);    top: clamp(90px, 13vh, 160px); }
-  .book:nth-child(3) { right: clamp(34px, 4.8vw, 80px);   top: clamp(84px, 12vh, 150px); }
-  .book:nth-child(4) { right: clamp(10px, 1.5vw, 20px);   top: clamp(78px, 11vh, 140px); }
-  .bookstack.is-open .book { transform: translateX(-200px); }
-  .bookstack.is-open .book.active {
-    left: clamp(-400px, -34vw, -260px);
-    top: clamp(78px, 11vh, 140px);
-    height: clamp(480px, 87vh, 800px);
-  }
-  .spine-text { font-size: clamp(14px, 1.9vw, 28px); }
-  .panel {
-    min-height: clamp(360px, 66vh, 600px);
-    max-height: clamp(360px, 66vh, 600px);
-  }
-  .stage.is-open .panel {
-    min-height: clamp(300px, 58vh, 500px);
-  }
-  .panel-content--bio {
-    min-height: auto;
-    padding: 24px 36px 28px;
-  }
-  .bio-copy { font-size: clamp(15px, 1.7vw, 20px); }
-}
-
-/* ========== RESPONSIVE: SHORT VIEWPORTS (≤ 820px tall) ========== */
-/* Targets 13" MacBooks (~800px height), compact laptop screens */
-@media (max-height: 820px) {
-  .bookstack {
-    height: clamp(400px, 80vh, 760px);
-  }
-  .book {
-    height: clamp(420px, 85vh, 800px);
-  }
-  .book::after {
-    height: clamp(390px, 79vh, 700px);
-  }
-  .bookstack.is-open .book.active {
-    height: clamp(420px, 85vh, 800px);
-  }
-  .panel {
-    min-height: clamp(300px, 60vh, 600px);
-    max-height: clamp(300px, 60vh, 600px);
-  }
-  .stage.is-open .panel {
-    min-height: clamp(260px, 52vh, 500px);
-  }
-}
-
-/* ========== RESPONSIVE: TABLET / NARROW (≤ 860px wide) ========== */
-/* Supplements existing rule — adds book & panel sizing for narrow viewports */
-@media (max-width: 860px) {
-  .bookstack {
-    width: clamp(150px, 38vw, 280px);
-    height: clamp(340px, 66vh, 560px);
-    padding-top: 14px;
-  }
-  .book {
-    width: clamp(240px, 52vw, 420px);
-    height: clamp(360px, 70vh, 600px);
-  }
-  .book::after {
-    right: clamp(20px, 4.6vw, 46px);
-    height: clamp(330px, 64vh, 550px);
-  }
-  .book:nth-child(1) { right: clamp(62px, 13vw, 116px); top: clamp(72px, 12vh, 108px); }
-  .book:nth-child(2) { right: clamp(42px, 8.8vw, 80px); top: clamp(66px, 11vh, 100px); }
-  .book:nth-child(3) { right: clamp(22px, 4.6vw, 42px); top: clamp(60px, 10vh, 92px);  }
-  .book:nth-child(4) { right: clamp(6px, 1.4vw, 12px);  top: clamp(54px, 9vh, 84px);   }
-  .bookstack:not(.is-open) .book:hover { transform: translateY(-55px); }
-  .bookstack.is-open .book { transform: translateX(-130px); }
-  .bookstack.is-open .book.active {
-    left: clamp(-280px, -28vw, -160px);
-    top: clamp(54px, 9vh, 84px);
-    height: clamp(360px, 70vh, 600px);
-  }
-  .spine-text { font-size: clamp(11px, 2.8vw, 20px); }
-  .panel {
-    min-height: clamp(260px, 52vh, 440px);
-    max-height: clamp(260px, 52vh, 440px);
-    width: 94%;
-    --panel-offset: 0px;
-  }
-  .stage.is-open .panel {
-    min-height: clamp(220px, 44vh, 360px);
-  }
-  .panel-content--bio {
-    min-height: auto;
-    height: auto;
-    top: 0;
-    padding: 18px 22px;
-  }
-  .bio-copy { font-size: clamp(13px, 3.2vw, 18px); }
-  .bio-links {
-    position: relative;
-    bottom: auto;
-    left: 0;
-    right: 0;
-    margin-top: 16px;
-  }
-  .bio-link { font-size: clamp(18px, 4.6vw, 30px); }
-  .panel-content { padding: 18px; }
-  .panel-content--cv {
-    transform: scale(0.55);
-    width: 181.8%;
-    padding: 28px 18px;
-  }
-}
-
-/* ========== RESPONSIVE: LARGE SCREENS (≥ 1440px wide) ========== */
-/* Lifts the hard height caps so books fill the full screen on big monitors */
-@media (min-width: 1440px) {
-  .bookstack {
-    height: clamp(780px, 95vh, 1500px);
-  }
-  .book {
-    height: clamp(800px, 93vh, 1480px);
-  }
-  .book::after {
-    height: clamp(750px, 87vh, 1420px);
-  }
-  .bookstack.is-open .book.active {
-    height: clamp(800px, 93vh, 1480px);
-  }
-
-  /* Drawing page – let images breathe on large monitors */
-  .drawing-slide img {
-    height: clamp(600px, 72vh, 1000px);
-  }
-}
-
 /* ========== RESPONSIVE: BOID PAGE — MEDIUM SCREENS (769px–1280px) ========== */
 /* Tightens hero layout and smooths text sizes in the gap between mobile and desktop */
 @media (max-width: 1280px) and (min-width: 769px) {
@@ -1773,6 +995,11 @@ body.boid-sequencer #main{
   }
   .boid-spacer {
     height: clamp(280px, calc(340px + (100vh - 900px) * 0.28), 560px);
+  }
+
+  /* Drawing page – let images breathe on large monitors */
+  .drawing-slide img {
+    height: clamp(600px, 72vh, 1000px);
   }
 }
 
@@ -1959,92 +1186,6 @@ body.night .illus-arrow {
   }
 }
 
-/* ========== RESPONSIVE: MOBILE (≤ 768px) — HAMBURGER MENU ========== */
-@media (max-width: 768px) {
-  .site-header { position: relative; }
-  .hamburger-btn { display: flex; }
-
-  /* Shelf becomes a fixed slide-in left drawer */
-  .shelf {
-    display: flex !important;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 240px;
-    height: 100vh;
-    z-index: 1050;
-    background: #fff;
-    flex-direction: column;
-    padding: 80px 24px 32px;
-    transform: translateX(-100%);
-    transition: transform 300ms ease;
-    border-right: 1px solid currentColor;
-  }
-  .shelf.mobile-open { transform: translateX(0); }
-
-  /* Reset bookstack to a simple vertical container */
-  .bookstack {
-    position: relative;
-    width: 100%;
-    height: auto;
-    padding-top: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  /* Reset books to simple horizontal list items */
-  .book,
-  .book:nth-child(1),
-  .book:nth-child(2),
-  .book:nth-child(3),
-  .book:nth-child(4) {
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    left: auto !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 52px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    transform: none !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    border-bottom: 1px solid currentColor;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    background: none;
-    z-index: auto;
-  }
-  .book::after { display: none; }
-
-  /* Spine text horizontal on mobile */
-  .spine-text {
-    position: static;
-    writing-mode: horizontal-tb;
-    transform: none;
-    font-size: 14px;
-    letter-spacing: 0.1em;
-  }
-
-  /* Stage single-column, panel full width */
-  .stage,
-  .stage.is-open {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Keep books visible in drawer even when bookstack has .is-open class */
-  .bookstack.is-open .book {
-    transform: none !important;
-    opacity: 1 !important;
-  }
-}
-
-/* Night mode: dark drawer background */
-body.night .shelf { background: #000; }
 
 /* ========== MOBILE NOTICE OVERLAY ========== */
 .mobile-notice {

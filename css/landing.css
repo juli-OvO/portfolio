@@ -1,0 +1,726 @@
+/* landing.css — new folder-tab landing layout */
+
+/* ======== NAV WIDTH TOKEN (shared between nav + cv-panel) ======== */
+:root {
+  --nav-w: clamp(260px, 24vw, 420px);
+  --nav-bg: #fff;
+  --border: 2px solid #000;
+  --border-w: 2px;
+}
+body.night {
+  --nav-bg: #0d0d0d;
+}
+
+/* ======== LAYOUT ======== */
+.landing-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ======== LEFT NAV (opaque — boids hidden behind) ======== */
+.landing-nav {
+  width: var(--nav-w);
+  min-width: 260px;
+  height: 100vh;
+  background: var(--nav-bg);
+  border-left: var(--border);
+  border-right: var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 5;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.landing-nav::-webkit-scrollbar { display: none; }
+
+/* ======== NAV HEADER ======== */
+.nav-header {
+  padding: clamp(20px, 2.8vh, 40px) clamp(16px, 1.5vw, 28px) clamp(20px, 2.8vh, 40px);
+  border-bottom: var(--border);
+  flex-shrink: 0;
+}
+
+.nav-title {
+  font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(24px, 3.2vw, 54px);
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: inherit;
+}
+
+/* ======== CONTACT GROUP ======== */
+.nav-contact {
+  width: 70%;
+  margin: 30px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.nav-contact-btn {
+  font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(11px, 1vw, 16px);
+  font-weight: 600;
+  color: inherit;
+  text-decoration: none;
+  border: 2px solid currentColor;
+  padding: 4px 14px;
+  letter-spacing: 0.05em;
+  transition: opacity 0.2s ease;
+}
+.nav-contact-btn:hover { opacity: 0.5; }
+
+.nav-contact-sep {
+  width: 1px;
+  height: 1.4em;
+  background: currentColor;
+  opacity: 0.35;
+  flex-shrink: 0;
+}
+
+/* ======== FOLDER STACK ======== */
+.folders-stack {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding-top: 50px;
+}
+
+/* ======== INDIVIDUAL FOLDER ======== */
+/* Per-folder color tokens */
+.folder[data-section="works"] { --folder-bg: hsl(30, 55%, 93%); }
+.folder[data-section="cv"]    { --folder-bg: hsl(28, 58%, 82%); }
+.folder[data-section="bio"]   { --folder-bg: hsl(25, 62%, 68%); }
+body.night .folder[data-section="works"] { --folder-bg: hsl(30, 18%, 16%); }
+body.night .folder[data-section="cv"]    { --folder-bg: hsl(28, 18%, 13%); }
+body.night .folder[data-section="bio"]   { --folder-bg: hsl(25, 22%, 11%); }
+
+
+.folder {
+  background: var(--folder-bg);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  /* Minimum height = tab row + colored strip below (the "folder face") */
+  min-height: clamp(65px, 8vh, 106px);
+  cursor: default;
+}
+
+.folder:last-child {
+  flex: 1;            /* BIO fills remaining space */
+  min-height: clamp(80px, 11vh, 150px);
+  border-bottom: var(--border);
+}
+
+/* ======== FOLDER TAB ROW ======== */
+.folder-tab-row {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  flex-shrink: 0;
+  background-image: none;
+}
+
+/* Each tab's cover (right of trapezoid) shows the color of the folder above it */
+.folder[data-section="works"] .folder-tab-row { background: var(--nav-bg); }
+.folder[data-section="cv"]    .folder-tab-row { background: hsl(30, 55%, 93%); }
+.folder[data-section="bio"]   .folder-tab-row { background: hsl(28, 58%, 82%); }
+body.night .folder[data-section="cv"]  .folder-tab-row { background: hsl(30, 18%, 16%); }
+body.night .folder[data-section="bio"] .folder-tab-row { background: hsl(28, 18%, 13%); }
+
+/* SVG fills the full tab-row, draws the tab outline */
+.folder-tab-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.tab-fill { fill: var(--folder-bg); }
+.tab-stroke { stroke: #000; }
+body.night .tab-stroke { stroke: #fff; }
+
+/* Tab label sits above the SVG */
+.folder-tab-label {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  padding-left: clamp(14px, 1.4vw, 24px);
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  clip-path: none;
+  background: transparent;
+  max-width: 52%;
+  font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(23px, 4vw, 26px);
+  left: clamp(14px, 1.4vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+/* ======== FOLDER BODY (smooth expand on hover) ======== */
+.folder-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.folder:hover .folder-body,
+.folder.is-expanded .folder-body {
+  grid-template-rows: 1fr;
+}
+
+.folder:hover .folder-body-inner,
+.folder.is-expanded .folder-body-inner {
+  min-height: clamp(300px, 45vh, 400px);
+  opacity: 1;
+}
+
+.folder-body-inner {
+  overflow: hidden;
+  min-height: 0;
+  padding: clamp(10px, 1.4vh, 18px) clamp(16px, 1.6vw, 26px) clamp(14px, 2vh, 22px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transition: min-height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease;
+}
+
+/* Works folder gets extra breathing room */
+.folder[data-section="works"] .folder-body-inner {
+  padding: clamp(20px, 3vh, 40px) clamp(20px, 2vw, 36px) clamp(24px, 3.5vh, 48px);
+}
+
+/* ======== WORKS LIST (inside folder) ======== */
+.folder .works-list {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(10px, 0.88vw, 14px);
+  gap: clamp(32px, 4vh, 60px);
+  align-items: flex-start;
+  margin-left: 0;
+}
+
+.folder .works-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.folder .works-group ul {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0 0 0 clamp(10px, 1vw, 18px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.4vh, 22px);
+  gap: 0;
+}
+
+.folder .works-header {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(9px, 0.78vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  opacity: 0.65;
+}
+
+.folder .topic-item {
+  font-size: clamp(15px, 1.45vw, 22px);
+  padding: 0;
+}
+
+/* override global hover scale — slightly smaller for the narrow column */
+.folder .topic-item:hover {
+  transform: scale(1.2);
+}
+
+.folder .works-footer {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(8px, 0.7vw, 11px);
+  font-weight: 600;
+  margin-top: clamp(4px, 0.6vh, 10px);
+  opacity: 0.5;
+}
+
+/* ======== CV / BIO FOLDER BODY — minimal hint text ======== */
+.folder-bio-hint,
+.folder-cv-hint {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(9px, 0.78vw, 12px);
+  font-weight: 600;
+  opacity: 0.55;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+/* ======== BIO CONTENT (inside folder) ======== */
+.folder-bio {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.4vh, 18px);
+}
+
+.folder-bio .bio-copy {
+  margin: 0;
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(10px, 0.88vw, 14px);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.folder-bio .bio-actions {
+  display: flex;
+  gap: clamp(14px, 1.4vw, 24px);
+  flex-wrap: wrap;
+}
+
+.folder-bio .bio-link {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(11px, 1vw, 15px);
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+}
+.folder-bio .bio-link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -3px;
+  width: 100%; height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms ease;
+}
+.folder-bio .bio-link:hover::after { transform: scaleX(1); }
+
+/* ======== RIGHT PANEL (transparent — boids show through) ======== */
+.landing-right {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  perspective: 900px;
+  perspective-origin: center center;
+}
+
+/* ======== PREVIEW GROUP (image + tags side by side, centered in right panel) ======== */
+.preview-group {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 2.2vw, 48px);
+  pointer-events: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+  /* Prevent overflow beyond panel edges */
+  max-width: calc(100% - 48px);
+}
+
+/* Image slot: 717×568, cover-fit, clips overflow */
+.landing-right .works-preview-slot {
+  /* Fixed target size: 717×568. Scales down on smaller viewports. */
+  width: clamp(240px, 49vw, 717px);
+  height: auto;
+  aspect-ratio: 717 / 568;
+  max-height: 568px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  /* opacity driven by data-preview-active on #landingRight */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.landing-right[data-preview-active] .works-preview-slot {
+  opacity: 1;
+}
+
+/* Image fills slot, maintains aspect ratio, clips excess (cover) */
+.landing-right [data-works-preview] {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  /* Override style.css which hides img via opacity:0 + old .panel-body selector */
+  opacity: 1 !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  transform: none !important;
+}
+
+/* Link wrapper fills slot */
+.works-preview-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+.works-preview-link.is-disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.landing-right .works-preview-note {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-family: "Inconsolata", monospace;
+  font-size: clamp(40px, 3.6vw, 56px);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.landing-right[data-preview-note="coming-soon"] .works-preview-note {
+  opacity: 1;
+}
+
+/* Coming-soon image: 50% opacity */
+.landing-right[data-preview-note="coming-soon"] [data-works-preview] {
+  opacity: 0.5 !important;
+}
+
+/* Work tags: flex sibling of works-preview-slot, anchors to right edge of image */
+.work-tags {
+  flex-shrink: 0;
+  min-width: clamp(140px, 16vw, 280px);
+  max-width: clamp(160px, 20vw, 320px);
+  text-align: left;
+  background: transparent;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity  1s   cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.work-tags.is-entering {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.work-tags__line {
+  font-size: clamp(9px, 0.85vw, 13px);
+  font-weight: 400;
+  text-align: left;
+  margin: 0 !important;
+}
+
+/* ======== CV SLIDING PANEL ======== */
+/* Slides in from left (starting at nav right edge), expands across the right area */
+#cv-panel {
+  position: fixed;
+  left: var(--nav-w);
+  top: 0;
+  height: 100vh;
+  width: 0;
+  overflow: hidden;
+  background: var(--nav-bg);
+  z-index: 12;
+  transition:
+    left 0.42s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+#cv-panel.is-open {
+  width: calc(100vw - var(--nav-w));
+  transition:
+    left 0.42s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: auto;
+}
+
+#cv-panel-content {
+  /* Fixed at full target width so text doesn't reflow during wipe */
+  width: calc(100vw - var(--nav-w));
+  min-width: calc(100vw - var(--nav-w));
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: clamp(40px, 6vh, 90px) clamp(36px, 5vw, 100px);
+  box-sizing: border-box;
+  /* Two-column layout: Education+Experience | Skills+Awards */
+  display: flex;
+  flex-direction: row;
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+
+.cv-col {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  min-height: auto;
+  scrollbar-width: none;
+}
+.cv-col::-webkit-scrollbar { display: none; }
+
+#cv-panel-content::-webkit-scrollbar { width: 4px; }
+#cv-panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 2px; }
+
+/* ======== BIO SLIDING PANEL ======== */
+#bio-panel {
+  position: fixed;
+  left: var(--nav-w);
+  top: 0;
+  height: 100vh;
+  width: 0;
+  overflow: hidden;
+  background: transparent;
+  z-index: 12;
+  transition:
+    left 0.42s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+#bio-panel.is-open {
+  width: calc(100vw - var(--nav-w));
+  transition:
+    left 0.42s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: auto;
+}
+
+#bio-panel-content {
+  width: calc(100vw - var(--nav-w));
+  min-width: calc(100vw - var(--nav-w));
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* Center bio text in the right area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 6vh, 90px) clamp(48px, 8vw, 140px);
+}
+
+#bio-panel-content::-webkit-scrollbar { width: 4px; }
+#bio-panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 2px; }
+
+.biop-copy {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(12px, 1.1vw, 17px);
+  line-height: 1.75;
+  font-weight: 400;
+  margin: 0;
+  max-width: 560px;
+}
+
+/* Typewriter content elements */
+.cvp-heading {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(14px, 1.6vw, 26px);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #f28d2b;
+  margin: clamp(8px, 1.2vh, 16px) 0 2px !important;
+  line-height: 1.1;
+}
+.cvp-heading:first-child { margin-top: 0 !important; }
+
+.cvp-title {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(12px, 1.1vw, 18px);
+  font-weight: 700;
+  margin: clamp(4px, 0.6vh, 8px) 0 0 !important;
+  line-height: 1.2;
+}
+
+.cvp-line {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(10px, 0.9vw, 14px);
+  font-weight: 400;
+  color: #666;
+  margin: 0 !important;
+  line-height: 1.4;
+}
+
+.cvp-bullet {
+  font-family: "Inconsolata", ui-monospace, Menlo, Monaco, monospace;
+  font-size: clamp(10px, 0.9vw, 14px);
+  font-weight: 400;
+  color: #666;
+  margin: 0 !important;
+  padding-left: 1em;
+  line-height: 1.4;
+}
+
+/* ======== NIGHT MODE ======== */
+body.night .nav-header { border-bottom-color: #fff; }
+body.night .landing-nav { border-right-color: #fff; }
+body.night .cvp-line,
+body.night .cvp-bullet { color: #999; }
+
+/* ======== RESPONSIVE ======== */
+
+/* Tablet (768–1024px) */
+@media (max-width: 1024px) {
+  :root { --nav-w: clamp(220px, 30vw, 300px); }
+
+  .landing-right .works-preview-slot {
+    width: clamp(150px, 42vw, 480px);
+    max-height: 380px;
+  }
+}
+
+/* Mobile / small tablet (max 768px) */
+@media (max-width: 768px) {
+  :root { --nav-w: 100vw; }
+
+  .landing-layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .landing-nav {
+    width: 100%;
+    height: auto;
+    min-width: unset;
+    border-right: none;
+    border-bottom: var(--border);
+    overflow-y: visible;
+  }
+
+  .folders-stack {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    flex: none;
+  }
+
+  .folder {
+    min-width: clamp(110px, 33vw, 180px);
+    min-height: unset;
+    flex: 1;
+    flex-shrink: 0;
+    border-top: none;
+    border-left: var(--border);
+  }
+  .folder:first-child { border-left: none; }
+  .folder:last-child { flex: 1; min-height: unset; }
+
+  .landing-right {
+    min-height: 50vh;
+    flex: 1;
+  }
+
+  .landing-right .works-preview-slot {
+    width: clamp(140px, 65vw, 380px);
+    max-height: 300px;
+  }
+  .preview-group {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  #cv-panel {
+    left: 0;
+    top: auto;
+    bottom: 0;
+    height: 60vh;
+    width: 100vw !important;
+    /* On mobile, panel slides up from bottom instead */
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateY(100%);
+  }
+  #cv-panel.is-open {
+    width: 100vw !important;
+    transform: translateY(0);
+    border-left: none;
+    border-top: var(--border);
+  }
+  #cv-panel-content {
+    flex-direction: column;
+    overflow-y: auto;
+    width: 100vw;
+    min-width: 100vw;
+  }
+  .cv-col { overflow-y: visible; max-height: none; }
+
+  #bio-panel {
+    left: 0;
+    top: auto;
+    bottom: 0;
+    height: 60vh;
+    width: 100vw !important;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateY(100%);
+  }
+  #bio-panel.is-open {
+    width: 100vw !important;
+    transform: translateY(0);
+    border-left: none;
+    border-top: var(--border);
+  }
+  #bio-panel-content {
+    width: 100vw;
+    min-width: 100vw;
+    padding: 32px 24px;
+    overflow-y: auto;
+  }
+}
+
+/* HD 1366×768 / 1600×900 — default --nav-w handles this */
+
+/* Full HD 1920×1080 */
+@media (min-width: 1600px) and (max-width: 1900px) {
+  :root { --nav-w: clamp(310px, 22vw, 400px); }
+}
+
+/* 1440p (2560×1440) */
+@media (min-width: 1900px) and (max-width: 3000px) {
+  :root { --nav-w: clamp(380px, 21vw, 520px); }
+
+  .nav-title { font-size: clamp(40px, 3.5vw, 64px); }
+  .folder-tab-label { font-size: clamp(12px, 0.9vw, 18px); }
+  .folder .topic-item { font-size: clamp(18px, 1.5vw, 28px); }
+  .folder .works-header { font-size: clamp(10px, 0.8vw, 14px); }
+  .landing-right .work-tags__line { font-size: clamp(14px, 1.3vw, 26px); }
+  .landing-right .works-preview-slot {
+    width: clamp(380px, 40vw, 717px);
+    max-height: 568px;
+  }
+  .landing-right .work-tags__line { font-size: clamp(14px, 1.3vw, 26px); }
+  .landing-right .work-tags { max-width: clamp(180px, 22vw, 380px); }
+}
+
+/* 4K (3840×2160) */
+@media (min-width: 3000px) {
+  :root { --nav-w: clamp(480px, 17vw, 700px); --border-w: 3px; --border: 3px solid #000; }
+  body.night { --border: 3px solid #fff; }
+
+  .nav-title { font-size: clamp(47px, 2.6vw, 90px); }
+  .folder-tab-label { font-size: clamp(16px, 0.85vw, 24px); }
+  .folder .topic-item { font-size: clamp(22px, 1.4vw, 36px); }
+  .landing-right .work-tags__line { font-size: clamp(18px, 1.4vw, 32px); }
+  .landing-right .work-tags { min-width: clamp(260px, 18vw, 500px); }
+  /* At 4K: can go above 717px proportionally */
+  .landing-right .works-preview-slot {
+    width: clamp(717px, 38vw, 1200px);
+    max-height: clamp(568px, 30vw, 950px);
+  }
+}

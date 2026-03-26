@@ -380,8 +380,8 @@ function revealWorkTags() {
   }
 
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+/";
-  const baseDuration = 300;
-  const staggerMs = 80;
+  const baseDuration = 150;
+  const staggerMs = 45;
 
   tagBlock.classList.remove("is-entering");
   window.requestAnimationFrame(() => {
@@ -408,9 +408,11 @@ function revealWorkTags() {
         const resolvedFromRight = i >= finalText.length - revealCount;
         if (resolvedFromRight || ch === " ") {
           scrambled += ch;
-        } else {
+        } else if (Math.random() < 0.4) {
           const randomIndex = Math.floor(Math.random() * chars.length);
           scrambled += chars[randomIndex];
+        } else {
+          scrambled += ch;
         }
       }
       line.textContent = progress === 1 ? finalText : scrambled;

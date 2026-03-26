@@ -6,76 +6,257 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Julianne Jin</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/landing.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
+  <!-- Intro overlay -->
   <div id="intro" aria-hidden="true">
     <div class="intro-text">
       <h1 id="revealTitle" class="reveal-title" aria-label="Julianne Jin"></h1>
     </div>
   </div>
   <canvas id="bubbleWipe" aria-hidden="true"></canvas>
+
   <div id="main">
+    <!-- Boids canvas — full-page background, hidden behind opaque left nav -->
     <canvas id="boids" aria-hidden="true"></canvas>
     <div id="cursor" aria-hidden="true"></div>
     <canvas id="cursorTrail" aria-hidden="true"></canvas>
+
+    <!-- Mode toggle -->
     <button class="mode-toggle" id="modeToggle" type="button" aria-pressed="false" aria-label="Day mode">
       <span class="mode-icon" aria-hidden="true"></span>
     </button>
-    <header class="site-header" id="siteHeader">
-      <h1 style="color:rgb(13, 27, 40)">JULIANNE JIN</h1>
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </header>
 
-    <div class="stage" id="stage">
-      <!-- LEFT: book set -->
-      <aside class="shelf" aria-label="Sections">
-        <div class="bookstack" id="bookstack">
-          <button class="book" data-section="bio" aria-controls="panel" aria-expanded="false">
-            <span class="spine-text">BIO</span>
-          </button>
+    <!-- Main layout -->
+    <div class="landing-layout">
 
-          <button class="book" data-section="works" aria-controls="panel" aria-expanded="false">
-            <span class="spine-text">WORKS</span>
-          </button>
+      <!-- ======== LEFT NAV (opaque background) ======== -->
+      <nav class="landing-nav" id="landingNav" aria-label="Portfolio navigation">
 
-          <button class="book" data-section="cv" aria-controls="panel" aria-expanded="false">
-            <span class="spine-text">CV</span>
-          </button>
-
-        </div>
-      </aside>
-
-      <!-- RIGHT: preview + open panel -->
-      <main class="panel" id="panel" aria-live="polite">
-        <div class="panel-body">
-          
+        <!-- Name + contact -->
+        <div class="nav-header">
+          <h1 class="nav-title">Julianne Jin</h1>
+          <div class="nav-contact">
+            <a class="nav-contact-btn" href="mailto:jjin04@risd.edu">Email</a>
+            <span class="nav-contact-sep" aria-hidden="true"></span>
+            <a class="nav-contact-btn" href="https://www.linkedin.com/in/chufan-jin-41b727311/" target="_blank" rel="noreferrer">LinkedIn</a>
+          </div>
         </div>
 
-      
-      </main>
-    </div>
-  </div>
-  <div class="mobile-nav-backdrop" id="mobileNavBackdrop" aria-hidden="true"></div>
+        <!-- Folder stack -->
+        <div class="folders-stack">
 
-  <!-- Mobile notice overlay — visible only on phone-sized screens -->
-  <div class="mobile-notice" id="mobileNotice" role="dialog" aria-modal="true" aria-label="Mobile notice">
-    <div class="mobile-notice__box">
-      <p class="mobile-notice__title">mobile view</p>
-      <p class="mobile-notice__sub">coming soon</p>
-      <button class="mobile-notice__dismiss" id="mobileNoticeDismiss" aria-label="Dismiss">continue anyway</button>
+          <!-- WORKS folder -->
+          <div class="folder" data-section="works" aria-label="Works section">
+            <div class="folder-tab-row">
+              <svg class="folder-tab-svg" viewBox="0 0 400 50" preserveAspectRatio="none" aria-hidden="true">
+                <polygon class="tab-fill" points="0,50 29,0 179,0 208,50"/>
+                <polyline class="tab-stroke" points="0,50 29,0 179,0 208,50 400,50" fill="none" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              </svg>
+              <span class="folder-tab-label">WORKS</span>
+            </div>
+            <div class="folder-body">
+              <div class="folder-body-inner">
+                <div class="works-list">
+                  <div class="works-group">
+                    <div class="works-header">Computational Work</div>
+                    <ul>
+                      <li>
+                        <a class="topic-item"
+                           data-preview="images/boidgame/boid.png"
+                           data-work-tags="music-boids"
+                           href="pages/music-boids/music-boids.html"
+                           target="_blank" rel="noreferrer">Music Boids</a>
+                      </li>
+                      <li>
+                        <a class="topic-item"
+                           data-preview="images/blender1/Scene5 copy.png"
+                           data-work-tags="modeling"
+                           data-disabled-link="true"
+                           href="#">Modeling</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="works-group">
+                    <div class="works-header">Game Design</div>
+                    <ul>
+                      <li>
+                        <a class="topic-item"
+                           data-preview="images/hellorsell.png"
+                           data-work-tags="hell-or-sell"
+                           data-disabled-link="true"
+                           href="#">Hell or Sell</a>
+                      </li>
+                      <li>
+                        <a class="topic-item"
+                           data-preview="images/gamedesign/TitleScreenFinalVersion.PNG"
+                           data-work-tags="orbit-of-desire"
+                           href="pages/orbit-of-desire/orbit-of-desire.html"
+                           target="_blank" rel="noreferrer">Orbit of Desire</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="works-group">
+                    <div class="works-header">Fine Art</div>
+                    <ul>
+                      <li>
+                        <a class="topic-item"
+                           data-preview="images/drawing/ClassDrawing2 copy 2.jpeg"
+                           data-work-tags="drawing"
+                           href="pages/drawing/drawing.html"
+                           target="_blank" rel="noreferrer">Drawing</a>
+                      </li>
+                      <li>
+                        <a class="topic-item"
+                           data-preview="images/illustration/1-preview.jpg"
+                           data-work-tags="illustration"
+                           href="pages/illustration/illustration.html"
+                           target="_blank" rel="noreferrer">Illustration</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="works-footer">More works in progress...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CV folder -->
+          <div class="folder" data-section="cv" aria-label="CV section">
+            <div class="folder-tab-row">
+              <svg class="folder-tab-svg" viewBox="0 0 400 50" preserveAspectRatio="none" aria-hidden="true">
+                <polygon class="tab-fill" points="0,50 29,0 179,0 208,50"/>
+                <polyline class="tab-stroke" points="0,50 29,0 179,0 208,50 400,50" fill="none" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              </svg>
+              <span class="folder-tab-label">CV</span>
+            </div>
+            <div class="folder-body">
+              <div class="folder-body-inner">
+                <!-- CV content lives in the sliding #cv-panel; this just anchors the hover -->
+                <p class="folder-cv-hint">hover to read full CV →</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- BIO folder -->
+          <div class="folder" data-section="bio" aria-label="Bio section">
+            <div class="folder-tab-row">
+              <svg class="folder-tab-svg" viewBox="0 0 400 50" preserveAspectRatio="none" aria-hidden="true">
+                <polygon class="tab-fill" points="0,50 29,0 179,0 208,50"/>
+                <polyline class="tab-stroke" points="0,50 29,0 179,0 208,50 400,50" fill="none" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              </svg>
+              <span class="folder-tab-label">BIO</span>
+            </div>
+            <div class="folder-body">
+              <div class="folder-body-inner">
+                <p class="folder-bio-hint">hover to read bio →</p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /folders-stack -->
+      </nav>
+
+      <!-- ======== RIGHT PANEL (transparent — boids visible) ======== -->
+      <div class="landing-right" id="landingRight" aria-live="polite">
+
+        <!-- Image + tags side by side, centered in right panel -->
+        <div class="preview-group">
+          <!-- Fixed-size image slot: 717×568, cover-fit, overflow clipped -->
+          <div class="works-preview-slot">
+            <a class="works-preview-link" data-works-preview-link href="#" target="_blank" rel="noreferrer" tabindex="-1" aria-hidden="true">
+              <img alt="Preview" data-works-preview aria-hidden="true" />
+            </a>
+            <p class="works-preview-note" aria-hidden="true" hidden>coming soon</p>
+          </div>
+          <!-- Work tags: flex sibling, anchors to right edge of preview image -->
+          <div class="work-tags" data-work-tags aria-hidden="true">
+            <p class="work-tags__line" data-final-text="| Spatial-to-Sound Mapping">| Spatial-to-Sound Mapping</p>
+            <p class="work-tags__line" data-final-text="| Generative Audio">| Generative Audio</p>
+            <p class="work-tags__line" data-final-text="| Event-Driven Architecture">| Event-Driven Architecture</p>
+            <p class="work-tags__line" data-final-text="| Interactive Media">| Interactive Media</p>
+            <p class="work-tags__line" data-final-text="| Modular System Architecture">| Modular System Architecture</p>
+          </div>
+        </div>
+
+      </div><!-- /landing-right -->
+
+    </div><!-- /landing-layout -->
+    <!-- CV sliding panel (appears on CV folder hover) -->
+    <!-- CV sliding panel: wipe-reveals pre-rendered text left → right on hover -->
+    <div id="cv-panel" aria-hidden="true" aria-label="Curriculum Vitae">
+      <div id="cv-panel-content">
+
+        <!-- Left column: Education + Experience -->
+        <div class="cv-col">
+          <h2 class="cvp-heading">EDUCATION</h2>
+          <p class="cvp-title">Rhode Island School of Design — 2024–2028</p>
+          <p class="cvp-line">BFA — Art and Computation</p>
+          <p class="cvp-line">Concentrating in Nature Culture Sustainability Studies</p>
+          <p class="cvp-title">Brown University — 2024–2028</p>
+          <p class="cvp-line">Mind and Perception</p>
+
+          <h2 class="cvp-heading">EXPERIENCE</h2>
+          <p class="cvp-title">RISD — Teaching Assistant — 2026</p>
+          <p class="cvp-bullet">› Assisted students with debugging HTML, CSS, and JavaScript</p>
+          <p class="cvp-bullet">› Gave feedback on interactive UI/UX design</p>
+          <p class="cvp-bullet">› Reinforced lecture concepts through one-on-one and group support</p>
+          <p class="cvp-title">Freelance Artist — NYC / Providence — 2024–2026</p>
+          <p class="cvp-bullet">› Commissioned illustrations and digital assets for private clients</p>
+          <p class="cvp-bullet">› Translated client briefs into finished visual work</p>
+          <p class="cvp-bullet">› Managed client communication and iterative feedback cycles</p>
+        </div>
+
+        <!-- Right column: Skills + Awards -->
+        <div class="cv-col">
+          <h2 class="cvp-heading">SKILLS</h2>
+          <p class="cvp-title">Technical</p>
+          <p class="cvp-line">Programming · web development · game design · Arduino · 3D modeling · UI/UX</p>
+          <p class="cvp-title">Tools</p>
+          <p class="cvp-line">HTML · CSS · p5.js · Processing · Figma · Blender · Photoshop · After Effects · Illustrator</p>
+          <p class="cvp-title">Fine Art</p>
+          <p class="cvp-line">Bookbinding · Cyanotype · Painting · Sculpture · Jewelry making</p>
+          <p class="cvp-title">Languages</p>
+          <p class="cvp-line">English · Chinese · French</p>
+
+          <h2 class="cvp-heading">AWARDS &amp; EXHIBITION</h2>
+          <p class="cvp-title">Group show at RISD — Reframing Representation — 2025</p>
+          <p class="cvp-title">Art and Computation Major Exhibition — 2025</p>
+          <p class="cvp-title">Mark Potter Studio Art Award — 2024</p>
+        </div>
+
+      </div>
     </div>
-  </div>
+
+    <!-- BIO sliding panel (appears on BIO folder hover) -->
+    <div id="bio-panel" aria-hidden="true" aria-label="Biography">
+      <div id="bio-panel-content">
+        <p class="biop-copy">
+          Julianne Jin is a visual artist and designer studying Art and
+          Computation at the Rhode Island School of Design. Her practice
+          spans generative systems, interactive media, web design, and
+          game development, exploring how technology can function as
+          both a conceptual and experiential medium. Through code,
+          interface design, and real-time digital environments, she builds
+          systems where algorithmic logic meets human imagination,
+          creating immersive, participatory worlds shaped by interaction
+          and narrative.
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /main -->
 
   <p class="site-credit">This website was concepted, designed, and coded by Julianne Jin.</p>
+
   <script src="js/boids.js"></script>
   <script src="js/intro.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/main.js"></script>
   <script src="js/cursor.js"></script>
 </body>
 </html>
