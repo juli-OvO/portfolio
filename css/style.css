@@ -28,7 +28,7 @@ body.night{
   background: #000;
 }
 body.night .site-credit{
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(220, 140, 60, 0.4);
 }
 
 #intro{
@@ -314,7 +314,7 @@ body.night .mode-toggle::after{
   font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: clamp(16px, calc(20px + (100vw - 1440px) * 0.014), 26px); /* scales fixed site credit text with viewport width */
   line-height: 1.2;
-  color: rgba(0, 0, 0, 0.7);
+  color: rgba(180, 100, 30, 0.45);
   z-index: 10001;
   pointer-events: none;
 }

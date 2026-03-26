@@ -214,7 +214,7 @@ function setPreviewImage(src, href, isDisabled) {
 
 function setPreviewNote(note) {
   if (!landingRight) return;
-  const showComingSoon = note === "coming-soon";
+  const showComingSoon = note === "Coming-soon!";
   if (note) {
     landingRight.dataset.previewNote = note;
   } else {
@@ -440,7 +440,7 @@ document.querySelectorAll(".folder").forEach((folder) => {
 const previewGroup = document.querySelector(".preview-group");
 let tiltTargetX = 0, tiltTargetY = 0;
 let tiltCurrentX = 0, tiltCurrentY = 0;
-const TILT_MAX = 20;   // max degrees
+const TILT_MAX = 10;   // max degrees
 const TILT_LERP = 0.07;
 
 function applyTilt() {
@@ -479,6 +479,26 @@ document.addEventListener("click", (e) => {
   setPreviewNote("");
   hideWorkTags();
 });
+
+// ======== NAV STATUS BAR ========
+const navDateTime = document.getElementById("navDateTime");
+const navWinSize  = document.getElementById("navWinSize");
+
+function updateNavStatus() {
+  if (navDateTime) {
+    const now = new Date();
+    const d = now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    const t = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    navDateTime.textContent = `[ ${d}  ${t} ]`;
+  }
+  if (navWinSize) {
+    navWinSize.textContent = `[ ${window.innerWidth} × ${window.innerHeight} ]`;
+  }
+}
+
+updateNavStatus();
+setInterval(updateNavStatus, 1000);
+window.addEventListener("resize", updateNavStatus);
 
 // ======== INIT ========
 initLetterSwap(document.body);
