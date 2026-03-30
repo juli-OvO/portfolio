@@ -214,7 +214,7 @@ function setPreviewImage(src, href, isDisabled) {
 
 function setPreviewNote(note) {
   if (!landingRight) return;
-  const showComingSoon = note === "Coming-soon!";
+  const showComingSoon = note === "coming-soon";
   if (note) {
     landingRight.dataset.previewNote = note;
   } else {
