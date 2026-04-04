@@ -3,10 +3,17 @@ const boidBg = document.querySelector('.boid-bg');
 if (boidBg) {
   const animatedBg = new Image();
   animatedBg.decoding = 'async';
-  animatedBg.src = '../../images/boidgame/boidpreview.gif';
-  animatedBg.addEventListener('load', () => {
+
+  const applyAnimatedBackground = () => {
     boidBg.classList.add('is-animated');
-  }, { once: true });
+  };
+
+  animatedBg.addEventListener('load', applyAnimatedBackground, { once: true });
+  animatedBg.src = '../../images/boidgame/boidpreview.gif';
+
+  if (animatedBg.complete) {
+    applyAnimatedBackground();
+  }
 }
 
 // Concept section scroll animation — replays on every enter/exit
