@@ -35,69 +35,68 @@
 
     <div class="boid-spacer" aria-hidden="true"></div>
 
-    <section class="boid-details" aria-labelledby="boid-details-title">
-      <div class="boid-details__content" id="boid-details-title">
-        <div class="boid-lines" aria-hidden="true">
-          <span class="boid-line boid-line--top"></span>
-          <span class="boid-line boid-line--mid"></span>
-          <span class="boid-line boid-line--lower"></span>
-          <span class="boid-line boid-line--bottom"></span>
-          <span class="boid-line boid-line--v1"></span>
-          <span class="boid-line boid-line--v2"></span>
-        </div>
+    <section class="boid-concept" aria-label="Project concept">
+      <p class="boid-concept__body">A sequencer that hides its own timeline. Boids trigger sounds when they cross lines you draw — you shape the space, the rhythm emerges. Under the hood: real-time flocking simulation, sample-accurate audio, synchronized graphics. On the surface: something you play with until it sounds interesting.</p>
+      <p class="boid-concept__tech">Built with p5.js + Tone.js</p>
+    </section>
 
-        <p class="boid-details__text boid-details__text--left">
-          An interactive audiovisual system that explores the relationship between time-based sequencing and spatial interaction in generative sound.
-        </p>
+    <section class="boid-details" aria-labelledby="boid-showcase-title">
+      <div class="boid-showcase">
+        <h2 class="boid-showcase__title" id="boid-showcase-title">[ User Manual ]</h2>
+        <div class="boid-showcase__grid">
 
-        <p class="boid-details__text boid-details__text--right">
-          Each element can be toggled or isolated, allowing the system to function as both a
-          compositional tool and an <strong>experimental instrument </strong>for studying cause and effect in
-          generative sound.
-        </p>
+          <div class="panel-item" style="--panel-delay: 0s">
+            <div class="panel-image">
+              <span class="panel-number" aria-hidden="true">1</span>
+              <img src="../../images/boidgame/img1.png" alt="Harmonic Line panel" />
+            </div>
+            <div class="panel-description">
+              <h3>Harmonic Line</h3>
+              <p>Control the X/Y position and ratio of the harmonic line that triggers boid sounds</p>
+            </div>
+          </div>
 
-        <p class="boid-details__text boid-details__text--bottom">
-          At its core, each instrument follows an independent time-based sequence (e.g. eight-step
-          hi-hat and kick, seven-step piano and bass). On top of this baseline rhythm, boid-based
-          agents act as mobile sequencer elements: when they cross harmonic lines or segments, they
-          trigger additional sound events. Each system, temporal and spatial, can be isolated to
-          study its individual effect, or layered together to produce emergent rhythms.
-        </p>
+          <div class="panel-item" style="--panel-delay: 0.1s">
+            <div class="panel-image">
+              <span class="panel-number" aria-hidden="true">2</span>
+              <img src="../../images/boidgame/img2.png" alt="Orbiters panel" />
+            </div>
+            <div class="panel-description">
+              <h3>Orbiters</h3>
+              <p>Adjust the number of orbiting circles and their speed to create rhythmic density</p>
+            </div>
+          </div>
 
-        <div class="boid-details__images" aria-hidden="true">
-          <figure class="boid-image boid-image--1">
-            <!-- <span class="boid-image__line boid-image__line--right boid-image__line--img1"></span> -->
-            <img src="../../images/boidgame/img1.png" alt="" />
-            <figcaption class="boid-image__caption">
-              Drawn lines act like invisible musical strings—when moving elements cross them, they trigger pitched sound events, turning space into a playable instrument.
-            </figcaption>
-          </figure>
-          <figure class="boid-image boid-image--2">
-            <img src="../../images/boidgame/img2.png" alt="" />
-            <figcaption class="boid-image__caption">
-              Drawn lines create custom orbital tracks, where adjustable particles move along the path and trigger sound events based on their movement.
-            </figcaption>
-          </figure>
-          <figure class="boid-image boid-image--3">
-            <span class="boid-image__line boid-image__line--left boid-image__line--img3"></span>
-            <span class="boid-image__base boid-image__base--img3"></span>
-            <img src="../../images/boidgame/img3.png" alt="" />
-            <figcaption class="boid-image__caption">
-              Each instrument runs on its own looping rhythm, like separate band members, and can be turned on or off individually or as a group.
-            </figcaption>
-          </figure>
-          <figure class="boid-image boid-image--4">
-            <span class="boid-image__line boid-image__line--left boid-image__line--img4"></span>
-            <!-- <span class="boid-image__stem boid-image__stem--img4"></span> -->
-            <img src="../../images/boidgame/img4.png" alt="" />
-            <figcaption class="boid-image__caption">
-              A central control panel adjusts overall tempo and movement speed, while the join/regroup function clusters or separates agents—like tightening or loosening an ensemble to change rhythmic intensity.
-            </figcaption>
-          </figure>
+          <div class="panel-item" style="--panel-delay: 0.2s">
+            <div class="panel-image">
+              <span class="panel-number" aria-hidden="true">3</span>
+              <img src="../../images/boidgame/img3.png" alt="Instruments panel" />
+            </div>
+            <div class="panel-description">
+              <h3>Instruments</h3>
+              <p>Toggle between hi-hat, bass, piano, and kick — each with independent step sequences</p>
+            </div>
+          </div>
+
+          <div class="panel-item" style="--panel-delay: 0.3s">
+            <div class="panel-image">
+              <span class="panel-number" aria-hidden="true">4</span>
+              <img src="../../images/boidgame/img4.png" alt="Tempo and Motion panel" />
+            </div>
+            <div class="panel-description">
+              <h3>Tempo &amp; Motion</h3>
+              <p>Control global tempo and boid clustering behavior</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
   </main>
+
+  <a class="boid-sticky-link" href="https://juli-ovo.github.io/BoidSequencer1.0/" target="_blank" rel="noreferrer" aria-label="Try Boid Sequencer live">
+    <span aria-hidden="true">↗</span>
+  </a>
 
   <script src="music-boids.js"></script>
   <script src="../../js/cursor.js"></script>
