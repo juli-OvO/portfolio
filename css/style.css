@@ -518,11 +518,12 @@ body.boid-sequencer #main{
 
 .boid-showcase__title {
   font-family: "Space Grotesk", system-ui, sans-serif;
-  font-size: clamp(18px, 2vw, 28px);
+  font-size: clamp(30px, 4vw, 48px);
   font-weight: 600;
   letter-spacing: 0.1em;
   color: var(--boid-light);
   margin: 0 0 clamp(32px, 4vw, 56px);
+  text-align: center;
 }
 
 .boid-showcase__grid {
@@ -917,8 +918,10 @@ body.boid-sequencer #main{
 /* ===== CONCEPT SECTION ===== */
 .boid-concept {
   background: var(--boid-ink);
-  padding: 80px clamp(5vw, 8vw, 10vw);
+  padding: clamp(100px, 14vh, 180px) clamp(5vw, 8vw, 10vw);
   text-align: center;
+  margin-left: calc(-1 * clamp(5vw, 8vw, 10vw));
+  width: calc(100% + 2 * clamp(5vw, 8vw, 10vw));
 }
 
 .boid-concept__body {
@@ -996,7 +999,9 @@ body.boid-sequencer #main{
 
 @media (max-width: 768px) {
   .boid-concept {
-    padding: 48px 7vw;
+    padding: 72px 7vw;
+    margin-left: -7vw;
+    width: calc(100% + 14vw);
   }
 }
 
