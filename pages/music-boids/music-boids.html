@@ -14,6 +14,8 @@
 
 </head>
 <body class="boid-sequencer">
+  <div id="page-loader"><canvas id="loader-canvas"></canvas></div>
+  <script src="../../js/loader.js"></script>
   <div id="cursor" aria-hidden="true"></div>
   <canvas id="cursorTrail" aria-hidden="true"></canvas>
   <div class="boid-bg" aria-hidden="true"></div>
@@ -26,23 +28,28 @@
   <main class="boid-content">
     <section class="boid-hero" aria-labelledby="boid-title">
       <div class="boid-hero__left">
-        <p class="boid-hero__label">Live Version</p>
+        <p class="boid-hero__label">LIVE LINK</p>
         <h1 id="boid-title" class="boid-hero__title">
           <a class="boid-hero__title-link" href="https://juli-ovo.github.io/BoidSequencer1.0/" target="_blank" rel="noreferrer">BOID SEQUENCER</a>
         </h1>
       </div>
     </section>
 
-    <div class="boid-spacer" aria-hidden="true"></div>
-
     <section class="boid-concept" aria-label="Project concept">
       <p class="boid-concept__body">A sequencer that hides its own timeline. Boids trigger sounds when they cross lines you draw — you shape the space, the rhythm emerges. <br> Under the hood: real-time flocking simulation, sample-accurate audio, synchronized graphics. <br> On the surface: something you play with until it sounds interesting.</p>
       <p class="boid-concept__tech">Built with p5.js + Tone.js</p>
     </section>
 
+    <section class="boid-marquee" aria-label="Project skills">
+      <div class="boid-marquee__track">
+        <p class="boid-marquee__line">p5.js · Tone.js · Boid Simulation · Generative Audio · Real-time Graphics · Creative Coding · Generative Sound · p5.js · Tone.js · Boid Simulation · Generative Audio · Real-time Graphics · Creative Coding · Generative Sound · p5.js · Tone.js · Boid Simulation · Generative Audio · Real-time Graphics · Creative Coding · Generative Sound</p>
+        <p class="boid-marquee__line" aria-hidden="true">p5.js · Tone.js · Boid Simulation · Generative Audio · Real-time Graphics · Creative Coding · Generative Sound · p5.js · Tone.js · Boid Simulation · Generative Audio · Real-time Graphics · Creative Coding · Generative Sound · p5.js · Tone.js · Boid Simulation · Generative Audio · Real-time Graphics · Creative Coding · Generative Sound</p>
+      </div>
+    </section>
+
     <section class="boid-details" aria-labelledby="boid-showcase-title">
       <div class="boid-showcase">
-        <h2 class="boid-showcase__title" id="boid-showcase-title">[ User Manual]</h2>
+        <h2 class="boid-showcase__title" id="boid-showcase-title"> - How it works - </h2>
         <div class="boid-showcase__grid">
 
           <div class="panel-item" style="--panel-delay: 0s">
@@ -93,6 +100,18 @@
       </div>
     </section>
   </main>
+
+  <footer class="boid-footer">
+    <p class="boid-footer__question">Interested in working together?</p>
+    <div class="boid-footer__links">
+      <a href="mailto:jjin04@risd.edu" class="boid-footer__link">jjin04@risd.edu</a>
+      <span class="boid-footer__sep" aria-hidden="true">·</span>
+      <a href="https://juli-ovo.github.io/portfolio/" class="boid-footer__link" target="_blank" rel="noreferrer">Portfolio</a>
+      <span class="boid-footer__sep" aria-hidden="true">·</span>
+      <a href="https://github.com/juli-ovo" class="boid-footer__link" target="_blank" rel="noreferrer">GitHub</a>
+    </div>
+    <p class="boid-footer__copy">© 2026 Julianne Jin</p>
+  </footer>
 
   <a class="boid-sticky-link" href="https://juli-ovo.github.io/BoidSequencer1.0/" target="_blank" rel="noreferrer" aria-label="Try Boid Sequencer live">
     <span aria-hidden="true">↗</span>

@@ -55,6 +55,18 @@ if (panels.length) {
   panels.forEach((panel) => panelObserver.observe(panel));
 }
 
+// Footer scroll animation — replays on re-entry
+const boidFooter = document.querySelector('.boid-footer');
+if (boidFooter) {
+  const footerObserver = new IntersectionObserver(
+    (entries) => {
+      boidFooter.classList.toggle('is-visible', entries[0].isIntersecting);
+    },
+    { threshold: 0.2 }
+  );
+  footerObserver.observe(boidFooter);
+}
+
 window.requestAnimationFrame(() => {
   document.body.classList.add('is-entering');
 });

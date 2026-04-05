@@ -13,15 +13,9 @@
 </head>
 
 <body>
-  <!-- Intro overlay -->
-  <div id="intro" aria-hidden="true">
-    <div class="intro-text">
-      <h1 id="revealTitle" class="reveal-title" aria-label="Julianne Jin"></h1>
-    </div>
-  </div>
-  <canvas id="bubbleWipe" aria-hidden="true"></canvas>
-
-  <div id="main">
+  <div id="page-loader"><canvas id="loader-canvas"></canvas></div>
+  <script src="js/loader.js"></script>
+  <div id="main" class="is-visible">
     <!-- Boids canvas — full-page background, hidden behind opaque left nav -->
     <canvas id="boids" aria-hidden="true"></canvas>
     <div id="cursor" aria-hidden="true"></div>
@@ -261,7 +255,6 @@
   <p class="site-credit">This website was concepted, designed, and coded by Julianne Jin.</p>
 
   <script src="js/boids.js"></script>
-  <script src="js/intro.js"></script>
   <script src="js/main.js"></script>
   <script src="js/cursor.js"></script>
 </body>

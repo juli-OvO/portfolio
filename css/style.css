@@ -423,7 +423,7 @@ body.boid-sequencer #main{
   gap: clamp(14px, calc(18px + (100vw - 1440px) * 0.01), 24px); /* scales hero left stack spacing with viewport width */
 }
 .boid-hero__label{
-  font-size: clamp(11px, calc(13px + (100vw - 1440px) * 0.005), 17px); /* scales boid hero label text with viewport width */
+  font-size: clamp(16px, calc(20px + (100vw - 1440px) * 0.008), 28px);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin: 0;
@@ -498,16 +498,51 @@ body.boid-sequencer #main{
   width: 100%;
 }
 
-.boid-spacer{
-  height: clamp(220px, calc(300px + (100vh - 900px) * 0.24), 460px); /* scales boid spacer height with viewport height */
-}
-
 .boid-details{
   background: var(--boid-ink);
   color: var(--boid-light);
   padding: clamp(60px, 8vh, 120px) 6vw clamp(80px, 10vh, 160px);
   margin: 0 -8vw;
-  margin-top: clamp(-140px, calc(-100px + (100vh - 900px) * -0.08), -70px);
+}
+
+.boid-marquee{
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  overflow: hidden;
+  background: var(--boid-ink);
+  padding: 32px 0 72px;
+  white-space: nowrap;
+}
+
+.boid-marquee__track{
+  display: flex;
+  width: max-content;
+  animation: boid-marquee-scroll 48s linear infinite;
+  will-change: transform;
+}
+
+.boid-marquee__line{
+  flex: 0 0 auto;
+  margin: 0;
+  padding-right: 5rem;
+  color: #9a9a90;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(14px, 1.15vw, 16px);
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  word-spacing: 0.45rem;
+  text-transform: none;
+}
+
+@keyframes boid-marquee-scroll{
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* ===== SHOWCASE GRID ===== */
@@ -531,13 +566,14 @@ body.boid-sequencer #main{
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   align-items: start;
+  padding-top: 18px;
 }
 
 /* ===== PANEL CARD ===== */
 .panel-item {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 4px;
-  overflow: hidden;
+  overflow: visible;
   background: rgba(255, 255, 255, 0.03);
   /* Hidden until scroll trigger */
   opacity: 0;
@@ -555,35 +591,41 @@ body.boid-sequencer #main{
 /* ===== PANEL IMAGE ===== */
 .panel-image {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .panel-image img {
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 4px 4px 0 0;
 }
 
 /* ===== NUMBER BADGE ===== */
 .panel-number {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 26px;
-  height: 26px;
+  top: 0;
+  left: 50%;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   color: var(--boid-light);
-  font-family: "Space Grotesk", system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  font-variant-numeric: lining-nums tabular-nums;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
+  text-align: center;
+  text-shadow: none;
   opacity: 0;
-  transform: scale(0.5);
+  transform: translate(-50%, -50%) scale(0.5);
 }
 
 /* ===== PANEL DESCRIPTION ===== */
@@ -620,7 +662,7 @@ body.boid-sequencer #main{
 
 .panel-item.visible .panel-number {
   opacity: 1;
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
   transition: opacity 0.5s ease calc(var(--panel-delay, 0s) + 0.3s),
               transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--panel-delay, 0s) + 0.3s);
 }
@@ -1052,6 +1094,80 @@ body.boid-sequencer #main{
   }
 }
 
+/* ========== BOID PAGE FOOTER ========== */
+.boid-footer {
+  text-align: center;
+  padding: 100px 24px 60px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  background-color:#0a0a0b;
+  z-index: 3;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.boid-footer__question,
+.boid-footer__links,
+.boid-footer__copy {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.boid-footer.is-visible .boid-footer__question {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.boid-footer.is-visible .boid-footer__links {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.boid-footer.is-visible .boid-footer__copy {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.boid-footer__question {
+  font-size: clamp(16px, 1.2vw, 18px);
+  color: #e8e6e3;
+  margin: 0;
+}
+
+.boid-footer__links {
+  margin: 16px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.boid-footer__link {
+  font-size: 14px;
+  color: #8a8880;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.boid-footer__link:hover {
+  color: #e8e6e3;
+  text-decoration: underline;
+}
+
+.boid-footer__sep {
+  color: #8a8880;
+  font-size: 14px;
+  user-select: none;
+}
+
+.boid-footer__copy {
+  margin: 32px 0 0;
+  font-size: 12px;
+  color: #5a5955;
+}
+
 /* ========== DRAWING PAGE ========== */
 .drawing-page{
   height: 100%;
@@ -1222,9 +1338,6 @@ body.boid-sequencer #main{
 @media (min-width: 1440px) {
   .boid-content {
     padding-top: clamp(200px, calc(240px + (100vh - 900px) * 0.22), 380px);
-  }
-  .boid-spacer {
-    height: clamp(280px, calc(340px + (100vh - 900px) * 0.28), 560px);
   }
 
   /* Drawing page – let images breathe on large monitors */
@@ -1474,4 +1587,26 @@ body.night .mobile-notice__box { border-color: #fff; }
 @media (max-width: 600px) {
   .mobile-notice { display: flex; }
   .mobile-notice.dismissed { display: none; }
+}
+
+/* ======== PAGE LOADER ======== */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.09s ease-out;
+}
+#page-loader.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+#page-loader canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
