@@ -1,0 +1,338 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit — Portfolio" name="Case — Heads Up" subtitle="Recruiter-scannable case study: three sections, labeled image placeholders, hover-reveal detail layer" viewport="1440x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heads Up Website Redesign — Julianne Jin</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<link rel="stylesheet" href="case-page.css">
+<style>
+  .htitle{max-width:13ch}
+  /* ---- image placeholders ---- */
+  .ph{position:relative;display:flex;flex-direction:column;justify-content:center;gap:9px;padding:26px 24px;
+    border:1.5px dashed var(--bp-soft);background:hsla(222,56%,44%,.045);min-height:var(--h,260px);
+    transition:background .3s,border-color .3s}
+  .ph:hover{background:hsla(222,56%,44%,.085);border-color:var(--bp)}
+  .ph::before{content:'';position:absolute;inset:7px;border:1px solid var(--bp-faint);pointer-events:none}
+  .ph .pk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
+  .ph .pt{font-size:clamp(15px,1.5vw,19px);font-weight:700;line-height:1.28;color:var(--ink);max-width:34ch}
+  .ph .pd{font-size:13px;line-height:1.55;color:var(--ink-soft);max-width:44ch}
+  .ph.tall{--h:400px}.ph.big{--h:clamp(300px,42vh,480px)}.ph.sm{--h:180px}
+  .ph.phone{--h:400px;max-width:230px}
+  /* ---- hero ---- */
+  .heroSplit{display:grid;grid-template-columns:1fr;gap:clamp(24px,3vw,44px);align-items:end}
+  @media(min-width:1080px){.heroSplit{grid-template-columns:1.35fr .65fr}}
+  .scan{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+  .chip{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--bp);
+    border:1px solid var(--bp-soft);padding:7px 12px;background:hsla(0,0%,100%,.45)}
+  .chip.hit{color:var(--acc);border-color:hsla(18,84%,54%,.55);background:hsla(18,84%,54%,.07);font-weight:700}
+  /* ---- org scale ---- */
+  .org{display:grid;grid-template-columns:1fr;gap:clamp(20px,3vw,44px);align-items:start}
+  @media(min-width:900px){.org{grid-template-columns:1.1fr .9fr}}
+  .scale{display:grid;grid-template-columns:repeat(3,1fr);border-top:1.5px solid var(--ink);border-left:1px solid var(--ink-hair)}
+  .scale .s{border-right:1px solid var(--ink-hair);border-bottom:1px solid var(--ink-hair);padding:18px 16px 20px}
+  .scale .num{font-size:clamp(28px,4.4vw,52px);font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+  .scale .lb{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--bp);margin-top:9px;line-height:1.4}
+  .note{font-size:12.5px;line-height:1.6;color:var(--ink-soft);margin-top:12px;font-style:italic}
+  /* ---- progression ---- */
+  .prog3{display:grid;grid-template-columns:1fr;gap:clamp(16px,2vw,26px);align-items:start}
+  @media(min-width:900px){.prog3{grid-template-columns:1fr 1fr 1fr}}
+  .stage .sh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+    border-top:1.5px solid var(--ink);padding:10px 0 14px}
+  .stage .sh b{font-size:15px;letter-spacing:-.01em;color:var(--ink)}
+  .stage .sh span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp-soft)}
+  .stage.sel .sh{border-top-color:var(--acc)}
+  .stage.sel .sh span{color:var(--acc)}
+  /* ---- detail disclosure (level 3) ---- */
+  .det{border-top:1px solid var(--ink-hair);margin-top:34px}
+  .det summary{cursor:pointer;list-style:none;padding:15px 0;display:flex;justify-content:space-between;gap:14px;align-items:baseline;
+    font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp);border-bottom:1px solid var(--ink-hair)}
+  .det summary::-webkit-details-marker{display:none}
+  .det summary::after{content:'+';color:var(--acc);font-size:16px}
+  .det[open] summary::after{content:'–'}
+  .det summary:hover{color:var(--acc)}
+  .det .dbody{padding:20px 0 6px;border-bottom:1px solid var(--ink-hair)}
+  .det .dbody p{font-size:15px;margin-bottom:13px}
+  .det .dbody p:last-child{margin-bottom:0}
+  /* ---- takeaway ---- */
+  .sec p.take,.take{font-size:clamp(19px,2.3vw,29px);line-height:1.34;font-weight:700;letter-spacing:-.01em;color:var(--ink);
+    max-width:30ch;border-left:3px solid var(--acc);padding-left:20px;margin:0 0 30px}
+  /* ---- helper tool callout ---- */
+  .tool{border:1.5px solid var(--ink);padding:clamp(20px,2.6vw,34px);background:hsla(0,0%,100%,.5);margin-top:8px}
+  .tool .tk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:12px}
+  .tool h3{font-size:clamp(20px,2.4vw,30px);margin:0 0 14px;letter-spacing:-.01em;text-transform:none;color:var(--ink);font-weight:700}
+  .props{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--ink-hair);border:1px solid var(--ink-hair);margin-top:22px}
+  .props div{background:hsla(0,0%,100%,.72);padding:11px 13px;font-size:13px;color:var(--ink-soft)}
+  .props div b{display:block;color:var(--bp);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
+  .foot{padding:clamp(48px,8vh,96px) var(--gut);border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:20px 36px;align-items:baseline;justify-content:space-between}
+  .foot .q{font-size:clamp(20px,2.6vw,34px);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+  .foot .ln{display:flex;gap:8px;flex-wrap:wrap;font-size:14px;color:var(--ink-soft)}
+  .foot .c{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp-soft);width:100%}
+</style>
+</head>
+<body>
+<div class="bpgrid"></div><div class="bpglow"></div>
+<div class="prog"></div>
+
+<div class="chrome">
+  <a class="cbtn" href="Folder Model v5.html">← Index</a>
+  <div class="mid">Heads Up · Website Redesign · UX/UI + Build</div>
+  <div class="cnav">
+    <a class="cbtn" href="Case - Music Boids.html">Boid Sequencer →</a>
+    <a class="cbtn" href="Case - Illustration.html">Illustration →</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="heroSplit">
+      <div>
+        <div class="eyebrow"><span>Nonprofit</span><span class="sep"></span><span>Website redesign</span><span class="sep"></span><span>Design → Build</span></div>
+        <h1 class="htitle" data-split="chars">Heads Up Website Redesign</h1>
+        <p class="hdeck rv">I redesigned and helped build the website for <b>Heads Up</b>, a youth-led digital wellness nonprofit. I developed the visual direction, built a functional coded prototype, iterated with the founder, board, and technical team, and translated the approved design into Webflow.</p>
+        <div class="scan rv" data-d=".08">
+          <span class="chip hit">My direction was selected</span>
+          <span class="chip">Coded prototype</span>
+          <span class="chip">Webflow build</span>
+          <span class="chip hit">Custom helper tool</span>
+        </div>
+      </div>
+      <figure class="ph phone rv" data-d=".2">
+        <div class="pk">Image · optional</div>
+        <div class="pt">Mobile view of the final site</div>
+        <div class="pd">Single phone-width screenshot of the Webflow homepage. Sits beside the hero as a secondary read.</div>
+      </figure>
+    </div>
+
+    <figure class="ph big rv" data-d=".12" style="margin-top:clamp(24px,3vw,40px)">
+      <div class="pk">Image · primary</div>
+      <div class="pt">Hero image or looping video of the final website</div>
+      <div class="pd">Full-width desktop capture of the finished Webflow homepage — ideally a short silent loop scrolling the top of the page. This is the first thing a recruiter sees; use the strongest frame.</div>
+    </figure>
+
+    <div class="hmeta rv" data-d=".16">
+      <div class="cell"><div class="k">Role</div><div class="v">UX/UI Design · Web Development · Prototyping</div></div>
+      <div class="cell"><div class="k">Tools</div><div class="v">Figma · Claude / AI-assisted coding · HTML, CSS, JS · Lucidchart · Webflow</div></div>
+      <div class="cell"><div class="k">Client</div><div class="v">Heads Up — youth-led digital wellness nonprofit</div></div>
+      <div class="cell"><div class="k">Collaborators</div><div class="v">Founder · Board · Technical team</div></div>
+    </div>
+  </header>
+
+  <div class="body2">
+    <aside class="rail">
+      <div class="sticky">
+        <div class="rsec">
+          <h4>Outcome</h4>
+          <div class="rrow"><b>Direction selected</b></div>
+          <div class="rrow">Coded prototype shipped</div>
+          <div class="rrow">Rebuilt in Webflow</div>
+          <div class="rrow">Helper tool built</div>
+        </div>
+        <div class="rsec">
+          <h4>Tools</h4>
+          <div class="rrow">Figma</div>
+          <div class="rrow">Webflow</div>
+          <div class="rrow">HTML · CSS · JS</div>
+          <div class="rrow">Lucidchart</div>
+        </div>
+        <div class="rsec">
+          <h4>Contents</h4>
+          <nav class="toc">
+            <a href="#overview">01 — Project overview</a>
+            <a href="#direction">02 — Problem to direction</a>
+            <a href="#build">03 — Prototype to Webflow</a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <main class="flow">
+      <section class="sec" id="overview">
+        <div class="slabel"><span class="n">01</span><span>Project overview</span></div>
+        <div class="org">
+          <div>
+            <h2 class="rv">A student-led movement for digital balance.</h2>
+            <p class="rv">Heads Up is a student-led movement focused on digital balance and healthier relationships with technology. The organization runs <b>student chapters, mentorship programs, learning initiatives</b>, and other youth-focused programs.</p>
+          </div>
+          <div class="rv" data-d=".08">
+            <div class="scale">
+              <div class="s"><div class="num">120+</div><div class="lb">Chapters</div></div>
+              <div class="s"><div class="num">38</div><div class="lb">States</div></div>
+              <div class="s"><div class="num">10k+</div><div class="lb">Students reached</div></div>
+            </div>
+            <p class="note">These figures describe the scale of the organization — not results attributable to this redesign.</p>
+          </div>
+        </div>
+
+        <div class="dgrid rv" style="margin-top:clamp(34px,4vw,54px)">
+          <div class="cell"><div class="k">01 — Direction</div><div class="v">My design direction was selected by the team</div></div>
+          <div class="cell"><div class="k">02 — Prototype</div><div class="v">Developed a functional coded website prototype</div></div>
+          <div class="cell"><div class="k">03 — Collaboration</div><div class="v">Iterated through stakeholder feedback</div></div>
+          <div class="cell"><div class="k">04 — Implementation</div><div class="v">Rebuilt the approved direction in Webflow</div></div>
+          <div class="cell"><div class="k">05 — Tooling</div><div class="v">Built a custom inspection helper for the transfer</div></div>
+        </div>
+      </section>
+
+      <div class="mq">
+        <div class="track">
+          <span class="run">Visual direction<span class="d">·</span>Coded prototype<span class="d">·</span>Stakeholder iteration<span class="d">·</span>Webflow build<span class="d">·</span>Custom helper tool<span class="d">·</span></span>
+          <span class="run">Visual direction<span class="d">·</span>Coded prototype<span class="d">·</span>Stakeholder iteration<span class="d">·</span>Webflow build<span class="d">·</span>Custom helper tool<span class="d">·</span></span>
+        </div>
+      </div>
+
+      <section class="sec" id="direction">
+        <div class="slabel"><span class="n">02</span><span>From problem to design direction</span></div>
+        <p class="take rv">Credible and organized, but unmistakably youth-led — not corporate.</p>
+        <p class="rv">The existing site was the starting point. The redesign focused on <b>visual hierarchy</b>, <b>clarity of programs and calls to action</b>, <b>consistency across pages</b>, and <b>communication of the organization's youth-led identity</b>.</p>
+        <p class="rv">The site needed to work for several audiences at once — students, mentors, partners, donors, and parents. Visual and interaction decisions were built around the organization's mission and personality: clear program entry points, visible calls to action, student-centered messaging, and a more recognizable visual identity.</p>
+
+        <figure class="ph rv" style="margin-top:clamp(30px,4vw,46px)">
+          <div class="pk">Image · starting point</div>
+          <div class="pt">Screenshot of the previous website</div>
+          <div class="pd">One full-page or above-the-fold capture of the old site. Presented neutrally as the baseline — no red-circle critique overlays.</div>
+        </figure>
+
+        <h2 class="rv" style="margin-top:clamp(44px,6vw,72px)">Initial direction → feedback → refined direction</h2>
+        <p class="rv" style="margin-bottom:32px">I met regularly with the board and technical team and iterated on the design based on feedback from the founder and other members. My initial direction was selected, then refined around messaging, navigation, hierarchy, program visibility, and implementation feasibility.</p>
+        <div class="prog3">
+          <div class="stage rv">
+            <div class="sh"><b>Initial direction</b><span>01</span></div>
+            <figure class="ph tall">
+              <div class="pk">Image</div>
+              <div class="pt">Early design exploration</div>
+              <div class="pd">First-pass homepage direction as presented to the team.</div>
+            </figure>
+          </div>
+          <div class="stage rv" data-d=".08">
+            <div class="sh"><b>Team feedback</b><span>02</span></div>
+            <figure class="ph tall">
+              <div class="pk">Image · optional</div>
+              <div class="pt">Feedback notes, Lucidchart, or annotated screens</div>
+              <div class="pd">Any planning artifact that visually shows what the board and technical team asked for.</div>
+            </figure>
+          </div>
+          <div class="stage sel rv" data-d=".16">
+            <div class="sh"><b>Refined direction</b><span>Selected</span></div>
+            <figure class="ph tall">
+              <div class="pk">Image</div>
+              <div class="pt">Selected and refined design</div>
+              <div class="pd">The approved direction that went on to be prototyped and built.</div>
+            </figure>
+          </div>
+        </div>
+
+        <details class="det rv">
+          <summary><span>What changed between rounds</span></summary>
+          <div class="dbody">
+            <p>Feedback concentrated on <b>messaging</b>, <b>navigation</b>, <b>hierarchy</b>, <b>program visibility</b>, and <b>implementation feasibility</b>. Replace this text with the specific notes worth keeping — annotated before/after crops work well here.</p>
+            <p>Keep the level-one story in the layout above; this disclosure is for a reader who wants the detail.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="sec" id="build">
+        <div class="slabel"><span class="n">03</span><span>From coded prototype to Webflow</span></div>
+        <p class="take rv">A prototype you can click beats a mockup you have to imagine.</p>
+        <p class="rv">After establishing the visual direction, I used AI-assisted coding to build a functional HTML/CSS/JavaScript version of the site. Rather than relying only on static mockups, the coded prototype let layout, interactions, and page behavior be tested directly in the browser — and gave the team something concrete to review during feedback.</p>
+        <p class="rv"><b>AI was a development assistant, not the designer.</b> I directed the visual system, layout, interaction goals, page structure, and every revision.</p>
+
+        <figure class="ph big rv" style="margin-top:clamp(28px,3.6vw,44px)">
+          <div class="pk">Image · primary</div>
+          <div class="pt">Screenshot or short recording of the coded prototype</div>
+          <div class="pd">Ideally a screen recording showing a real interaction — nav, scroll behavior, or a hover state. An interactive embed can replace this block later.</div>
+        </figure>
+
+        <h2 class="rv" style="margin-top:clamp(44px,6vw,72px)">Translating the prototype into Webflow</h2>
+        <p class="rv">Once the direction was established, I rebuilt the prototype in Webflow so the organization could maintain and edit the site themselves. Transferring a coded interface into Webflow meant constantly reading properties — parent containers, inherited styles, dimensions, spacing, typography, and layout behavior.</p>
+
+        <div class="tool rv">
+          <div class="tk">Internal tool · built during implementation</div>
+          <h3>A custom Webflow inspection helper</h3>
+          <p style="margin:0">Select any element on the coded site and read everything needed to reproduce it in Webflow in one place — instead of moving repeatedly between browser inspection views.</p>
+          <div class="props">
+            <div><b>Element</b>Type and tag</div>
+            <div><b>Classes</b>Applied selectors</div>
+            <div><b>Context</b>Parent / layout</div>
+            <div><b>Size</b>Width &amp; height behavior</div>
+            <div><b>Spacing</b>Margins and padding</div>
+            <div><b>Type</b>Typography values</div>
+            <div><b>Inherited</b>Cascaded properties</div>
+            <div><b>Sizing</b>Fixed, fill, or hug logic</div>
+          </div>
+          <div class="pgrid" style="margin-top:24px">
+            <figure class="ph sm">
+              <div class="pk">Image</div>
+              <div class="pt">Helper running on the site</div>
+              <div class="pd">In-context screenshot with the panel open.</div>
+            </figure>
+            <figure class="ph sm">
+              <div class="pk">Image</div>
+              <div class="pt">Zoomed view of the helper interface</div>
+              <div class="pd">Close crop so the readouts are legible.</div>
+            </figure>
+            <figure class="ph sm">
+              <div class="pk">Image · optional</div>
+              <div class="pt">One element → its Webflow settings</div>
+              <div class="pd">Side-by-side showing the translation.</div>
+            </figure>
+          </div>
+        </div>
+
+        <h2 class="rv" style="margin-top:clamp(44px,6vw,72px)">The final Webflow site</h2>
+        <figure class="ph big rv">
+          <div class="pk">Image · primary</div>
+          <div class="pt">Final desktop homepage</div>
+          <div class="pd">Full-width capture of the live Webflow homepage.</div>
+        </figure>
+        <div class="pgrid" style="margin-top:clamp(16px,2vw,28px)">
+          <figure class="ph rv">
+            <div class="pk">Image</div>
+            <div class="pt">Key page or component view</div>
+            <div class="pd">e.g. programs, chapters, or mentorship page.</div>
+          </figure>
+          <figure class="ph rv" data-d=".06">
+            <div class="pk">Image</div>
+            <div class="pt">Second key page or component</div>
+            <div class="pd">Show a different layout pattern from the first.</div>
+          </figure>
+          <figure class="ph rv" data-d=".12">
+            <div class="pk">Image</div>
+            <div class="pt">Mobile / responsive version</div>
+            <div class="pd">Two or three phone-width screens side by side.</div>
+          </figure>
+        </div>
+
+        <details class="det rv">
+          <summary><span>Implementation notes</span></summary>
+          <div class="dbody">
+            <p>Space for technical detail a curious reader might want: Webflow class structure, breakpoint decisions, CMS collections, or specific transfer problems the helper solved. Keep it out of the main scroll.</p>
+          </div>
+        </details>
+
+        <p class="quote" data-split="words" style="margin-top:clamp(48px,7vw,86px)">One design carried across every stage — from an organization's goals to a maintainable site.</p>
+        <p class="rv" style="margin-top:34px">This project gave me experience carrying one design across multiple stages: understanding an organization's goals, developing a visual direction, presenting and iterating through group feedback, prototyping the experience in code, solving implementation problems with a custom tool, and translating the system into a maintainable Webflow site.</p>
+      </section>
+
+      <section class="next">
+        <div><div class="lbl">Next project</div><a class="big" href="Case - Music Boids.html">Boid Sequencer</a></div>
+        <a class="cbtn" href="Folder Model v5.html">← Back to index</a>
+      </section>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <div class="q">Interested in working together?</div>
+    <div class="ln">
+      <a href="mailto:jjin04@risd.edu">jjin04@risd.edu</a><span>·</span>
+      <a href="https://www.linkedin.com/in/chufan-jin-41b727311/" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+    <div class="c">© 2026 Julianne Jin</div>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous"></script>
+<script src="case-page.js"></script>
+</body>
+</html>

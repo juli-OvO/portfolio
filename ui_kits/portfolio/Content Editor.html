@@ -1,0 +1,130 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit — Portfolio" name="Content Editor (off-site)" subtitle="Fill-in-the-blanks sheet for every page, section and image slot — exports JSON + a Markdown brief" viewport="1440x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content Editor — Julianne Jin Portfolio</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+:root{--gut:clamp(18px,3.4vw,56px);
+  --bp:hsl(222 56% 44%);--bp-soft:hsla(222,56%,44%,.55);--bp-faint:hsla(222,56%,44%,.16);
+  --ink:hsl(28 24% 16%);--ink-soft:hsla(28,18%,20%,.62);--ink-hair:hsla(28,18%,20%,.14);
+  --acc:hsl(18 84% 54%)}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body,system-ui,sans-serif);
+  background-image:linear-gradient(hsla(222,46%,58%,.13) 1px,transparent 1px),linear-gradient(90deg,hsla(222,46%,58%,.13) 1px,transparent 1px),linear-gradient(hsla(212,42%,66%,.06) 1px,transparent 1px),linear-gradient(90deg,hsla(212,42%,66%,.06) 1px,transparent 1px);
+  background-size:132px 132px,132px 132px,33px 33px,33px 33px}
+a{color:var(--acc)}a:hover{color:var(--bp)}
+
+/* ---- top bar ---- */
+.bar{position:sticky;top:0;z-index:40;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;
+  padding:12px var(--gut);border-bottom:1px solid var(--ink);background:hsla(0,0%,100%,.9);backdrop-filter:blur(14px)}
+.bar .t{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--bp);margin-right:auto}
+.bar .t b{color:var(--ink)}
+.btn{font:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:hsla(0,0%,100%,.6);
+  border:1.5px solid var(--ink);padding:9px 15px;cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:var(--ink);color:#fff}
+.btn.acc{border-color:var(--acc);color:var(--acc)}
+.btn.acc:hover{background:var(--acc);color:#fff}
+.btn.ghost{border-color:var(--bp-soft);color:var(--bp)}
+.stat{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bp-soft)}
+
+.shell{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:1000px){.shell{grid-template-columns:250px 1fr}}
+
+/* ---- rail ---- */
+.rail{border-right:1px solid var(--ink-hair);padding:26px var(--gut) 60px}
+@media(min-width:1000px){.rail{position:sticky;top:57px;height:calc(100vh - 57px);overflow:auto;padding:26px 22px 60px}}
+.rail h4{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--bp-soft);margin:0 0 12px;font-weight:700}
+.rail a{display:flex;gap:9px;align-items:baseline;padding:7px 0;font-size:13.5px;color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--ink-hair)}
+.rail a:hover{color:var(--acc)}
+.rail a .n{font-size:10.5px;letter-spacing:.14em;color:var(--bp-soft);min-width:20px}
+.rail a .c{margin-left:auto;font-size:10.5px;color:var(--bp-soft)}
+.rail a.done .c{color:var(--acc)}
+
+/* ---- content ---- */
+.main{padding:0 var(--gut) 140px;max-width:980px}
+.intro{padding:34px 0 30px;border-bottom:1.5px solid var(--ink)}
+.intro h1{font-size:clamp(28px,4vw,50px);line-height:1;letter-spacing:-.025em;text-transform:uppercase;margin:0 0 14px;font-weight:700}
+.intro p{font-size:15px;line-height:1.65;color:var(--ink-soft);max-width:62ch;margin:0 0 10px}
+
+.page{padding:44px 0 10px;border-bottom:1px solid var(--ink-hair)}
+.phead{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;border-top:1.5px solid var(--ink);padding:14px 0 6px;margin-bottom:8px}
+.phead .n{font-size:11px;letter-spacing:.2em;color:var(--acc)}
+.phead h2{font-size:clamp(21px,2.6vw,32px);letter-spacing:-.02em;margin:0;font-weight:700}
+.phead .file{margin-left:auto;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bp-soft)}
+.pnote{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;max-width:60ch;font-style:italic}
+
+.sec{border-top:1px solid var(--ink-hair);padding:18px 0 6px}
+.sec>.sh{display:flex;gap:10px;align-items:baseline;margin-bottom:14px}
+.sec>.sh b{font-size:13px;letter-spacing:.02em}
+.sec>.sh span{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp-soft)}
+
+.f{display:grid;grid-template-columns:1fr;gap:6px;margin:0 0 16px}
+@media(min-width:760px){.f{grid-template-columns:190px 1fr;gap:8px 20px;align-items:start}}
+.f .lab{padding-top:8px}
+.f .lab .k{font-size:12px;font-weight:700;color:var(--ink);display:block;line-height:1.35}
+.f .lab .id{font-size:10px;letter-spacing:.08em;color:var(--bp-soft);font-family:ui-monospace,Menlo,monospace;word-break:break-all}
+.f .lab .hint{font-size:11.5px;line-height:1.5;color:var(--ink-soft);margin-top:4px;display:block}
+.f textarea,.f input[type=text]{font:inherit;font-size:14.5px;line-height:1.55;color:var(--ink);width:100%;
+  border:1.5px solid var(--ink-hair);background:hsla(0,0%,100%,.72);padding:9px 12px;resize:vertical}
+.f textarea:focus,.f input:focus{outline:none;border-color:var(--acc);background:#fff}
+.f .cur{font-size:11px;color:var(--bp-soft);text-align:right;margin-top:2px}
+
+/* image slot */
+.slot{border:1.5px dashed var(--bp-soft);background:hsla(222,56%,44%,.045);padding:14px;display:grid;gap:10px}
+.slot.has{border-style:solid;border-color:var(--acc);background:hsla(18,84%,54%,.05)}
+.slot.over{background:hsla(18,84%,54%,.12);border-color:var(--acc)}
+.slot .drop{display:flex;gap:12px;align-items:center;min-height:76px;cursor:pointer}
+.slot .thumb{width:104px;height:76px;flex:none;border:1px solid var(--ink-hair);background:#fff center/cover no-repeat;display:grid;place-items:center;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--bp-soft);text-align:center;padding:4px}
+.slot .meta{font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+.slot .meta b{display:block;color:var(--ink);font-size:13px;word-break:break-all}
+.slot input[type=text]{font-size:13px;padding:7px 10px}
+.slot .row{display:flex;gap:8px;align-items:center}
+.slot .x{font:inherit;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--bp);background:none;border:1px solid var(--bp-soft);padding:5px 9px;cursor:pointer}
+.slot .x:hover{color:var(--acc);border-color:var(--acc)}
+
+/* list field */
+.list{display:grid;gap:8px}
+.list .item{display:flex;gap:8px;align-items:flex-start}
+.list .item input{flex:1}
+.list .del{font:inherit;font-size:14px;line-height:1;color:var(--bp-soft);background:none;border:1px solid var(--ink-hair);padding:9px 11px;cursor:pointer}
+.list .del:hover{color:var(--acc);border-color:var(--acc)}
+.list .add{justify-self:start}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:var(--ink);color:#fff;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:12px 20px;transition:.28s;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="t"><b>Content Editor</b> · off-site worksheet</div>
+  <span class="stat" id="stat">—</span>
+  <button class="btn ghost" id="btnImport">Import JSON</button>
+  <button class="btn ghost" id="btnMd">Export brief (.md)</button>
+  <button class="btn acc" id="btnJson">Export content (.json)</button>
+  <input type="file" id="fileIn" accept=".json,application/json" hidden>
+</div>
+
+<div class="shell">
+  <nav class="rail" id="rail"><h4>Pages</h4></nav>
+  <main class="main">
+    <div class="intro">
+      <h1>Portfolio content sheet</h1>
+      <p>Every page of the site, broken into its real sections and slots. Fill in what you want the copy to say and drop images where they belong — this page is a worksheet, it is not part of the website.</p>
+      <p>Everything saves in this browser as you type. When you're done, hit <b>Export content (.json)</b> and send me the file; I'll push it into the actual pages. Images: drop them here so I can see what goes where, then send me the full-resolution originals separately — the export records each filename.</p>
+    </div>
+    <div id="pages"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="content-schema.js"></script>
+<script src="content-editor.js"></script>
+</body>
+</html>

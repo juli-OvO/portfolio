@@ -1,0 +1,162 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit — Portfolio" name="Case — Illustration" subtitle="Label-style numbered index: hover a row to float its plate, click for the lightbox; parallax plate grid" viewport="1440x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Illustration — Julianne Jin</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<script src="page-swipe.js"></script>
+<link rel="stylesheet" href="case-page.css">
+<style>
+  /* ---- label-style index ---- */
+  .idx{border-top:1.5px solid var(--ink)}
+  .row{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding:clamp(16px,2.4vh,26px) 0;
+    border-bottom:1px solid var(--ink-hair);cursor:pointer;position:relative;background:none;border-left:0;border-right:0;border-top:0;
+    width:100%;text-align:left;font-family:var(--font-mono);color:inherit;transition:padding .38s cubic-bezier(.16,1,.3,1)}
+  @media(min-width:820px){.row{grid-template-columns:64px minmax(0,1fr) 190px 120px}}
+  .row::after{content:'';position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--acc);transform:scaleX(0);transform-origin:0 50%;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+  .row:hover::after,.row:focus-visible::after{transform:scaleX(1)}
+  .row:hover{padding-left:16px}
+  .row .n{font-size:12.5px;letter-spacing:.16em;color:var(--bp-soft);transition:color .25s}
+  .row:hover .n{color:var(--acc)}
+  .row .t{font-size:clamp(22px,3.4vw,46px);font-weight:700;letter-spacing:-.02em;line-height:1.04;color:var(--ink);transition:color .25s}
+  .row:hover .t{color:var(--bp)}
+  .row .m{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);display:none}
+  .row .y{font-size:13px;letter-spacing:.14em;color:var(--ink-soft);text-align:right}
+  @media(min-width:820px){.row .m{display:block}}
+  /* cursor-following plate */
+  .plate{position:fixed;top:0;left:0;z-index:70;width:clamp(190px,20vw,300px);pointer-events:none;opacity:0;
+    transform:translate3d(-50%,-50%,0) scale(.9) rotate(-3deg);transition:opacity .3s ease}
+  .plate img{display:block;width:100%;height:auto;border:1px solid var(--ink);box-shadow:0 26px 60px -28px rgba(40,24,8,.55);background:#fff}
+  .plate.on{opacity:1}
+  @media(hover:none){.plate{display:none}}
+
+  /* ---- plate grid ---- */
+  .pgal{columns:1;column-gap:clamp(14px,2vw,30px)}
+  @media(min-width:640px){.pgal{columns:2}}
+  @media(min-width:1160px){.pgal{columns:3}}
+  .plateItem{break-inside:avoid;margin:0 0 clamp(14px,2vw,30px);cursor:pointer;position:relative}
+  .plateItem img{display:block;width:100%;height:auto;border:1px solid var(--ink-hair);background:#faf7f2;transition:filter .4s,border-color .3s}
+  .plateItem:hover img{filter:saturate(1.06) contrast(1.03);border-color:var(--bp-soft)}
+  .plateItem figcaption{display:flex;justify-content:space-between;gap:10px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:9px}
+  .plateItem:hover figcaption{color:var(--bp)}
+
+  /* ---- lightbox ---- */
+  .lb{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:clamp(20px,5vh,72px);
+    background:hsla(28,24%,10%,.9);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .35s}
+  .lb.on{opacity:1;pointer-events:auto}
+  .lb img{max-width:100%;max-height:78vh;display:block;border:1px solid hsla(0,0%,100%,.28);background:#111}
+  .lb .lbin{display:flex;flex-direction:column;gap:16px;align-items:center}
+  .lb .lbmeta{display:flex;gap:18px;align-items:baseline;color:hsla(0,0%,100%,.72);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase}
+  .lb .lbmeta b{color:#fff;font-size:15px;letter-spacing:.04em;text-transform:none}
+  .lbctl{position:absolute;top:22px;right:22px;display:flex;gap:10px}
+  .lbnav{position:absolute;top:50%;transform:translateY(-50%);display:flex;gap:10px}
+  .lbnav.p{left:22px}.lbnav.n{right:22px}
+  .lbbtn{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#fff;
+    border:1.5px solid hsla(0,0%,100%,.4);background:transparent;padding:9px 15px;cursor:pointer;transition:background .2s,border-color .2s}
+  .lbbtn:hover{background:hsla(0,0%,100%,.12);border-color:#fff}
+
+  .foot{padding:clamp(48px,8vh,96px) var(--gut);border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:20px 36px;align-items:baseline;justify-content:space-between}
+  .foot .q{font-size:clamp(20px,2.6vw,34px);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+  .foot .ln{display:flex;gap:8px;flex-wrap:wrap;font-size:14px;color:var(--ink-soft)}
+  .foot .c{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp-soft);width:100%}
+</style>
+</head>
+<body>
+<div class="bpgrid"></div><div class="bpglow"></div>
+<div class="prog"></div>
+
+<div class="chrome">
+  <a class="cbtn" href="Index - Wall.html">← Index</a>
+  <div class="mid">Illustration · Fine Art · 2023–25</div>
+  <div class="cnav">
+    <a class="cbtn" href="Case - Drawings.html">Drawings →</a>
+    <button class="cbtn acc" id="viewToggle" type="button">Grid view</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow"><span>Fine Art</span><span class="sep"></span><span>2023 — 2025</span><span class="sep"></span><span>Six plates</span></div>
+    <h1 class="htitle" data-split="chars">Illustration</h1>
+    <p class="hdeck rv">Painterly digital work made between coursework and code — single frames that imply a larger story. Hover a title to preview a plate; click to open it full size.</p>
+  </header>
+
+  <div class="body2">
+    <aside class="rail">
+      <div class="sticky">
+        <div class="rsec">
+          <h4>Work</h4>
+          <div class="rrow"><b>Personal series</b></div>
+          <div class="rrow">Contribution 100%</div>
+        </div>
+        <div class="rsec">
+          <h4>Tools</h4>
+          <div class="rrow">Procreate</div>
+          <div class="rrow">Photoshop</div>
+          <div class="rrow">Clip Studio</div>
+        </div>
+        <div class="rsec">
+          <h4>Contents</h4>
+          <nav class="toc">
+            <a href="#index">01 — Index</a>
+            <a href="#plates">02 — Plates</a>
+            <a href="#statement">03 — Statement</a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <main class="flow">
+      <section class="sec" id="index">
+        <div class="slabel"><span class="n">01</span><span>Index</span><span style="margin-left:auto;color:var(--bp-soft)">[06]</span></div>
+        <div class="idx" id="idx"></div>
+      </section>
+
+      <section class="sec" id="plates">
+        <div class="slabel"><span class="n">02</span><span>Plates</span></div>
+        <div class="pgal" id="gal"></div>
+      </section>
+
+      <section class="sec" id="statement">
+        <div class="slabel"><span class="n">03</span><span>Statement</span></div>
+        <p class="quote" data-split="words">One frame, with the rest of the story implied.</p>
+        <p class="rv" style="margin-top:40px">These started as warm-ups between programming projects, and they're where I work out color decisions that end up in other work. Each plate is built the same way: block in values, pick one dominant hue, then add a single cold accent to keep the warm tones from flattening.</p>
+      </section>
+
+      <section class="next">
+        <div><div class="lbl">Also in Art</div><a class="big" href="Case - Drawings.html">Drawings</a></div>
+        <a class="cbtn" href="Index - Wall.html">← Back to index</a>
+      </section>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <div class="q">Interested in working together?</div>
+    <div class="ln">
+      <a href="mailto:jjin04@risd.edu">jjin04@risd.edu</a><span>·</span>
+      <a href="https://www.linkedin.com/in/chufan-jin-41b727311/" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+    <div class="c">© 2026 Julianne Jin</div>
+  </footer>
+</div>
+
+<div class="plate" id="plate"><img alt=""></div>
+
+<div class="lb" id="lb" aria-hidden="true">
+  <div class="lbin">
+    <img id="lbImg" alt="">
+    <div class="lbmeta"><span id="lbN">01</span><b id="lbT"></b><span id="lbY"></span></div>
+  </div>
+  <div class="lbctl"><button class="lbbtn" id="lbX" type="button">Close ✕</button></div>
+  <div class="lbnav p"><button class="lbbtn" id="lbP" type="button">←</button></div>
+  <div class="lbnav n"><button class="lbbtn" id="lbNx" type="button">→</button></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous"></script>
+<script src="illus-gallery.js"></script>
+<script src="case-page.js"></script>
+</body>
+</html>

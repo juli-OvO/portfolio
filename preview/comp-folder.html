@@ -1,0 +1,61 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Components — Folder Stack" subtitle="Three tabs · SVG trapezoid · layered manila" viewport="700x220" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+  body { background:#fff; }
+  .card { padding:28px 24px; }
+  .stack { position:relative; width:100%; max-width:440px; margin:0 auto; }
+
+  .fld {
+    position:relative;
+    width:100%;
+    height:96px;
+    margin-top:-44px;        /* overlap: only the tab + a body sliver shows */
+  }
+  .fld:first-child { margin-top:0; }
+
+  .fld svg { display:block; width:100%; height:100%; overflow:visible; }
+  .fld-path { stroke:#000; stroke-width:2; vector-effect:non-scaling-stroke; }
+
+  .works .fld-path { fill:hsl(30,55%,93%); }
+  .cv    .fld-path { fill:hsl(28,58%,82%); }
+  .bio   .fld-path { fill:hsl(25,62%,68%); }
+
+  /* label centered on the tab's flat top (flat top spans x 30→165 of 400) */
+  .fld-label {
+    position:absolute;
+    top:0; left:7.5%;
+    width:34%;
+    height:28px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono);
+    font-size:21px; font-weight:700; letter-spacing:0.14em;
+    color:#000;
+  }
+
+  .cap { font-size:10px;opacity:0.55;letter-spacing:0.08em;margin-top:18px;text-align:center;font-family:var(--font-mono); }
+</style>
+</head><body>
+<div class="card">
+  <div class="stack">
+    <div class="fld works">
+      <svg viewBox="0 0 400 96" preserveAspectRatio="none">
+        <path class="fld-path" d="M10,28 L30,1 L165,1 L185,28 L399,28 L399,95 L1,95 L1,28 Z"/>
+      </svg>
+      <div class="fld-label">WORKS</div>
+    </div>
+    <div class="fld cv">
+      <svg viewBox="0 0 400 96" preserveAspectRatio="none">
+        <path class="fld-path" d="M10,28 L30,1 L165,1 L185,28 L399,28 L399,95 L1,95 L1,28 Z"/>
+      </svg>
+      <div class="fld-label">CV</div>
+    </div>
+    <div class="fld bio">
+      <svg viewBox="0 0 400 96" preserveAspectRatio="none">
+        <path class="fld-path" d="M10,28 L30,1 L165,1 L185,28 L399,28 L399,95 L1,95 L1,28 Z"/>
+      </svg>
+      <div class="fld-label">BIO</div>
+    </div>
+  </div>
+  <div class="cap">FOLDER STACK · TRAPEZOID TABS · LAYERED MANILA · WORKS → CV → BIO</div>
+</div>
+</body></html>

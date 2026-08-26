@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en" data-mode="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Folder Model — Prototype</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    cursor: default;
+  }
+
+  /* ---- stage layout ---- */
+  .wrap {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-columns: clamp(240px, 24vw, 360px) 1fr;
+  }
+
+  /* boids sit behind the folder but above the page background */
+  #boids {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ---------- LEFT: index list ---------- */
+  .index {
+    position: relative;
+    z-index: 3;
+    padding: clamp(28px, 4vh, 48px) clamp(22px, 2.4vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    border-right: var(--border-w) solid var(--ink);
+    background: color-mix(in srgb, var(--paper) 78%, transparent);
+    backdrop-filter: blur(2px);
+    overflow-y: auto;
+  }
+  .brand {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: var(--tracking-tab);
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  .brand .sub {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    opacity: 0.5;
+    margin-top: 8px;
+  }
+  .disc { display: flex; flex-direction: column; gap: 2px; }
+  .disc-head {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+  .row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 10px 7px 14px;
+    margin: 0 -10px;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    position: relative;
+    transition: background var(--dur-fast) var(--ease-calm),
+                color var(--dur-fast) var(--ease-calm),
+                padding-left var(--dur-fast) var(--ease-calm);
+  }
+  .row::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 0; height: 2px;
+    background: var(--orange);
+    transform: translateY(-50%);
+    transition: width var(--dur-fast) var(--ease-calm);
+  }
+  .row .t { font-size: 16px; font-weight: 600; }
+  .row .y { font-size: 12px; opacity: 0.45; }
+  .row:hover, .row.active {
+    background: var(--orange-wash);
+    padding-left: 22px;
+  }
+  .row:hover::before, .row.active::before { width: 10px; }
+  .row.active .y { opacity: 0.75; }
+
+  .hint {
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    opacity: 0.4;
+    line-height: 1.7;
+  }
+  .hint b { color: var(--orange); font-weight: 700; opacity: 0.9; }
+
+  /* ---------- RIGHT: 3D scene ---------- */
+  .scene {
+    position: relative;
+    z-index: 2;
+    perspective: 1600px;
+    perspective-origin: 52% 42%;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .rig {
+    position: relative;
+    width: 460px;
+    height: 340px;
+    transform-style: preserve-3d;
+    transform: rotateX(0deg) rotateY(0deg);
+    will-change: transform;
+  }
+
+  /* desk plane beneath the folder */
+  .desk {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 1500px; height: 1500px;
+    transform: translate(-50%, -50%) translateY(232px) translateZ(-30px) rotateX(80deg);
+    transform-origin: center;
+    background:
+      radial-gradient(ellipse 380px 240px at 50% 36%, rgba(0,0,0,0.22), rgba(0,0,0,0) 62%),
+      repeating-linear-gradient(90deg, hsl(28 30% 78%) 0 2px, hsl(28 32% 80%) 2px 90px),
+      linear-gradient(hsl(28 34% 82%), hsl(28 30% 74%));
+    box-shadow: inset 0 0 200px rgba(120,70,30,0.25);
+  }
+
+  /* the folder itself */
+  .folder { position: absolute; inset: 0; transform-style: preserve-3d; }
+
+  /* back panel of the manila folder (full height) */
+  .back {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px 16px 5px 5px;
+    background: linear-gradient(158deg, color-mix(in srgb, var(--folder-cv) 88%, #fff), var(--folder-cv) 55%, color-mix(in srgb, var(--folder-cv) 80%, #000));
+    border: var(--border-w) solid var(--ink);
+    transform: translateZ(0px);
+    box-shadow: 0 34px 54px -22px rgba(60,30,10,0.55);
+  }
+
+  /* decorative stacked sheets behind the live document */
+  .ssheet {
+    position: absolute;
+    left: 18px; right: 18px;
+    top: 8px; height: 292px;
+    background: var(--paper);
+    border: 1.5px solid color-mix(in srgb, var(--ink) 26%, transparent);
+    border-radius: 3px;
+  }
+
+  /* the live document sheet — peeks at rest, pulls up out of the pocket on hover */
+  .doc {
+    position: absolute;
+    left: 30px; right: 30px;
+    top: 6px; height: 300px;
+    background: var(--paper);
+    border: var(--border-w) solid var(--ink);
+    border-radius: 3px;
+    transform: translateZ(16px) translateY(0);
+    transform-origin: bottom center;
+    transition: transform var(--dur-panel) var(--ease-quint),
+                box-shadow var(--dur-panel) var(--ease-quint);
+    overflow: hidden;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  .doc .doc-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity var(--dur-base) var(--ease-calm);
+  }
+  /* title + year overlay near the top of the sheet (always visible while peeking) */
+  .doc .doc-meta {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    background: linear-gradient(var(--ink), color-mix(in srgb, var(--ink) 0%, transparent));
+    color: var(--paper);
+    padding: 11px 16px 22px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .doc .doc-ttl { font-family: var(--font-mono); font-weight: 700; font-size: 16px; letter-spacing: 0.02em; }
+  .doc .doc-yr  { font-family: var(--font-mono); font-size: 12px; opacity: 0.7; }
+
+  /* FRONT POCKET — shorter than the back, so the sheet's top peeks above it */
+  .pocket {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 196px;
+    border-radius: 0 0 5px 5px;
+    background:
+      linear-gradient(158deg, color-mix(in srgb, var(--folder-bio) 80%, #fff) 0%, var(--folder-bio) 55%, color-mix(in srgb, var(--folder-bio) 72%, #000) 100%);
+    border: var(--border-w) solid var(--ink);
+    transform: translateZ(34px);
+    box-shadow: 0 -10px 22px -14px rgba(40,18,4,0.55);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+  .pocket .disc-label {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--ink) 78%, transparent);
+    mix-blend-mode: multiply;
+  }
+  .pocket .stamp {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 1.5px solid color-mix(in srgb, var(--ink) 55%, transparent);
+    color: color-mix(in srgb, var(--ink) 70%, transparent);
+    padding: 3px 8px;
+    border-radius: 2px;
+    transform: rotate(-4deg);
+  }
+
+  /* folder tab carrying the tags */
+  .tab {
+    position: absolute;
+    top: -32px; left: 28px;
+    transform: translateZ(2px);
+    background: var(--folder-works);
+    border: var(--border-w) solid var(--ink);
+    border-bottom: none;
+    border-radius: 9px 9px 0 0;
+    padding: 7px 15px 11px;
+    display: flex;
+    gap: 13px;
+    align-items: center;
+    max-width: 392px;
+    box-shadow: 0 -3px 10px -6px rgba(0,0,0,0.4);
+  }
+  .tab .tab-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .tab .tags { display: flex; gap: 11px; overflow: hidden; }
+  .tab .tg {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0.72;
+  }
+  .tab .tg::before { content: '| '; color: var(--orange); opacity: 0.9; }
+
+  /* OPEN state: the sheet slides up out of the pocket */
+  .rig.open .doc {
+    transform: translateZ(16px) translateY(-150px);
+    box-shadow: 0 40px 60px -28px rgba(40,18,4,0.7);
+  }
+
+  .credit {
+    position: fixed;
+    right: 18px; bottom: 14px;
+    z-index: 4;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.35;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .doc, .front, .rig { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <canvas id="boids"></canvas>
+
+  <div class="wrap">
+    <aside class="index" id="index">
+      <div class="brand">Julianne Jin<span class="sub">Designer / Coder · RISD</span></div>
+      <!-- discipline groups injected -->
+      <div class="hint">
+        <b>Hover</b> a title to pull its file.<br>
+        Move your mouse — the folder follows.
+      </div>
+    </aside>
+
+    <main class="scene" id="scene">
+      <div class="rig" id="rig">
+        <div class="desk"></div>
+        <div class="folder">
+          <div class="back"></div>
+          <div class="ssheet" style="transform: translateZ(8px)  translateY(2px) rotate(-0.5deg);"></div>
+          <div class="ssheet" style="transform: translateZ(12px) translateY(4px) rotate(0.4deg);"></div>
+
+          <div class="doc" id="doc">
+            <img class="doc-img" id="docImg" alt="">
+            <div class="doc-meta">
+              <span class="doc-ttl" id="docTtl">—</span>
+              <span class="doc-yr" id="docYr"></span>
+            </div>
+          </div>
+
+          <div class="pocket">
+            <span class="disc-label" id="discLabel">FILE</span>
+            <span class="stamp">Portfolio</span>
+          </div>
+
+          <div class="tab" id="tab">
+            <span class="tab-name" id="tabName">FILE</span>
+            <span class="tags" id="tabTags"></span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="credit">Folder Model — concept prototype</div>
+
+<script>
+(function () {
+  const WORKS = [
+    { id:'music-boids', title:'Music Boids', year:'2025', disc:'CODE', img:'assets/boid.png',
+      tags:['Generative','Flocking','WebAudio','Real-time'] },
+    { id:'blender', title:'Blender / 3D', year:'2024', disc:'CODE', img:'assets/blender-scene5.png',
+      tags:['Blender','Cycles','Lighting'] },
+    { id:'orbit', title:'Orbit of Desire', year:'2025', disc:'GAMES', img:'assets/orbit-title.png',
+      tags:['Visual Novel','Character','Branching','Botany'] },
+    { id:'hellorsell', title:'Hell or Sell', year:'2024', disc:'GAMES', img:'assets/hellorsell.png',
+      tags:['UI Satire','Fintech','Motion'] },
+    { id:'illustration', title:'Illustration', year:'2024', disc:'ART', img:'assets/illustration-1-preview.jpg',
+      tags:['Procreate','Narrative','Mood','Colour'] },
+    { id:'drawing', title:'Drawing', year:'2025', disc:'ART', img:'assets/drawing-class-1.jpeg',
+      tags:['Charcoal','Observational','Studio'] },
+  ];
+  const DISCS = ['CODE','GAMES','ART'];
+
+  // ---- build index list ----
+  const index = document.getElementById('index');
+  const hint = index.querySelector('.hint');
+  const rowEls = {};
+  DISCS.forEach(d => {
+    const group = document.createElement('div');
+    group.className = 'disc';
+    const head = document.createElement('div');
+    head.className = 'disc-head';
+    head.textContent = d;
+    group.appendChild(head);
+    WORKS.filter(w => w.disc === d).forEach(w => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `<span class="t">${w.title}</span><span class="y">${w.year}</span>`;
+      row.addEventListener('mouseenter', () => activate(w, row));
+      group.appendChild(row);
+      rowEls[w.id] = row;
+    });
+    index.insertBefore(group, hint);
+  });
+
+  // ---- folder content refs ----
+  const rig = document.getElementById('rig');
+  const docImg = document.getElementById('docImg');
+  const docTtl = document.getElementById('docTtl');
+  const docYr  = document.getElementById('docYr');
+  const discLabel = document.getElementById('discLabel');
+  const tabName = document.getElementById('tabName');
+  const tabTags = document.getElementById('tabTags');
+
+  let current = null;
+  function activate(w, row) {
+    current = w;
+    Object.values(rowEls).forEach(r => r.classList.remove('active'));
+    if (row) row.classList.add('active');
+    rig.classList.add('open');
+    docImg.src = w.img;       docImg.alt = w.title;
+    docTtl.textContent = w.title;
+    docYr.textContent = w.year;
+    discLabel.textContent = w.disc;
+    tabName.textContent = w.title.toUpperCase();
+    tabTags.innerHTML = w.tags.map(t => `<span class="tg">${t}</span>`).join('');
+    boids.converge(true);
+  }
+  function deactivate() {
+    rig.classList.remove('open');
+    Object.values(rowEls).forEach(r => r.classList.remove('active'));
+    boids.converge(false);
+  }
+  index.addEventListener('mouseleave', deactivate);
+
+  // ---- mouse parallax tilt ----
+  const MAX_Y = 16, MAX_X = 11;
+  let tx = 0, ty = 0, cx = 0, cy = 0;
+  window.addEventListener('mousemove', e => {
+    const nx = (e.clientX / innerWidth)  * 2 - 1;   // -1..1
+    const ny = (e.clientY / innerHeight) * 2 - 1;
+    ty =  nx * MAX_Y;     // rotateY follows horizontal
+    tx = -ny * MAX_X;     // rotateX follows vertical (invert)
+  });
+  (function tiltLoop() {
+    cx += (tx - cx) * 0.08;
+    cy += (ty - cy) * 0.08;
+    rig.style.transform = `rotateX(${cx.toFixed(2)}deg) rotateY(${cy.toFixed(2)}deg)`;
+    requestAnimationFrame(tiltLoop);
+  })();
+
+  // =========================================================
+  // BOIDS — visible flock that swarms & converges to the folder
+  // =========================================================
+  const boids = (function () {
+    const c = document.getElementById('boids');
+    const x = c.getContext('2d');
+    let W, H, dpr;
+    function resize() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      W = c.width = innerWidth * dpr;
+      H = c.height = innerHeight * dpr;
+      c.style.width = innerWidth + 'px';
+      c.style.height = innerHeight + 'px';
+      x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    addEventListener('resize', resize);
+
+    const PER = 26;                 // per flock → 78 agents total (efficient)
+    const VIS2 = 78*78, SEP2 = 26*26;
+    const W_ALIGN = 0.05, W_COH = 0.006, W_SEP = 0.06;
+    const MAXV = 2.7, MAXV_CONV = 4.4;
+
+    const mouse = { x:-9999, y:-9999 };
+    addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+    const flocks = [4, 24, 46].map(hb => {
+      const a = [];
+      for (let i=0;i<PER;i++) a.push({
+        x: Math.random()*innerWidth, y: Math.random()*innerHeight,
+        vx:(Math.random()-0.5)*2, vy:(Math.random()-0.5)*2,
+        r: 4 + Math.random()*5, hue: hb + Math.random()*22 - 8
+      });
+      return a;
+    });
+
+    let conv = 0, convTarget = 0;     // 0 = free flock, 1 = converged on folder
+    function converge(on){ convTarget = on ? 1 : 0; }
+    function target() {
+      const r = rig.getBoundingClientRect();
+      return { x: r.left + r.width*0.5, y: r.top + r.height*0.5 };
+    }
+
+    function step(b, flock, tgt) {
+      let ax=0,ay=0,cox=0,coy=0,sx=0,sy=0,n=0;
+      for (const o of flock) {
+        if (o===b) continue;
+        const dx=o.x-b.x, dy=o.y-b.y, d2=dx*dx+dy*dy;
+        if (d2 < VIS2) {
+          ax+=o.vx; ay+=o.vy; cox+=o.x; coy+=o.y; n++;
+          if (d2 < SEP2) { sx-=dx; sy-=dy; }
+        }
+      }
+      const flockW = 1 - 0.55*conv;   // ease off flocking as we converge
+      if (n>0) {
+        ax = (ax/n - b.vx) * W_ALIGN * flockW;
+        ay = (ay/n - b.vy) * W_ALIGN * flockW;
+        cox = (cox/n - b.x) * W_COH * flockW;
+        coy = (coy/n - b.y) * W_COH * flockW;
+      } else { ax=ay=cox=coy=0; }
+      sx *= W_SEP; sy *= W_SEP;
+
+      // arrival toward folder (only when converging) — cheap, no shape matching
+      let arx=0, ary=0;
+      if (conv > 0.01) {
+        const dx = tgt.x - b.x, dy = tgt.y - b.y;
+        const d = Math.hypot(dx, dy) || 1;
+        const slow = 220;
+        const desired = d < slow ? (d/slow)*MAXV_CONV : MAXV_CONV;
+        arx = (dx/d*desired - b.vx) * 0.09 * conv;
+        ary = (dy/d*desired - b.vy) * 0.09 * conv;
+      }
+
+      // gentle cursor repulse only in free mode
+      if (conv < 0.3) {
+        const mdx=b.x-mouse.x, mdy=b.y-mouse.y, md=Math.hypot(mdx,mdy);
+        if (md < 70 && md > 0) { sx += (mdx/md)*0.5*(70-md); sy += (mdy/md)*0.5*(70-md); }
+      }
+
+      b.vx += ax+cox+sx+arx;
+      b.vy += ay+coy+sy+ary;
+      const cap = conv > 0.5 ? MAXV_CONV : MAXV;
+      const sp = Math.hypot(b.vx,b.vy);
+      if (sp > cap) { b.vx=b.vx/sp*cap; b.vy=b.vy/sp*cap; }
+      b.x += b.vx; b.y += b.vy;
+      // wrap (free) — when converged they orbit the target so wrap rarely triggers
+      if (b.x<-12) b.x=innerWidth+12; else if (b.x>innerWidth+12) b.x=-12;
+      if (b.y<-12) b.y=innerHeight+12; else if (b.y>innerHeight+12) b.y=-12;
+    }
+
+    function loop() {
+      conv += (convTarget - conv) * 0.05;
+      const tgt = target();
+      x.clearRect(0,0,innerWidth,innerHeight);
+      x.lineWidth = 1.3;
+      for (const flock of flocks) {
+        for (const b of flock) {
+          step(b, flock, tgt);
+          x.strokeStyle = `hsla(${b.hue} 88% 55% / ${0.55 + 0.3*conv})`;
+          x.beginPath();
+          x.arc(b.x, b.y, b.r, 0, 6.2832);
+          x.stroke();
+        }
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+    return { converge };
+  })();
+
+  // start with the first work loaded into the sheet but folder closed (peeking)
+  const first = WORKS[0];
+  docImg.src = first.img;
+  docTtl.textContent = first.title;
+  docYr.textContent = first.year;
+  discLabel.textContent = first.disc;
+  tabName.textContent = first.title.toUpperCase();
+  tabTags.innerHTML = first.tags.map(t => `<span class="tg">${t}</span>`).join('');
+})();
+</script>
+</body>
+</html>

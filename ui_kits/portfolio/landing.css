@@ -1,0 +1,243 @@
+/* Landing page styles */
+
+.landing {
+  display: grid;
+  grid-template-columns: var(--nav-width) 1fr;
+  height: 100vh;
+  position: relative;
+}
+
+/* ---------- Left: nav strip ---------- */
+.nav-strip {
+  background: var(--bg-0);
+  border-right: var(--border-w) solid var(--fg-1);
+  --nav-pad-x: clamp(28px, 2vw, 40px);
+  padding: clamp(80px, 8vh, 110px) var(--nav-pad-x) clamp(28px, 4vh, 48px);
+  display: flex; flex-direction: column;
+  position: relative;
+  z-index: var(--z-panel);
+  overflow: hidden;
+}
+.brand-name {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--text-hero);
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--fg-2);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.contact-row {
+  display: flex; gap: 10px;
+  margin-bottom: clamp(28px, 4vh, 48px);
+}
+
+/* ---------- Folder stack (continuous trapezoid-tab silhouette) ---------- */
+/* Fixed-size folders stacked & overlapping so only the staggered tabs show.
+   Hovering slides the folders below out of the way to uncover the hovered
+   folder's body — nothing resizes, only vertical position changes. */
+.folders {
+  --ft: var(--folder-tab-h);   /* tab height (matches the SVG tab) */
+  --fb: 210px;         /* folder body height (fixed) */
+  --n: 4; /* @kind other */ /* folder count (set inline in JS) */
+  position: relative;
+  flex-shrink: 0;              /* don't let the flex column shrink the open height */
+  /* full-bleed: touch the nav's left edge and right border line */
+  margin-left: calc(-1 * var(--nav-pad-x));
+  margin-right: calc(-1 * var(--nav-pad-x));
+  margin-top: clamp(20px, 4vh, 56px);      /* sit a little higher */
+  overflow: hidden;
+  /* collapsed: just the stacked tabs */
+  height: calc(var(--n) * var(--ft) + 8px);
+  transition: height var(--dur-panel) var(--ease-quint);
+}
+/* open: room for the deepest folder's full body */
+.folders:has(.folder:hover),
+.folders:has(.folder.open) { height: calc(var(--n) * var(--ft) + var(--fb)); }
+
+.folder {
+  position: relative;
+  transition: transform var(--dur-panel) var(--ease-quint);
+}
+.folder[data-tone="code"]  { --tone: hsl(34, 55%, 93%); }
+.folder[data-tone="games"] { --tone: hsl(30, 57%, 84%); }
+.folder[data-tone="art"]   { --tone: hsl(26, 60%, 75%); }
+.folder[data-tone="info"]  { --tone: hsl(22, 62%, 66%); }
+/* decorative blocker: never opens, never intercepts the pointer */
+.folder--blank { pointer-events: none; }
+/* overlap: each folder pulls up over the previous one's body, leaving only its tab.
+   The body is elongated by one tab-height (see .folder-body) so it backs the next
+   folder's tab; the overlap matches the body height so the staggered tabs stay 1
+   tab-height apart, exactly as before. */
+.folder + .folder { margin-top: calc(-1 * (var(--fb) + var(--ft))); }
+/* hovered folder lifts to the front; the ones after it slide down to reveal it.
+   The sliding folders sit ABOVE the open folder so their tabs paint over the open
+   folder's elongated body (which fills what used to be a white gap behind them). */
+.folder:hover, .folder.open { z-index: 5; }
+.folder:hover ~ .folder,
+.folder.open ~ .folder { transform: translateY(var(--fb)); z-index: 6; }
+
+/* Tab: full-width SVG. Trapezoid fill + a stroke that runs up the slants,
+   across the flat top, then along the baseline to the right edge — so the
+   tab's bottom line becomes the body's top edge (one continuous silhouette). */
+.folder-tab {
+  position: relative;
+  height: var(--folder-tab-h);
+  cursor: pointer;
+  user-select: none;
+}
+.folder-tab svg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: block; overflow: visible;
+}
+.folder-tab .tab-fill   { fill: var(--tone); }
+.folder-tab .tab-stroke {
+  fill: none;
+  stroke: var(--fg-1);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.folder-tab .tab-label {
+  position: absolute;
+  left: var(--tab-cx, 22%); top: 0; height: 100%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 21px;
+  letter-spacing: var(--tracking-tab);
+  color: var(--fg-1);
+  white-space: nowrap;
+}
+
+/* Body: fixed-size colored face. Never resizes — the stack hides it by
+   overlap and reveals it by sliding the folders below out of the way. */
+.folder-body {
+  background: var(--tone);
+  border-left:  var(--border-w) solid var(--fg-1);
+  border-right: var(--border-w) solid var(--fg-1);
+  border-bottom: var(--border-w) solid var(--fg-1);
+  overflow: hidden;
+  /* Elongated by one tab-height: only --fb of it is revealed on open (the expand
+     distance is unchanged); the extra --ft sits behind the next folder's tab to
+     fill what used to be a white gap at the tab's transparent corners. */
+  height: calc(var(--fb) + var(--ft));
+}
+.folder-body-inner {
+  padding: 18px 24px 28px;
+  display: flex; flex-direction: column; gap: 10px;
+  opacity: 0;                  /* content hidden at rest — only colored faces show */
+  transition: opacity var(--dur-base) var(--ease-calm);
+}
+.folder:hover .folder-body-inner,
+.folder.open .folder-body-inner { opacity: 1; transition-delay: 80ms; }
+
+/* ---------- Topic items (works list) ---------- */
+.topic {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--fg-1);
+  cursor: pointer;
+  display: inline-block;
+  width: fit-content;
+  transition: transform var(--dur-base) var(--ease-back),
+              color var(--dur-base) var(--ease-calm);
+  transform-origin: left center;
+}
+.topic:hover { transform: scale(1.12); color: var(--orange-hover); }
+.topic .meta-yr { font-size: 11px; opacity: 0.5; margin-left: 8px; letter-spacing: 0.05em; }
+
+/* ---------- CV block ---------- */
+.cv-block { display: flex; flex-direction: column; gap: 14px; }
+.cv-section { display: flex; flex-direction: column; gap: 4px; }
+.cv-section h3 {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cv-line {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.cv-line.bullet::before {
+  content: '› '; color: var(--fg-2); margin-right: 4px;
+}
+.cv-line.title { font-weight: 700; }
+.cv-line.muted { color: var(--fg-2); }
+
+/* ---------- Bio block ---------- */
+.bio-block p {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 36ch;
+}
+.bio-block .tags {
+  display: flex; flex-direction: column; gap: 4px; margin-top: 14px;
+}
+.bio-block .tags .tag {
+  font-size: 12px; color: var(--fg-1);
+}
+
+/* ---------- Right: preview panel ---------- */
+.preview-panel {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  display: grid; place-items: center;
+  padding: clamp(24px, 4vw, 80px);
+}
+.preview-card {
+  position: relative;
+  max-width: min(720px, 60vw);
+  max-height: min(70vh, 560px);
+  aspect-ratio: 4/3;
+  width: 100%;
+  background: var(--bg-0);
+  border: var(--border-w) solid var(--fg-1);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform var(--dur-base) var(--ease-calm),
+              opacity var(--dur-base) var(--ease-calm);
+  opacity: 0;
+}
+.preview-card.show { opacity: 1; }
+.preview-card img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+.preview-cap {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 14px 20px;
+  background: var(--bg-0);
+  border-top: var(--border-w) solid var(--fg-1);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.preview-cap .ttl { font-weight: 700; }
+.preview-cap .yr { opacity: 0.55; font-size: 11px; letter-spacing: 0.05em; }
+
+.preview-empty {
+  font-family: var(--font-mono);
+  font-size: 13px; color: var(--fg-2);
+  text-align: center;
+  letter-spacing: 0.04em;
+}

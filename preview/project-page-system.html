@@ -1,0 +1,79 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Components — Project Page System" subtitle="Shared chrome + composable section blocks + page transitions" viewport="700x340" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+  .card { padding:22px; gap:16px; }
+  .lede { font-family:var(--font-mono); font-size:12px; line-height:1.6; color:#000; max-width:64ch; }
+  .lede b { color:#c2410c; }
+  .layouts { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .lay { border:2px solid #000; background:#faf6ef; display:flex; flex-direction:column; }
+  .lay-vis { height:120px; position:relative; overflow:hidden; border-bottom:2px solid #000; }
+  .lay-name { font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:0.1em; padding:7px 10px 2px; text-transform:uppercase; }
+  .lay-desc { font-family:var(--font-mono); font-size:10px; color:#666; padding:0 10px 9px; line-height:1.4; }
+  /* shared chrome dots */
+  .chrome-back { position:absolute; top:7px; left:7px; width:13px; height:13px; border:1.5px solid #000; border-radius:50%; }
+  .chrome-pill { position:absolute; top:7px; left:50%; transform:translateX(-50%); width:44px; height:9px; border:1.5px solid #000; }
+  /* hero-bg */
+  .hb-bg { position:absolute; inset:0; background:linear-gradient(120deg,#e8c9b3,#cda98e); }
+  .hb-title { position:absolute; left:8px; bottom:20px; font-family:'Fraunces',serif; font-style:italic; font-size:20px; }
+  .hb-deck { position:absolute; left:8px; bottom:9px; height:4px; width:60%; background:rgba(0,0,0,0.25); }
+  /* carousel */
+  .cc { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:5px; }
+  .cc-card { border:1.5px solid #000; background:#fff; }
+  .cc-card.side { width:24px; height:46px; opacity:0.4; transform:scaleY(0.8); }
+  .cc-card.main { width:62px; height:62px; }
+  .cc-arrow { width:11px; height:11px; border:1.5px solid #000; border-radius:50%; }
+  /* slides */
+  .sl-img { position:absolute; inset:24px 30px 30px; border:1.5px solid #000; background:#ddd; }
+  .sl-panel { position:absolute; left:50%; bottom:8px; transform:translateX(-50%); width:78%; height:16px; border:1.5px solid #000; background:rgba(255,255,255,0.85); display:flex; align-items:center; gap:4px; padding:0 5px; }
+  .sl-panel .d { width:9px; height:9px; border:1.5px solid #000; border-radius:50%; }
+  .sl-panel .ln { flex:1; height:3px; background:rgba(0,0,0,0.3); }
+  .shared { font-family:var(--font-mono); font-size:10px; color:#666; letter-spacing:0.04em; display:flex; flex-wrap:wrap; gap:6px 14px; }
+  .shared b { color:#c2410c; }
+</style>
+</head><body>
+<div class="card">
+  <div class="lede">One <b>shared chrome</b> (back · eyebrow/index pill · Fraunces-italic title · mono caption · nav arrows · next-project footer · cursor) wrapping a <b>composable stack of section blocks</b>. A case study is an ordered list of sections — mix freely per project. First-load intro, between-page wipes, and scroll-reveals throughout.</div>
+  <div class="layouts">
+    <div class="lay">
+      <div class="lay-vis">
+        <div class="hb-bg"></div>
+        <div class="hb-title">Title</div>
+        <div class="hb-deck"></div>
+        <div class="chrome-back"></div><div class="chrome-pill"></div>
+      </div>
+      <div class="lay-name">hero · bg</div>
+      <div class="lay-desc">Full-bleed image + legibility veil. Music Boids, Hell or Sell.</div>
+    </div>
+    <div class="lay">
+      <div class="lay-vis">
+        <div class="cc">
+          <div class="cc-arrow"></div>
+          <div class="cc-card side"></div>
+          <div class="cc-card main"></div>
+          <div class="cc-card side"></div>
+          <div class="cc-arrow"></div>
+        </div>
+        <div class="chrome-back"></div><div class="chrome-pill"></div>
+      </div>
+      <div class="lay-name">gallery · carousel / slides</div>
+      <div class="lay-desc">3D carousel or single-slide + glass caption. Illustration, Drawing.</div>
+    </div>
+    <div class="lay">
+      <div class="lay-vis">
+        <div class="sl-img" style="inset:18px 130px 18px 16px;"></div>
+        <div class="sl-img" style="inset:18px 16px 40px 130px; background:#eee;"></div>
+        <div class="sl-panel" style="bottom:14px; width:60%;"><div class="ln"></div></div>
+        <div class="chrome-back"></div><div class="chrome-pill"></div>
+      </div>
+      <div class="lay-name">hero · split</div>
+      <div class="lay-desc">Title + key art side by side. Orbit of Desire.</div>
+    </div>
+  </div>
+  <div class="shared">
+    <span><b>Section blocks:</b></span>
+    <span>marquee</span><span>concept</span><span>text + image</span><span>prose</span>
+    <span>breakdown grid</span><span>numbered steps</span><span>process grid</span>
+    <span>detail</span><span>hover-terms</span><span>references</span><span>final</span>
+  </div>
+</div>
+</body></html>

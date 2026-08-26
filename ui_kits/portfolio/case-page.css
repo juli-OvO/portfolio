@@ -1,0 +1,140 @@
+/* Case pages — shared chrome. Blueprint-ruled paper, mono type, orange accents.
+   Matches the CV/resume surface in Folder Model v5. */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:#fff;color:hsl(28 24% 16%);font-family:var(--font-mono);overflow-x:hidden}
+:root{
+  --bp:hsl(222 56% 44%);--bp-soft:hsla(222,56%,44%,.55);--bp-faint:hsla(222,56%,44%,.16);
+  --ink:hsl(28 24% 16%);--ink-soft:hsla(28,18%,20%,.62);--ink-hair:hsla(28,18%,20%,.14);
+  --acc:hsl(18 84% 54%);
+  --rail:clamp(200px,19vw,268px);
+  --gut:clamp(24px,4vw,64px);
+}
+/* ---- fixed blueprint field ---- */
+.bpgrid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(hsla(222,46%,58%,.15) 1px,transparent 1px),
+    linear-gradient(90deg,hsla(222,46%,58%,.15) 1px,transparent 1px),
+    linear-gradient(hsla(212,42%,66%,.07) 1px,transparent 1px),
+    linear-gradient(90deg,hsla(212,42%,66%,.07) 1px,transparent 1px);
+  background-size:132px 132px,132px 132px,33px 33px,33px 33px}
+.bpglow{position:fixed;inset:-25%;z-index:0;pointer-events:none;mix-blend-mode:multiply;
+  background:
+    radial-gradient(38% 38% at 26% 26%,hsla(222,72%,64%,.16),transparent 70%),
+    radial-gradient(44% 44% at 74% 62%,hsla(204,74%,66%,.13),transparent 70%),
+    radial-gradient(34% 34% at 50% 90%,hsla(232,66%,68%,.11),transparent 70%);
+  animation:bpdrift 19s ease-in-out infinite alternate}
+@keyframes bpdrift{0%{transform:translate3d(-4%,-3%,0) scale(1.06)}50%{transform:translate3d(3%,2%,0) scale(1.13)}100%{transform:translate3d(-2%,5%,0) scale(1.07)}}
+.wrap{position:relative;z-index:1}
+
+/* ---- top chrome ---- */
+.chrome{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:18px var(--gut);backdrop-filter:blur(9px);background:hsla(0,0%,100%,.62);
+  border-bottom:1px solid var(--bp-faint);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--bp)}
+.chrome .mid{color:var(--ink-soft);letter-spacing:.2em;display:none}
+@media(min-width:900px){.chrome .mid{display:block}}
+.cbtn{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bp);
+  border:1.5px solid var(--bp-soft);background:hsla(0,0%,100%,.4);padding:8px 15px;cursor:pointer;position:relative;
+  transition:background .18s,border-color .18s,color .18s;text-decoration:none;display:inline-block}
+.cbtn::before,.cbtn::after{content:'';position:absolute;width:5px;height:5px}
+.cbtn::before{left:3px;top:3px;border-left:1.5px solid var(--bp);border-top:1.5px solid var(--bp)}
+.cbtn::after{right:3px;bottom:3px;border-right:1.5px solid var(--bp);border-bottom:1.5px solid var(--bp)}
+.cbtn:hover{background:hsla(222,56%,44%,.12);border-color:var(--bp);color:var(--bp)}
+.cbtn.acc{color:var(--acc);border-color:hsla(18,84%,54%,.5)}
+.cbtn.acc::before{border-left-color:var(--acc);border-top-color:var(--acc)}
+.cbtn.acc::after{border-right-color:var(--acc);border-bottom-color:var(--acc)}
+.cbtn.acc:hover{background:hsla(18,84%,54%,.12);border-color:var(--acc)}
+.cnav{display:flex;gap:10px;align-items:center}
+
+/* scroll progress hairline */
+.prog{position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:var(--acc);z-index:61}
+
+/* ---- hero ---- */
+.hero{padding:calc(var(--gut) + 92px) var(--gut) clamp(48px,7vh,96px);border-bottom:1px solid var(--ink-hair)}
+.eyebrow{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.eyebrow .sep{width:5px;height:5px;background:var(--bp);display:inline-block}
+.htitle{font-size:clamp(48px,10.5vw,148px);line-height:.9;font-weight:700;letter-spacing:-.02em;text-transform:uppercase;margin:26px 0 0}
+.htitle .ch{display:inline-block;will-change:transform,opacity}
+.hdeck{margin:30px 0 0;max-width:56ch;font-size:clamp(16px,1.5vw,21px);line-height:1.62;color:var(--ink)}
+.hmeta{margin-top:38px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink-hair)}
+.hmeta .cell{border-right:1px solid var(--ink-hair);border-bottom:1px solid var(--ink-hair);padding:15px 17px}
+.hmeta .k{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp);margin-bottom:7px}
+.hmeta .v{font-size:14.5px;line-height:1.45;color:var(--ink)}
+
+/* ---- two-column body: sticky rail + flow ---- */
+.body2{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:960px){.body2{grid-template-columns:var(--rail) 1fr}}
+.rail{display:none}
+@media(min-width:960px){
+  .rail{display:block;border-right:1px solid var(--ink-hair);padding:44px var(--gut) 44px var(--gut)}
+  .rail .sticky{position:sticky;top:104px}
+}
+.rail h4{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--bp);margin:0 0 12px;font-weight:700}
+.rail .rrow{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin-bottom:5px}
+.rail .rrow b{color:var(--ink);font-weight:700}
+.rail .rsec{margin-bottom:30px}
+.toc{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.toc a{font-size:13.5px;color:var(--ink-soft);padding:5px 0 5px 14px;border-left:2px solid transparent;transition:color .2s,border-color .2s,padding .25s cubic-bezier(.16,1,.3,1);text-decoration:none}
+.toc a:hover{color:var(--bp)}
+.toc a.on{color:var(--bp);border-left-color:var(--bp);font-weight:700;padding-left:19px}
+
+.flow{min-width:0}
+.sec{padding:clamp(56px,9vh,120px) var(--gut);border-bottom:1px solid var(--ink-hair);position:relative}
+.slabel{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:26px;display:flex;gap:12px;align-items:baseline}
+.slabel .n{color:var(--bp-soft)}
+.sec h2{font-size:clamp(24px,3.2vw,40px);line-height:1.12;font-weight:700;letter-spacing:-.01em;margin:0 0 22px;max-width:22ch}
+.sec p{font-size:16.5px;line-height:1.78;color:var(--ink-soft);max-width:62ch;margin:0 0 17px}
+.sec p b,.sec p strong{color:var(--ink);font-weight:700}
+.hl{color:var(--acc);font-style:italic}
+
+/* pull quote — .sec p is (0,1,1), so scope these to win on specificity */
+.sec p.quote,.quote{font-size:clamp(26px,4vw,54px);line-height:1.16;letter-spacing:-.02em;color:var(--ink);max-width:20ch;margin:0;font-weight:700}
+.quote .w{display:inline-block;will-change:transform,opacity}
+
+/* data grid (ref: ruled CV grid) */
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink-hair)}
+.dgrid .cell{border-right:1px solid var(--ink-hair);border-bottom:1px solid var(--ink-hair);padding:20px 18px 24px}
+.dgrid .k{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp);margin-bottom:9px}
+.dgrid .v{font-size:16px;line-height:1.45}
+
+/* steps */
+.steps{display:flex;flex-direction:column;border-top:1px solid var(--ink-hair)}
+.step{display:grid;grid-template-columns:64px 1fr;gap:22px;padding:26px 0;border-bottom:1px solid var(--ink-hair);align-items:start}
+@media(min-width:760px){.step{grid-template-columns:82px 1fr 1fr;gap:34px}}
+.step .n{font-size:13px;letter-spacing:.16em;color:var(--bp);padding-top:5px}
+.step h3{font-size:clamp(19px,2vw,26px);font-weight:700;margin:0;letter-spacing:-.01em;color:var(--ink);text-transform:none}
+.step p{margin:0;font-size:15.5px}
+
+/* image blocks */
+figure{margin:0}
+.fig img{display:block;width:100%;height:auto;border:1px solid var(--ink-hair);background:hsla(28,20%,94%,.6)}
+.cap{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:11px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:clamp(14px,2vw,28px)}
+.wide img{display:block;width:100%;height:auto;border:1px solid var(--ink-hair)}
+
+/* marquee */
+.mq{overflow:hidden;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:15px 0;background:hsla(0,0%,100%,.5)}
+.mq .track{display:flex;gap:0;white-space:nowrap;will-change:transform}
+.mq .run{font-size:clamp(18px,2.4vw,32px);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bp);padding-right:24px}
+.mq .run .d{color:var(--acc);padding:0 20px}
+
+/* refs */
+.refs{border-top:1px solid var(--ink-hair)}
+.ref{display:grid;grid-template-columns:44px 1fr auto;gap:16px;padding:15px 0;border-bottom:1px solid var(--ink-hair);font-size:15px;align-items:baseline}
+.ref .n{color:var(--bp-soft);font-size:12.5px}
+.ref .s{color:var(--ink-soft);font-size:13px;text-align:right}
+
+/* footer / next */
+.next{padding:clamp(56px,9vh,110px) var(--gut);display:flex;flex-wrap:wrap;gap:22px;align-items:baseline;justify-content:space-between}
+.next .lbl{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--bp)}
+.next a.big{font-size:clamp(30px,6vw,72px);font-weight:700;text-transform:uppercase;letter-spacing:-.02em;color:var(--ink);text-decoration:none;transition:color .22s}
+.next a.big:hover{color:var(--acc)}
+a{color:var(--bp)}a:hover{color:var(--acc)}
+
+/* reveal — content is VISIBLE by default. The hidden start state is opted into
+   only once case-page.js has proven animation frames are actually delivered
+   (html.anim), so a frameless context renders the page statically instead of blank. */
+.rv{opacity:1}
+.anim .rv{opacity:0;transform:translateY(26px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)}
+.anim .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.anim .rv{opacity:1;transform:none;transition:none}.bpglow{animation:none}}

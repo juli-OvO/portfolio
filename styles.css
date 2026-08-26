@@ -1,0 +1,20 @@
+/* =========================================================
+   PORTFOLIO DESIGN SYSTEM — root entry point
+   Consumers link this single file; it pulls in tokens,
+   fonts, and every layer of the kit in cascade order.
+   ========================================================= */
+
+/* Tokens, fonts, base type, semantic vars */
+@import url('colors_and_type.css');
+
+/* UI-kit overlay (mode toggle, nav strip, cursor, status bar) */
+@import url('ui_kits/portfolio/kit.css');
+
+/* Landing page — folder stack, nav, topics */
+@import url('ui_kits/portfolio/landing.css');
+
+/* Project / case-study chrome */
+@import url('ui_kits/portfolio/case-study.css');
+
+/* Project page — section library, transitions, reveals */
+@import url('ui_kits/portfolio/cs-sections.css');

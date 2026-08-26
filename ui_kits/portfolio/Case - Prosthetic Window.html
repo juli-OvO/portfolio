@@ -1,0 +1,273 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit — Portfolio" name="Case — Prosthetic Window" subtitle="Physical computation: responsive bioplastic window, 559 LEDs, light + presence sensing" viewport="1440x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prosthetic Window — Julianne Jin</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<script src="page-swipe.js"></script>
+<link rel="stylesheet" href="case-page.css">
+<style>
+  /* green-and-ochre theme — the piece's own palette */
+  :root{--bp:hsl(148 34% 34%);--bp-soft:hsla(148,34%,34%,.55);--bp-faint:hsla(148,34%,34%,.18);--acc:hsl(36 74% 46%)}
+  body{background:hsl(60 22% 97%)}
+  .bpgrid{background-image:
+    linear-gradient(hsla(148,30%,40%,.14) 1px,transparent 1px),
+    linear-gradient(90deg,hsla(148,30%,40%,.14) 1px,transparent 1px),
+    linear-gradient(hsla(148,26%,44%,.06) 1px,transparent 1px),
+    linear-gradient(90deg,hsla(148,26%,44%,.06) 1px,transparent 1px)}
+  .bpglow{background:
+    radial-gradient(40% 40% at 24% 22%,hsla(148,44%,44%,.16),transparent 70%),
+    radial-gradient(44% 44% at 76% 60%,hsla(36,64%,52%,.13),transparent 70%),
+    radial-gradient(34% 34% at 52% 92%,hsla(96,38%,46%,.11),transparent 70%)}
+  .htitle{max-width:9ch}
+  .ph{position:relative;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:24px 22px;
+    border:1.5px dashed var(--bp-soft);background:hsla(148,34%,34%,.05);min-height:var(--h,240px);transition:background .3s,border-color .3s}
+  .ph:hover{background:hsla(148,34%,34%,.09);border-color:var(--bp)}
+  .ph::before{content:'';position:absolute;inset:7px;border:1px solid var(--bp-faint);pointer-events:none}
+  .ph .pk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
+  .ph .pt{font-size:clamp(15px,1.5vw,18px);font-weight:700;line-height:1.28;color:var(--ink);max-width:34ch}
+  .ph .pd{font-size:13px;line-height:1.55;color:var(--ink-soft);max-width:44ch}
+  .ph.tall{--h:340px}.ph.big{--h:clamp(300px,46vh,500px)}.ph.sm{--h:180px}
+  .take{font-size:clamp(19px,2.3vw,29px);line-height:1.34;font-weight:700;letter-spacing:-.01em;color:var(--ink);
+    max-width:32ch;border-left:3px solid var(--acc);padding-left:20px;margin:0 0 30px}
+  .split{display:grid;grid-template-columns:1fr;gap:clamp(20px,3vw,44px);align-items:start;margin-top:clamp(24px,3vw,40px)}
+  @media(min-width:900px){.split{grid-template-columns:1fr 1fr}}
+  .sys{display:grid;grid-template-columns:1fr;gap:clamp(18px,2.4vw,32px);margin-top:clamp(22px,3vw,36px)}
+  @media(min-width:840px){.sys{grid-template-columns:repeat(3,1fr)}}
+  .sys .s{border-top:1.5px solid var(--ink)}
+  .sys .s .st{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0 13px;gap:10px}
+  .sys .s .st b{font-size:15.5px;color:var(--ink)}
+  .sys .s .st span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp-soft)}
+  .sys .s p{font-size:14.5px;line-height:1.66;color:var(--ink-soft);margin:0;max-width:42ch}
+  .rules{display:grid;grid-template-columns:1fr;gap:1px;background:var(--ink-hair);border:1px solid var(--ink-hair);margin-top:10px}
+  @media(min-width:720px){.rules{grid-template-columns:1fr 1fr}}
+  .rules div{background:hsla(0,0%,100%,.74);padding:15px 17px;font-size:14.5px;line-height:1.55;color:var(--ink)}
+  .rules div b{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bp);margin-bottom:7px;font-weight:700}
+  .rules div.warm b{color:var(--acc)}
+  .bom{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ink-hair);border:1px solid var(--ink-hair)}
+  @media(min-width:760px){.bom{grid-template-columns:repeat(3,1fr)}}
+  .bom div{background:hsla(0,0%,100%,.72);padding:13px 15px;font-size:14px;line-height:1.45;color:var(--ink)}
+  .bom div b{display:block;color:var(--bp);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;font-weight:700}
+  .det{border-top:1px solid var(--ink-hair);margin-top:32px}
+  .det summary{cursor:pointer;list-style:none;padding:15px 0;display:flex;justify-content:space-between;gap:14px;align-items:baseline;
+    font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp);border-bottom:1px solid var(--ink-hair)}
+  .det summary::-webkit-details-marker{display:none}
+  .det summary::after{content:'+';color:var(--acc);font-size:16px}
+  .det[open] summary::after{content:'–'}
+  .det summary:hover{color:var(--acc)}
+  .det .dbody{padding:20px 0 6px;border-bottom:1px solid var(--ink-hair)}
+  .det .dbody p{font-size:15px;line-height:1.72;color:var(--ink-soft);max-width:62ch;margin:0 0 14px}
+  .det .dbody p:last-child{margin-bottom:0}
+  .foot{padding:clamp(48px,8vh,96px) var(--gut);border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:20px 36px;align-items:baseline;justify-content:space-between}
+  .foot .q{font-size:clamp(20px,2.6vw,34px);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+  .foot .ln{display:flex;gap:8px;flex-wrap:wrap;font-size:14px;color:var(--ink-soft)}
+  .foot .c{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bp-soft);width:100%}
+  .shot{margin:0}
+  .shot img{display:block;width:100%;border:1px solid var(--ink-hair);background:#0d0b09;
+    aspect-ratio:4/5;object-fit:cover;object-position:center}
+  .shot.wide img{aspect-ratio:3/2}
+  .shot.hero img{aspect-ratio:5/4}
+  .shot figcaption{font-size:13px;line-height:1.55;color:var(--ink-soft);margin-top:11px;max-width:48ch}
+  .blist{list-style:none;margin:0;padding:0;display:grid;gap:11px;max-width:62ch}
+  .blist li{position:relative;padding-left:20px;font-size:15px;line-height:1.62;color:var(--ink-soft)}
+  .blist li::before{content:'';position:absolute;left:2px;top:.68em;width:7px;height:1.5px;background:var(--acc)}
+  .blist li b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="bpgrid"></div><div class="bpglow"></div>
+<div class="prog"></div>
+
+<div class="chrome">
+  <a class="cbtn" href="Index - Wall.html">← Index</a>
+  <div class="mid">Prosthetic Window · Physical computation · 2026</div>
+  <div class="cnav">
+    <a class="cbtn" href="Case - Magnetoreception.html">Prosthesis →</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow"><span>Physical computation</span><span class="sep"></span><span>2026</span><span class="sep"></span><span>Solo</span></div>
+    <h1 class="htitle" data-split="chars">Prosthetic Window</h1>
+    <p class="hdeck rv">A wall-mounted window with nothing behind it. It reads the room's brightness and whether someone is standing close, then answers with green and ochre light through a cast bioplastic membrane.</p>
+    <div class="hmeta rv" data-d=".2">
+      <div class="cell"><div class="k">Role</div><div class="v">Concept · material research · circuit · build</div></div>
+      <div class="cell"><div class="k">Sensing</div><div class="v">Photoresistor · ultrasonic</div></div>
+      <div class="cell"><div class="k">Light</div><div class="v">559 LEDs on reflective fabric</div></div>
+      <div class="cell"><div class="k">Surface</div><div class="v">Cast bioplastic on muslin</div></div>
+    </div>
+  </header>
+
+  <div class="body2">
+    <aside class="rail">
+      <div class="sticky">
+        <div class="rsec">
+          <h4>Work</h4>
+          <div class="rrow"><b>Solo project</b></div>
+          <div class="rrow">Wall-mounted · responsive</div>
+        </div>
+        <div class="rsec">
+          <h4>Materials</h4>
+          <div class="rrow">Starch · gelatin · glycerin</div>
+          <div class="rrow">Muslin · leaf tannin</div>
+          <div class="rrow">Aluminum-backed fabric</div>
+          <div class="rrow">Wood · yarn</div>
+        </div>
+        <div class="rsec">
+          <h4>Contents</h4>
+          <nav class="toc">
+            <a href="#concept">01 — Concept</a>
+            <a href="#glance">02 — Summary</a>
+            <a href="#logic">03 — Mechanism</a>
+            <a href="#systems">04 — Systems</a>
+            <a href="#surface">05 — Surface</a>
+            <a href="#drafts">06 — Drafts</a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <main class="flow">
+      <section class="sec" id="concept">
+        <div class="slabel"><span class="n">01</span><span>Concept</span></div>
+        <p class="quote" data-split="words">A window that gives off light instead of a view.</p>
+        <ul class="blist rv" style="margin-top:40px">
+          <li>Windows as <b>surfaces</b>, not openings — read for weather, time of day, mood.</li>
+          <li>Green and filtered light come from my own association with an imagined greener outside, not a specific landscape.</li>
+          <li>Not realistic: no blue sky, no sunlight — an exaggeration of how a window <b>feels</b>.</li>
+          <li>On a wall, a stand-in for an opening the room doesn't have.</li>
+        </ul>
+        <figure class="shot hero rv" style="margin-top:clamp(28px,3.6vw,44px)">
+          <img src="assets/win-final-1600.jpg" alt="The finished window installed and lit in a dark room, bioplastic patches glowing green and ochre behind muslin curtains" loading="lazy">
+          <figcaption>Installed and lit. The patchwork membrane reads as weathered glass; the curtain is the only thing implying a room beyond it.</figcaption>
+        </figure>
+      </section>
+
+      <div class="mq">
+        <div class="track">
+          <span class="run">Bioplastic<span class="d">·</span>Arduino<span class="d">·</span>559 LEDs<span class="d">·</span>Photoresistor<span class="d">·</span>Ultrasonic sensing<span class="d">·</span>Material research<span class="d">·</span>Installation<span class="d">·</span></span>
+          <span class="run">Bioplastic<span class="d">·</span>Arduino<span class="d">·</span>559 LEDs<span class="d">·</span>Photoresistor<span class="d">·</span>Ultrasonic sensing<span class="d">·</span>Material research<span class="d">·</span>Installation<span class="d">·</span></span>
+        </div>
+      </div>
+
+      <section class="sec" id="glance">
+        <div class="slabel"><span class="n">02</span><span>Summary</span></div>
+        <div class="dgrid rv">
+          <div class="cell"><div class="k">Reads</div><div class="v">Room brightness + audience presence</div></div>
+          <div class="cell"><div class="k">LEDs</div><div class="v">559, on aluminum-backed fabric</div></div>
+          <div class="cell"><div class="k">Surface</div><div class="v">Cast bioplastic patch membrane</div></div>
+          <div class="cell"><div class="k">Frame</div><div class="v">Wood sticks</div></div>
+          <div class="cell"><div class="k">Palette</div><div class="v">Green · ochre</div></div>
+          <div class="cell"><div class="k">Mount</div><div class="v">Hangs on a wall like a window</div></div>
+        </div>
+      </section>
+
+      <section class="sec" id="logic">
+        <div class="slabel"><span class="n">03</span><span>Mechanism</span></div>
+        <ul class="blist rv" style="margin-bottom:20px">
+          <li>Two sensors, four rules.</li>
+          <li>No timer, no script — it only reacts to the room.</li>
+        </ul>
+        <div class="rules rv">
+          <div><b>Light &lt; 300</b>LED panel on — it glows only once the room has gone dim.</div>
+          <div><b>Light &gt; 300</b>LED panel off — in daylight it reads as a surface.</div>
+          <div class="warm"><b>Distance &lt; 40 cm</b>Color turns warmer and brighter.</div>
+          <div><b>Distance &gt; 40 cm</b>Color goes dimmer and colder.</div>
+        </div>
+        <ul class="blist rv" style="margin-top:26px">
+          <li>Closer than 40 cm: hard to trigger on purpose.</li>
+          <li>Further: fired at anyone walking past.</li>
+          <li><b>40 cm</b> — only someone standing at the window turns it warm.</li>
+        </ul>
+        <div class="split">
+          <figure class="shot rv"><img src="assets/win-cold-1600.jpg" alt="The window in its cold state, dimmer and cooler, warm light only along the top" loading="lazy"><figcaption>Cold state — nobody near. Dimmer, cooler, withdrawn.</figcaption></figure>
+          <figure class="shot rv" data-d=".08"><img src="assets/win-final-1600.jpg" alt="The window in its warm state, brighter with green and ochre light across the whole membrane" loading="lazy"><figcaption>Warm state — someone at the surface. Brighter, greener, the whole panel active.</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="sec" id="systems">
+        <div class="slabel"><span class="n">04</span><span>Systems</span></div>
+        <ul class="blist rv"><li>Three systems — sensing, light, surface — each worked out separately.</li></ul>
+        <div class="sys">
+          <div class="s rv">
+            <div class="st"><b>Arduino circuit</b><span>01</span></div>
+            <p>A photoresistor for room brightness and an ultrasonic sensor for presence. Those are the only two inputs; there are no controls.</p>
+          </div>
+          <div class="s rv" data-d=".08">
+            <div class="st"><b>LED light panel</b><span>02</span></div>
+            <p>559 LEDs on aluminum-backed fabric. The reflective backing scatters the light, so the surface glows evenly instead of showing hundreds of points.</p>
+          </div>
+          <div class="s rv" data-d=".16">
+            <div class="st"><b>Bioplastic surface</b><span>03</span></div>
+            <p>Cast sheets of water, glycerin, starch, and gelatin, some reinforced with muslin, patterned with leaf tannin and liquid dye, joined into a larger membrane and framed with wood.</p>
+          </div>
+        </div>
+        <div class="pgrid rv" style="margin-top:30px">
+          <figure class="ph sm"><div class="pk">Image</div><div class="pt">Arduino circuit and sensors</div><div class="pd">Wiring, with the photoresistor and ultrasonic sensor visible.</div></figure>
+          <figure class="ph sm"><div class="pk">Image</div><div class="pt">LED array on reflective fabric</div><div class="pd">Panel before the surface goes on.</div></figure>
+          <figure class="shot"><img src="assets/win-material-1600.jpg" alt="A cast bioplastic sheet held up to the light with green and blue dye swirling through it" loading="lazy"><figcaption>One cast sheet held to the light — the translucency the whole surface depends on.</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="sec" id="surface">
+        <div class="slabel"><span class="n">05</span><span>Surface</span></div>
+        <ul class="blist rv">
+          <li>Needed translucent and uneven, so the light reads as <b>filtered</b>, not emitted — nothing off the shelf did it.</li>
+          <li>Cast bioplastic: water, glycerin, starch, gelatin — ratios varied batch by batch.</li>
+          <li>Plain sheets crack, so some are cast onto <b>muslin</b> to stay trimmable and hangable.</li>
+          <li>Pattern from pressed leaves (<b>tannin heat transfer</b>) plus liquid dye.</li>
+          <li>Each batch made one patch; patches joined into a membrane with seams left visible — it reads like old glass.</li>
+        </ul>
+        <div class="bom rv" style="margin-top:24px">
+          <div><b>Base</b>Water · glycerin · starch · gelatin</div>
+          <div><b>Reinforcement</b>Muslin backing</div>
+          <div><b>Pattern</b>Leaf tannin heat transfer</div>
+          <div><b>Color</b>Liquid dye</div>
+          <div><b>Assembly</b>Patch units joined into a membrane</div>
+          <div><b>Frame</b>Wood sticks · yarn</div>
+        </div>
+        <div class="split">
+          <figure class="shot rv"><img src="assets/win-material-1600.jpg" alt="Holding up a cast bioplastic sheet dyed green and blue" loading="lazy"><figcaption>A finished patch: starch, gelatin, glycerin, dyed and cast thin enough to pass light.</figcaption></figure>
+          <figure class="shot wide rv" data-d=".08"><img src="assets/win-sew-1600.jpg" alt="Bioplastic patches laid out on muslin with LED strips threaded between them, mid-assembly" loading="lazy"><figcaption>Assembly: patches laid onto muslin with the LED strips threaded between them, before the panel was joined and framed.</figcaption></figure>
+        </div>
+        <details class="det rv">
+          <summary><span>Notes on the material</span></summary>
+          <div class="dbody"><ul class="blist"><li>The schedule followed the material — sheets dried when they dried, a cracked batch cost a day.</li><li>Small patches kept failures cheap.</li><li>Planned an even membrane; ended up with a seamed one I preferred.</li></ul></div>
+        </details>
+      </section>
+
+      <section class="sec" id="drafts">
+        <div class="slabel"><span class="n">06</span><span>Drafts</span></div>
+        <ul class="blist rv"><li>Frame proportions, panel divisions, and LED placement — worked out before casting.</li></ul>
+        <div class="pgrid rv" style="margin-top:24px">
+          <figure class="ph tall"><div class="pk">Image</div><div class="pt">Early draft</div><div class="pd">Sketch of the window form.</div></figure>
+          <figure class="ph tall"><div class="pk">Image</div><div class="pt">Layout study</div><div class="pd">Panel divisions and LED placement.</div></figure>
+          <figure class="ph tall"><div class="pk">Image · optional</div><div class="pt">In-progress build</div><div class="pd">Frame and panel coming together.</div></figure>
+        </div>
+        </section>
+
+      <section class="next">
+        <div><div class="lbl">Also in Physical computation</div><a class="big" href="Case - Magnetoreception.html">Prosthesis</a></div>
+        <a class="cbtn" href="Index - Wall.html">← Back to index</a>
+      </section>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <div class="q">Interested in working together?</div>
+    <div class="ln">
+      <a href="mailto:jjin04@risd.edu">jjin04@risd.edu</a><span>·</span>
+      <a href="https://www.linkedin.com/in/chufan-jin-41b727311/" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+    <div class="c">© 2026 Julianne Jin</div>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous"></script>
+<script src="case-page.js"></script>
+</body>
+</html>

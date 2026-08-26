@@ -1,0 +1,81 @@
+/* UI kit — portfolio overlay styles, layered on top of colors_and_type.css */
+@import url('../../colors_and_type.css');
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { overflow: hidden; cursor: none; }
+
+/* ---------- Cursor ---------- */
+.cursor {
+  position: fixed;
+  width: 24px; height: 24px;
+  background: var(--cursor);
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  transition: width var(--dur-fast) var(--ease-back),
+              height var(--dur-fast) var(--ease-back);
+}
+.cursor.big { width: 56px; height: 56px; }
+
+/* ---------- Boids canvas ---------- */
+#boids {
+  position: fixed; inset: 0;
+  z-index: var(--z-boids);
+  pointer-events: none;
+}
+
+/* ---------- Mode toggle ---------- */
+.mode-toggle {
+  position: fixed; top: 18px; right: 18px;
+  width: 44px; height: 44px;
+  border: var(--border-w) solid var(--fg-1);
+  background: var(--bg-0);
+  display: grid; place-items: center;
+  z-index: var(--z-fixed);
+  cursor: pointer;
+  transition: background var(--dur-base) var(--ease-calm);
+}
+.mode-toggle .dot {
+  width: 18px; height: 18px;
+  border-radius: var(--radius-pill);
+  background: var(--fg-1);
+  position: relative; overflow: hidden;
+  transition: transform var(--dur-base) var(--ease-calm);
+}
+[data-mode="night"] .mode-toggle .dot::after {
+  content: ''; position: absolute; inset: 0;
+  border-radius: var(--radius-pill);
+  background: var(--bg-0);
+  transform: translate(6px, -3px);
+}
+
+/* ---------- Site credit (bottom-right) ---------- */
+.credit {
+  position: fixed; bottom: 10px; right: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-1); opacity: 0.45;
+  z-index: var(--z-fixed);
+  letter-spacing: 0.04em;
+  background: var(--orange-wash);
+  padding: 4px 8px;
+}
+
+/* ---------- Status readout (top-left of landing) ---------- */
+.status-bar {
+  position: fixed; top: 18px; left: 24px;
+  display: flex; gap: 14px;
+  z-index: var(--z-fixed);
+  max-width: calc(var(--nav-width) - 48px);
+  flex-wrap: wrap;
+}
+.status-bar > span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.4;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}

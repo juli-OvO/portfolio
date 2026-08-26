@@ -1,0 +1,189 @@
+{
+  "_meta": {
+    "doc": "braindump",
+    "site": "Julianne Jin portfolio",
+    "exported": "2026-08-21T01:15:36.848Z",
+    "schema": "v1"
+  },
+  "groups": {
+    "hellorsell": {
+      "title": "Hell or Sell",
+      "blocks": {
+        "scan": {
+          "oneline": "a group game project made bystudnets together from University california irvine idk name also risd. ",
+          "role": "co art lead",
+          "team": "about 20 ish people. 7 in art",
+          "when": "for one semester",
+          "context": "self directed",
+          "tools": [
+            "illustration, design, "
+          ]
+        },
+        "story": {
+          "problem": "more to be added, the game is not completed yet. near complete. needs final test play. will add more details later. "
+        }
+      }
+    },
+    "headsup": {
+      "title": "Heads Up Website Redesign",
+      "blocks": {
+        "scan": {
+          "oneline": "a website for a non profit student organization that focus on reducing screen time and help for better digital balance. ",
+          "role": "tech intern, which now i am tech director after internship",
+          "team": "2 other teammates and cto",
+          "when": "for summer 10 weeks about",
+          "context": "mostly self directed, got the tasks and figure out myself",
+          "tools": [
+            "figma for draft, lucidchart for collab edit and combine of ideas ,claude, codex for draft,  webflow for final result"
+          ],
+          "outcome": "nothing yet, by the end of summer it is still just been published. org will be using it to replace the old website. for a more cohesive and interactive deisgn"
+        },
+        "story": {
+          "problem": "the old website was too basic and plain. also does not represent the organization too well strucutre wise. so we updated it for the websit eto have more cohesive visual identity.",
+          "process": "i first looked at other websites, organizations. analyzed what they usually have, such as motivation, founding time, what they did, statistics, what they proved and call to action to jion. then i drafted up a rough outline in figma for claude to generate a cohesive design system, resuable parts and I edited and compared different choices. presented to board memebers and my deisgn was the final one out of the three presented from my tech team. then i collaborated with my team and board member feed back for improvements of the currrent design, such as addint interactive sliders and information changes. then i built it out on webflow, learned as i built because i had no idea how it worked. also made a webflow helper for me to learn more detilaed css heirarchy . ",
+          "decisions": "i decided that the color should be consistent with the logo. also have a more school elements. like round buttons and text fonts. it should be different from corprate websites or other news letter sytle becuase the target audience is middle/highschool ppl. board memebers mainly also liked my visual language. ",
+          "changed": "a constrain was wecant have too much scroll based anomation like gsap since we are making them on webflow. ",
+          "craft": "proud of my design choices. ",
+          "redo": "maybe ask for a better content organization and tweak structure based on content. "
+        },
+        "show": {
+          "hero": {
+            "name": "juli-ovo.github.io_HeadsUpWebsite_mentor-program.html (2).png",
+            "w": 2086,
+            "h": 5430,
+            "note": "mentor program page, main design style, whiteboard fits school theme. also a more comfortable background color of light blue instead of just blande white. "
+          },
+          "a1": {
+            "name": "juli-ovo.github.io_HeadsUpWebsite_donate.html.png",
+            "w": 1860,
+            "h": 3060,
+            "note": "open fields for donation, clear call to action. "
+          },
+          "a2": {
+            "name": "Screenshot 2026-08-13 at 22.40.20.png",
+            "w": 716,
+            "h": 1566,
+            "note": "map feature of where located to show spread of club. also phone view. responsibe website."
+          },
+          "a3": {
+            "name": "Screenshot 2026-08-13 at 22.31.00.png",
+            "w": 828,
+            "h": 1516,
+            "note": "some more paragrpahs and resuable elements"
+          },
+          "missing": [
+            "maybe a before website?"
+          ],
+          "links": [
+            "actually nah they havent published at this moment but they will soon"
+          ]
+        },
+        "loose": {
+          "notes": "idk i just want to show that i can do websites with intentional thinking and practical collab skill. ",
+          "worry": "unsure about tone and what hr would doubt when seeing. also the webflow one didnt carry as well as the vibe coded one so i dont really want to show that link. meh. showing gpthub link is also kinda lame. "
+        }
+      }
+    },
+    "orbit": {
+      "title": "Orbit of Desire",
+      "blocks": {
+        "scan": {
+          "oneline": "this one we can keep as is as what we currently have"
+        }
+      }
+    },
+    "boids": {
+      "title": "Boid Sequencer",
+      "blocks": {
+        "scan": {
+          "oneline": "it is a sequencer that consists of four shapes swimming in boids formation which also acts as sequencer. ",
+          "role": "single dev",
+          "team": "just me ",
+          "when": "2 weeks",
+          "context": "class",
+          "tools": [
+            "codex, tone.js"
+          ],
+          "outcome": "just assignment, experiemtnation of sequencer, "
+        },
+        "story": {
+          "process": "i first made a sequencer with p5.js, then decided to make each button of the sequencer float, breaking the spatial arrangement, taking away definite control of the outcome. i also decided to add two lines xy axis so when buttons pass through them they make a sound too. i also added harmony lines and logs for both info and visual effect",
+          "decisions": "i decided to scramble the visual order of sequencer buttons to experiement. it would be more fun to play with. also this means that it is not for standard music making but more like a toy. ",
+          "changed": "some liked the level of control some didnt. i decided to add a corresponding sequencer map on the bottom so user would know which one they clicked on. for more information and choices. ",
+          "craft": "my first actual vibe coded peice. also i liked how the visuals turned out at last."
+        },
+        "show": {
+          "hero": {
+            "name": "introcomp.png",
+            "w": 2632,
+            "h": 1720,
+            "note": "general shot"
+          },
+          "a1": {
+            "name": "Screenshot 2026-08-20 at 21.03.53.png",
+            "w": 2266,
+            "h": 1254,
+            "note": "initial sequencer in p5.js"
+          },
+          "a2": {
+            "name": "Screenshot 2026-08-20 at 21.05.00.png",
+            "w": 1868,
+            "h": 1018,
+            "note": "draw line, and have circles follow the route function"
+          },
+          "a3": {
+            "name": "Screenshot 2026-08-20 at 21.04.10.png",
+            "w": 1692,
+            "h": 998,
+            "note": "initial state of moving sequencer button (swap order with process artifact 2)"
+          },
+          "links": [
+            "live site link already in current portfolio page. "
+          ]
+        },
+        "loose": {
+          "worry": "unsure of the purpose. i guess it is just cool. but hard to make sense or make a purpose out of it. idk if hr cares about it. "
+        }
+      }
+    },
+    "illustration": {
+      "title": "Illustration",
+      "blocks": {
+        "scan": {
+          "oneline": "nothing much to say about it. just commissions. individual project"
+        }
+      }
+    },
+    "drawings": {
+      "title": "Drawings",
+      "blocks": {
+        "scan": {
+          "oneline": "same as illustration. class asignemtns. nothing to talk about"
+        }
+      }
+    },
+    "about": {
+      "title": "You & the portfolio",
+      "blocks": {
+        "aim": {
+          "target": "portoflio for tech companies, also art roles. potentially smaller companies or studios like RadicalMedia, Huge, InstaLILY. also would love bigger companies like apple too. idk if that makes a difference. ",
+          "jobs": [
+            "uiux, computational designer, web site designer, artist, creative teechonogist. mostly just intern level for now. "
+          ],
+          "read": "i can creatively problem solve based on need and uses various tech to incorprate in art, while designing with a purpose and a sense of play. ",
+          "strong": "depends. more projects to be added. i will be also adding two more physical computaiton projects so i will need two of that filled out. ",
+          "order": [
+            "keep as is. tech ones should come first, put heads up and boid sequencer on the first two and the rest can be in same groups. "
+          ]
+        },
+        "you": {
+          "bio": "bio can be kept the same ",
+          "thread": "problem solving and thinking. more like philosopy of drawing? never really like copying but think about reasons and decision making and why make choices to make the work. ",
+          "edu": [
+            "other things can be kept as is like cv i will update you later on this, "
+          ]
+        }
+      }
+    }
+  }
+}

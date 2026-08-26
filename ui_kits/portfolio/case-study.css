@@ -1,0 +1,281 @@
+/* =========================================================
+   PROJECT PAGE SYSTEM
+   One shared chrome (back · eyebrow · title · caption · arrows ·
+   footer) + swappable body layouts (hero-bg · carousel · slides).
+   ========================================================= */
+
+.cs {
+  position: fixed; inset: 0;
+  background: var(--bg-0);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: var(--z-panel);
+  cursor: none;
+}
+
+/* ---------------- SHARED CHROME ---------------- */
+
+/* Back button — circular, top-left, blur, hover→orange. The ONE back button. */
+.cs-back {
+  position: fixed; top: 20px; left: 20px;
+  width: 46px; height: 46px;
+  border-radius: var(--radius-pill);
+  border: var(--border-w) solid var(--fg-1);
+  background: color-mix(in srgb, var(--bg-0) 70%, transparent);
+  backdrop-filter: blur(6px);
+  display: grid; place-items: center;
+  z-index: var(--z-fixed);
+  cursor: pointer;
+  transition: background var(--dur-base) var(--ease-calm),
+              transform var(--dur-base) var(--ease-back),
+              border-color var(--dur-base) var(--ease-calm);
+}
+.cs-back:hover { background: var(--orange); border-color: var(--orange); transform: scale(1.1); }
+.cs-back .arr {
+  width: 11px; height: 11px;
+  border-left: 2px solid var(--fg-1);
+  border-bottom: 2px solid var(--fg-1);
+  transform: rotate(45deg) translate(2px, -2px);
+  transition: border-color var(--dur-base) var(--ease-calm);
+}
+.cs-back:hover .arr { border-color: var(--paper); }
+
+/* Top status row — eyebrow (left) + index (right). Fixed across all layouts. */
+.cs-top {
+  position: fixed; top: 26px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 12px;
+  z-index: var(--z-fixed);
+  pointer-events: none;
+}
+.cs-top .eyebrow-pill {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--fg-1);
+  background: color-mix(in srgb, var(--bg-0) 70%, transparent);
+  backdrop-filter: blur(6px);
+  border: var(--border-w) solid var(--fg-1);
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+.cs-top .idx { opacity: 0.5; }
+
+/* Eyebrow label (in-flow, used in heroes/headers) */
+.cs-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+/* Title — Fraunces italic, the single title treatment everywhere */
+.cs-title {
+  font-family: var(--font-serif);
+  font-style: italic; font-weight: 400;
+  font-size: var(--text-display);
+  line-height: 0.95; letter-spacing: -0.02em;
+  margin: 0;
+}
+.cs-title .ext {
+  font-style: normal; font-family: var(--font-mono);
+  font-size: 0.34em; vertical-align: super; opacity: 0.55; margin-left: 10px;
+}
+
+.cs-deck {
+  font-family: var(--font-alt); font-weight: 300;
+  font-size: clamp(17px, 1.7vw, 22px); line-height: 1.5;
+  max-width: 48ch; color: var(--fg-1);
+}
+
+/* Meta chips */
+.cs-meta {
+  display: flex; gap: 28px; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-2);
+}
+.cs-meta b { display: block; color: var(--fg-1); font-weight: 700; margin-top: 3px; letter-spacing: 0.04em; }
+
+/* Caption — the single caption format: index · title · year */
+.cs-caption {
+  font-family: var(--font-mono); font-size: 13px;
+  letter-spacing: 0.04em; color: var(--fg-1);
+  display: flex; align-items: baseline; gap: 10px;
+}
+.cs-caption .n { color: var(--orange); font-weight: 700; }
+.cs-caption .yr { color: var(--fg-2); margin-left: auto; font-size: 11px; }
+
+/* Nav arrow — the single arrow control (carousel + slides) */
+.cs-arrow {
+  width: 46px; height: 46px;
+  border-radius: var(--radius-pill);
+  border: var(--border-w) solid var(--fg-1);
+  background: transparent;
+  display: grid; place-items: center;
+  cursor: pointer; flex: 0 0 auto;
+  transition: background var(--dur-base) var(--ease-calm),
+              transform var(--dur-base) var(--ease-back);
+}
+.cs-arrow:hover { background: var(--orange); transform: scale(1.08); }
+.cs-arrow svg { width: 16px; height: 16px; stroke: var(--fg-1); fill: none; stroke-width: 2; }
+.cs-arrow:hover svg { stroke: var(--paper); }
+
+/* Footer — next project + credit, shared */
+.cs-footer {
+  border-top: var(--border-w) solid var(--fg-1);
+  margin-top: 64px;
+  padding: 40px var(--pad-section-x);
+  display: flex; justify-content: space-between; align-items: baseline; gap: 24px;
+  flex-wrap: wrap;
+}
+.cs-footer .next {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: clamp(28px, 4vw, 52px); line-height: 1;
+  cursor: pointer; color: var(--fg-1);
+  transition: color var(--dur-base) var(--ease-calm);
+}
+.cs-footer .next:hover { color: var(--orange); }
+.cs-footer .next .lbl {
+  display: block; font-family: var(--font-mono); font-style: normal;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--fg-2); margin-bottom: 8px;
+}
+.cs-footer .credit-text {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--fg-2); letter-spacing: 0.04em; max-width: 28ch; text-align: right;
+}
+
+/* Body prose (shared) */
+.cs-body { padding: var(--pad-section-y) var(--pad-section-x); max-width: 920px; margin: 0 auto; }
+.cs-body h2 {
+  font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px;
+}
+.cs-body p {
+  font-family: var(--font-alt); font-weight: 300; font-size: 18px; line-height: 1.7;
+  margin: 0 0 1.1em 0; color: var(--fg-1); max-width: 64ch;
+}
+.cs-tags { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 22px 0 0; }
+.cs-tags .tag { font-family: var(--font-mono); font-size: 12px; color: var(--fg-1); }
+
+/* ---------------- LAYOUT A · HERO-BG (Music Boids, Orbit) ---------------- */
+.cs-hero {
+  position: relative; min-height: 100vh;
+  padding: var(--pad-section-y) var(--pad-section-x);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  background-image: var(--cs-hero-bg, none);
+  background-size: cover; background-position: center;
+}
+.cs-hero__veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(0deg, var(--bg-0) 0%, color-mix(in srgb, var(--bg-0) 60%, transparent) 28%, transparent 62%),
+    linear-gradient(115deg, color-mix(in srgb, var(--bg-0) 50%, transparent), transparent 58%);
+}
+.cs-hero__inner { position: relative; z-index: 1; }
+.cs-hero .cs-eyebrow { margin-bottom: 16px; }
+.cs-hero .cs-title { max-width: 16ch; margin-bottom: 18px; }
+.cs-hero .cs-deck { margin-bottom: 30px; }
+.cs-hero .scroll-cue {
+  position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--fg-2);
+  animation: cs-bob 1.8s var(--ease-calm) infinite;
+}
+@keyframes cs-bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 6px); } }
+
+/* Dark gallery grid (process studies) */
+.cs-dark { background: #0a0a0a; color: var(--paper); padding: var(--pad-section-y) var(--pad-section-x); margin: 56px 0 0; }
+.cs-dark h2 { color: var(--orange); font-family: var(--font-mono); font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; }
+.cs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.cs-card {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-card); overflow: hidden; aspect-ratio: 4/3; position: relative; cursor: pointer;
+  transition: transform var(--dur-base) var(--ease-calm), box-shadow var(--dur-base) var(--ease-calm);
+}
+.cs-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
+.cs-card img { width: 100%; height: 100%; object-fit: cover; transition: filter var(--dur-base) var(--ease-calm); }
+.cs-card:hover img { filter: grayscale(1) brightness(1.35) contrast(0.9); }
+.cs-card .cap {
+  position: absolute; left: 10px; bottom: 10px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+  background: rgba(0,0,0,0.55); padding: 4px 8px; border-radius: 2px;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity var(--dur-base) var(--ease-calm), transform var(--dur-base) var(--ease-calm);
+}
+.cs-card:hover .cap { opacity: 1; transform: translateY(0); }
+
+/* ---------------- LAYOUT B · CAROUSEL (Illustration) ---------------- */
+.cs-stage {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: clamp(90px, 12vh, 140px) 0 clamp(40px, 6vh, 70px);
+}
+.cs-stage .cs-head { text-align: center; margin-bottom: clamp(28px, 5vh, 56px); }
+.cs-stage .cs-eyebrow { margin-bottom: 12px; display: block; }
+.cs-stage .cs-title { font-size: clamp(36px, 5vw, 64px); }
+.cs-carousel {
+  flex: 1; width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(16px, 3vw, 40px);
+}
+.cs-scene {
+  position: relative;
+  width: min(58vw, 620px); height: clamp(300px, 56vh, 540px);
+  perspective: 1200px;
+}
+.cs-slide-card {
+  position: absolute; inset: 0; margin: auto;
+  display: grid; place-items: center;
+  transition: transform var(--dur-panel) var(--ease-quint), opacity var(--dur-panel) var(--ease-quint);
+  will-change: transform, opacity;
+}
+.cs-slide-card img {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  border: var(--border-w) solid var(--fg-1);
+  background: var(--bg-0);
+}
+/* positions set via JS: active / prev / next / hidden */
+.cs-slide-card[data-pos="active"] { transform: translateX(0) scale(1) rotateY(0); opacity: 1; z-index: 3; }
+.cs-slide-card[data-pos="prev"]   { transform: translateX(-46%) scale(0.8) rotateY(14deg); opacity: 0.4; z-index: 2; }
+.cs-slide-card[data-pos="next"]   { transform: translateX(46%) scale(0.8) rotateY(-14deg); opacity: 0.4; z-index: 2; }
+.cs-slide-card[data-pos="hidden"] { transform: scale(0.6); opacity: 0; z-index: 1; pointer-events: none; }
+.cs-stage .cs-caption { margin-top: clamp(24px, 4vh, 44px); width: min(58vw, 620px); }
+
+/* ---------------- LAYOUT C · SLIDES (Drawing) ---------------- */
+.cs-slidestage {
+  min-height: 100vh; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: clamp(90px, 12vh, 140px) var(--pad-section-x) 140px;
+}
+.cs-slidestage .cs-head { text-align: center; margin-bottom: clamp(24px, 4vh, 44px); }
+.cs-slidestage .cs-eyebrow { display: block; margin-bottom: 12px; }
+.cs-slidestage .cs-title { font-size: clamp(36px, 5vw, 64px); }
+.cs-figs { position: relative; width: min(70vw, 720px); height: clamp(320px, 58vh, 620px); }
+.cs-fig {
+  position: absolute; inset: 0; margin: auto;
+  display: grid; place-items: center;
+  opacity: 0; transform: translateY(40px);
+  transition: opacity var(--dur-panel) var(--ease-quint), transform var(--dur-panel) var(--ease-quint);
+  pointer-events: none;
+}
+.cs-fig.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.cs-fig.exit  { opacity: 0; transform: translateY(-40px); }
+.cs-fig img { max-width: 100%; max-height: 100%; object-fit: contain; }
+/* Floating caption panel (glass) — anchored to the bottom of the slide stage */
+.cs-cap-panel {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  padding: 14px 24px; min-width: min(70vw, 520px);
+  background: color-mix(in srgb, var(--bg-0) 80%, transparent);
+  border: var(--border-w) solid var(--fg-1);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; gap: 18px;
+  z-index: 4;
+}
+.cs-cap-panel .cs-arrow { width: 38px; height: 38px; }
+.cs-cap-panel .cs-caption { flex: 1; justify-content: center; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cs-scene { width: 84vw; }
+  .cs-stage .cs-caption { width: 84vw; }
+  .cs-figs { width: 86vw; }
+  .cs-grid { grid-template-columns: repeat(2, 1fr); }
+}
