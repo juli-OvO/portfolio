@@ -181,6 +181,7 @@ Specifically:
 | `SKILL.md` | Agent-skill manifest (Claude Code compatible). |
 | `colors_and_type.css` | All CSS custom properties + base element styles. Import this first. |
 | `assets/` | Logos, project images, boids.js runtime. |
+| `content/` | Source material not yet fully absorbed into the system: `portfolio-braindump.{md,json}` (draft project copy, incl. unbuilt projects like "Hell or Sell") and `raw-photos/` (uncropped originals behind the cropped photos in `assets/`). |
 | `preview/` | Cards for the Design System tab (tokens, type, components). |
 | `ui_kits/portfolio/` | Hi-fi React recreation of the live site's core screens. |
 | `ui_kits/portfolio/index.html` | Interactive click-thru of Home / Case study / Resume / 404. |
