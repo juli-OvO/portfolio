@@ -1,6 +1,6 @@
 ---
 title: Illustration
-date: 2023–25
+date: 2023
 order: 8
 slug: illustration
 meta: Digital painting · Commissions and personal work
