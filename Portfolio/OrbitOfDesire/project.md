@@ -3,6 +3,7 @@ title: Orbit of Desire
 date: 2025
 order: 7
 slug: orbit-of-desire
+tags: Game Art · Character Design · Environment Illustration
 meta: Game art · Brown–RISD Game Dev
 ---
 

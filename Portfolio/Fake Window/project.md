@@ -3,6 +3,7 @@ title: Prosthetic Window
 date: 2026
 order: 5
 slug: prosthetic-window
+tags: Physical Computing · Biomaterials · Spatial Installation
 meta: Physical computing · Arduino, LEDs, cast bioplastic
 ---
 

@@ -3,6 +3,7 @@ title: Heads Up Website
 date: 2026
 order: 1
 slug: heads-up
+tags: Web Design · Front-End Development · Design Systems
 cover: web/webflow-helper.jpg
 meta: Web design + development · Figma, Webflow, HTML/CSS/JS
 ---

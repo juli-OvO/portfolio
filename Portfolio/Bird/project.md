@@ -3,6 +3,7 @@ title: Prosthesis
 date: 2026
 order: 4
 slug: prosthesis
+tags: Physical Computing · Wearable Interaction · Digital Fabrication
 meta: Physical computing · Arduino, compass, servos, 3D printing
 ---
 

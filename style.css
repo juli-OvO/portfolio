@@ -109,8 +109,33 @@ p { margin: 0; }
 
 .grid { columns: 3 240px; column-gap: 22px; }
 .tile { display: block; break-inside: avoid; margin-bottom: 30px; text-decoration: none; }
+.tile .pic { position: relative; display: block; }
 .tile img { width: 100%; transition: opacity 0.25s; }
 .tile:hover img { opacity: 0.82; }
+
+/* tags: pinned bottom-left on keyboard focus; with JS, they follow the pointer in place of the cursor */
+.tag {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  max-width: 280px;
+  width: max-content;
+  padding: 5px 9px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 12px/1.35 var(--mono);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.tile:hover .tag, .tile:focus-visible .tag { opacity: 1; }
+@media (hover: hover) {
+  .js .tile .pic { cursor: none; }
+  .js .tag { left: 0; top: 0; bottom: auto; }
+  .js .tile:focus-visible:not(:hover) .tag { transform: translate(10px, 10px) !important; }
+}
+@media (hover: none) { .tile:hover .tag { opacity: 0; } }
 .cap { display: flex; justify-content: space-between; gap: 12px; margin-top: 9px; color: var(--soft); }
 .tile:hover .cap { color: var(--ink); }
 

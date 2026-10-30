@@ -27,7 +27,7 @@
       <li><a href="work/prosthetic-window.html"><span class="n">05</span><span class="t">Prosthetic Window</span><span class="y">2026</span></a></li>
       <li><a href="work/hell-or-sell.html"><span class="n">06</span><span class="t">Hell or Sell</span><span class="y">2026</span></a></li>
       <li><a href="work/orbit-of-desire.html"><span class="n">07</span><span class="t">Orbit of Desire</span><span class="y">2025</span></a></li>
-      <li><a href="work/illustration.html"><span class="n">08</span><span class="t">Illustration</span><span class="y">2023–25</span></a></li>
+      <li><a href="work/illustration.html"><span class="n">08</span><span class="t">Illustration</span><span class="y">2023</span></a></li>
       <li><a href="work/drawings.html"><span class="n">09</span><span class="t">Drawings</span><span class="y">2025</span></a></li>
     </ol>
   </nav>
@@ -40,43 +40,57 @@
 <main class="gallery">
   <div class="grid">
     <a class="tile" href="work/heads-up.html">
-      <img src="Portfolio/HeadsupWebsite/web/webflow-helper.jpg" alt="Heads Up Website" width="1800" height="1028">
+      <span class="pic"><img src="Portfolio/HeadsupWebsite/web/webflow-helper.jpg" alt="Heads Up Website" width="1800" height="1028"><span class="tag" aria-hidden="true">Web Design · Front-End Development · Design Systems</span></span>
       <span class="cap"><span>01&ensp;Heads Up Website</span><span>2026</span></span>
     </a>
     <a class="tile" href="work/boid-sequencer.html">
-      <img src="Portfolio/Boid%20Sequencer/web/interface.jpg" alt="Boid Sequencer" width="1800" height="1176">
+      <span class="pic"><img src="Portfolio/Boid%20Sequencer/web/interface.jpg" alt="Boid Sequencer" width="1800" height="1176"><span class="tag" aria-hidden="true">Creative Coding · Interaction Design · Generative Audio</span></span>
       <span class="cap"><span>02&ensp;Boid Sequencer</span><span>2025</span></span>
     </a>
     <a class="tile" href="work/department-display.html">
-      <img src="Portfolio/DepartmentSchedule/web/display-in-studio.jpg" alt="Department Information Display" width="1800" height="1350">
+      <span class="pic"><img src="Portfolio/DepartmentSchedule/web/display-in-studio.jpg" alt="Department Information Display" width="1800" height="1350"><span class="tag" aria-hidden="true">Information Design · Web Development · Spatial Display</span></span>
       <span class="cap"><span>03&ensp;Department Information Display</span><span>2026</span></span>
     </a>
     <a class="tile" href="work/prosthesis.html">
-      <img src="Portfolio/Bird/web/worn.jpg" alt="Prosthesis" width="1800" height="1350" loading="lazy">
+      <span class="pic"><img src="Portfolio/Bird/web/worn.jpg" alt="Prosthesis" width="1800" height="1350" loading="lazy"><span class="tag" aria-hidden="true">Physical Computing · Wearable Interaction · Digital Fabrication</span></span>
       <span class="cap"><span>04&ensp;Prosthesis</span><span>2026</span></span>
     </a>
     <a class="tile" href="work/prosthetic-window.html">
-      <img src="Portfolio/Fake%20Window/web/on-state.jpg" alt="Prosthetic Window" width="1800" height="1200" loading="lazy">
+      <span class="pic"><img src="Portfolio/Fake%20Window/web/on-state.jpg" alt="Prosthetic Window" width="1800" height="1200" loading="lazy"><span class="tag" aria-hidden="true">Physical Computing · Biomaterials · Spatial Installation</span></span>
       <span class="cap"><span>05&ensp;Prosthetic Window</span><span>2026</span></span>
     </a>
     <a class="tile" href="work/hell-or-sell.html">
-      <img src="Portfolio/HellOrSell/web/title-screen.jpg" alt="Hell or Sell" width="1800" height="943" loading="lazy">
+      <span class="pic"><img src="Portfolio/HellOrSell/web/title-screen.jpg" alt="Hell or Sell" width="1800" height="943" loading="lazy"><span class="tag" aria-hidden="true">Game UI · Art Direction · Team Collaboration</span></span>
       <span class="cap"><span>06&ensp;Hell or Sell</span><span>2026</span></span>
     </a>
     <a class="tile" href="work/orbit-of-desire.html">
-      <img src="Portfolio/OrbitOfDesire/web/final-scene.jpg" alt="Orbit of Desire" width="1800" height="1109" loading="lazy">
+      <span class="pic"><img src="Portfolio/OrbitOfDesire/web/final-scene.jpg" alt="Orbit of Desire" width="1800" height="1109" loading="lazy"><span class="tag" aria-hidden="true">Game Art · Character Design · Environment Illustration</span></span>
       <span class="cap"><span>07&ensp;Orbit of Desire</span><span>2025</span></span>
     </a>
     <a class="tile" href="work/illustration.html">
-      <img src="Portfolio/Illustration/web/illustration-01.jpg" alt="Illustration" width="1800" height="1271" loading="lazy">
-      <span class="cap"><span>08&ensp;Illustration</span><span>2023–25</span></span>
+      <span class="pic"><img src="Portfolio/Illustration/web/illustration-01.jpg" alt="Illustration" width="1800" height="1271" loading="lazy"><span class="tag" aria-hidden="true">Illustration · Visual Development</span></span>
+      <span class="cap"><span>08&ensp;Illustration</span><span>2023</span></span>
     </a>
     <a class="tile" href="work/drawings.html">
-      <img src="Portfolio/Drawings/web/swan-and-figures.jpg" alt="Drawings" width="1210" height="1800" loading="lazy">
+      <span class="pic"><img src="Portfolio/Drawings/web/swan-and-figures.jpg" alt="Drawings" width="1210" height="1800" loading="lazy"><span class="tag" aria-hidden="true">Drawing · Visual Research</span></span>
       <span class="cap"><span>09&ensp;Drawings</span><span>2025</span></span>
     </a>
   </div>
 </main>
 </div>
+<script>
+document.documentElement.classList.add("js");
+document.querySelectorAll(".tile .pic").forEach(pic => {
+  const tag = pic.querySelector(".tag");
+  if (!tag) return;
+  pic.addEventListener("pointermove", e => {
+    const box = pic.getBoundingClientRect();
+    let x = e.clientX - box.left, y = e.clientY - box.top;
+    // flip to the left of the pointer near the right edge of the window
+    if (e.clientX + tag.offsetWidth > window.innerWidth - 12) x -= tag.offsetWidth;
+    tag.style.transform = `translate(${x}px, ${y}px)`;
+  });
+});
+</script>
 </body>
 </html>

@@ -3,6 +3,7 @@ title: Department Information Display
 date: 2026
 order: 3
 slug: department-display
+tags: Information Design · Web Development · Spatial Display
 meta: Information design + web development
 ---
 

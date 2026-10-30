@@ -3,6 +3,7 @@ title: Illustration
 date: 2023
 order: 8
 slug: illustration
+tags: Illustration · Visual Development
 meta: Digital painting · Commissions and personal work
 ---
 

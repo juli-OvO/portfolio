@@ -3,6 +3,7 @@ title: Drawings
 date: 2025
 order: 9
 slug: drawings
+tags: Drawing · Visual Research
 meta: Charcoal · Observational drawing
 ---
 

@@ -202,11 +202,29 @@ def cover(p):
     return p["images"][0]
 
 
+# Index: the hovered tile's tag follows the pointer and stands in for the cursor.
+TAG_SCRIPT = """<script>
+document.documentElement.classList.add("js");
+document.querySelectorAll(".tile .pic").forEach(pic => {
+  const tag = pic.querySelector(".tag");
+  if (!tag) return;
+  pic.addEventListener("pointermove", e => {
+    const box = pic.getBoundingClientRect();
+    let x = e.clientX - box.left, y = e.clientY - box.top;
+    // flip to the left of the pointer near the right edge of the window
+    if (e.clientX + tag.offsetWidth > window.innerWidth - 12) x -= tag.offsetWidth;
+    tag.style.transform = `translate(${x}px, ${y}px)`;
+  });
+});
+</script>"""
+
+
 def build_index(projects):
     tiles = []
     for i, p in enumerate(projects):
+        tag = f'<span class="tag" aria-hidden="true">{esc(p["tags"])}</span>' if p.get("tags") else ""
         tiles.append(f"""    <a class="tile" href="work/{p['slug']}.html">
-      {media(p, cover(p), '', p['title'], lazy=i > 2)}
+      <span class="pic">{media(p, cover(p), '', p['title'], lazy=i > 2)}{tag}</span>
       <span class="cap"><span>{num(i)}&ensp;{esc(p['title'])}</span><span>{esc(p['date'])}</span></span>
     </a>""")
     body = f"""<div class="layout index">
@@ -216,7 +234,8 @@ def build_index(projects):
 {chr(10).join(tiles)}
   </div>
 </main>
-</div>"""
+</div>
+{TAG_SCRIPT}"""
     (ROOT / "index.html").write_text(page(NAME, body), encoding="utf-8")
 
 
