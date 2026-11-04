@@ -23,5 +23,7 @@ Shown on the site in this order. The first image is the cover on the index page.
    Source: `boid-process1.png` (from old website)
 3. `web/buttons-adrift.jpg` — The same four instruments, now drifting as a flock.
    Source: `boid-process2.png` (from old website)
+   Grid: previous
 4. `web/readouts.jpg` — Cluster boxes, segment log, and waveform readouts, added last.
    Source: `boid-sound.png` (from old website)
+   Grid: previous

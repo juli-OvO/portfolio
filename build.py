@@ -34,6 +34,9 @@ WEB_QUALITY = "82"    # jpeg quality
 
 IMAGE_LINE = re.compile(r"^\d+\.\s+`([^`]+)`\s+[—-]\s+(.+)$")
 SOURCE_LINE = re.compile(r"^\s+Source:\s+`([^`]+)`")
+# join the image above:  Beside = same row,  Grid = two-column grid,  Toggle = stacked, switched by a button
+JOIN_LINE = re.compile(r"^\s+(Beside|Grid|Toggle):\s+previous\s*$", re.I)
+GROUP_LINE = re.compile(r"^###\s+(.+)$")
 
 
 # ---------- parsing ----------
@@ -60,15 +63,27 @@ def parse_project(md_path):
 
     description = " ".join(l.strip() for l in sections.get("description", []) if l.strip())
 
-    images = []
+    # `### Heading` inside Images starts a section; plain text right under it is its description
+    images, groups = [], []
     for line in sections.get("images", []):
+        g = GROUP_LINE.match(line)
+        if g:
+            groups.append({"title": g.group(1).strip(), "text": []})
+            continue
         im = IMAGE_LINE.match(line)
         if im:
-            images.append({"web": im.group(1), "caption": im.group(2).strip(), "source": None})
+            images.append({"web": im.group(1), "caption": im.group(2).strip(), "source": None,
+                           "group": len(groups) - 1})
+            continue
+        if groups and line.strip() and not line[0].isspace() and \
+                (not images or images[-1]["group"] != len(groups) - 1):
+            groups[-1]["text"].append(line.strip())
             continue
         sm = SOURCE_LINE.match(line)
         if sm and images:
             images[-1]["source"] = sm.group(1)
+        elif JOIN_LINE.match(line) and len(images) > 1:
+            images[-1]["join"] = JOIN_LINE.match(line).group(1).lower()
 
     for key in ("title", "date", "slug"):
         if not meta.get(key):
@@ -77,7 +92,8 @@ def parse_project(md_path):
         raise SystemExit(f"{md_path}: no images listed under '## Images'")
 
     return {**meta, "order": int(meta.get("order", 999)), "dir": md_path.parent,
-            "description": description, "images": images}
+            "description": description, "images": images,
+            "groups": [{"title": g["title"], "text": " ".join(g["text"])} for g in groups]}
 
 
 # ---------- images ----------
@@ -153,6 +169,7 @@ def page(title, body, prefix="", description=INTRO):
 </head>
 <body>
 {body}
+{TAG_SCRIPT}
 </body>
 </html>
 """
@@ -160,6 +177,10 @@ def page(title, body, prefix="", description=INTRO):
 
 def num(i):
     return f"{i + 1:02d}"
+
+
+def tag_span(p):
+    return f'<span class="tag" aria-hidden="true">{esc(p["tags"])}</span>' if p.get("tags") else ""
 
 
 def sidebar(projects, prefix="", active=None):
@@ -170,13 +191,14 @@ def sidebar(projects, prefix="", active=None):
         rows.append(f'      <li><a href="{prefix}work/{p["slug"]}.html"{cur}>'
                     f'<span class="n">{num(i)}</span>'
                     f'<span class="t">{esc(p["title"])}</span>'
-                    f'<span class="y">{esc(p["date"])}</span></a></li>')
+                    f'<span class="y">{esc(p["date"])}</span>{tag_span(p)}</a></li>')
     return f"""<aside class="side">
   <div class="id">
     <a class="name" href="{prefix}index.html">{NAME}</a>
     <p>{esc(BIO)}</p>
   </div>
   <nav aria-label="Projects">
+    <a class="overview" href="{prefix}index.html"{'' if active else ' aria-current="page"'}>Overview</a>
     <h2 class="label">Work</h2>
     <ol class="list">
 {chr(10).join(rows)}
@@ -202,27 +224,30 @@ def cover(p):
     return p["images"][0]
 
 
-# Index: the hovered tile's tag follows the pointer and stands in for the cursor.
+# Every page: a hovered tile's or sidebar row's tag follows the pointer and stands in for the cursor.
+# Tile tags sit inside the image; sidebar tags are fixed to the window so the sidebar can't clip them.
 TAG_SCRIPT = """<script>
 document.documentElement.classList.add("js");
-document.querySelectorAll(".tile .pic").forEach(pic => {
-  const tag = pic.querySelector(".tag");
+const follow = (host, fixed) => {
+  const tag = host.querySelector(".tag");
   if (!tag) return;
-  pic.addEventListener("pointermove", e => {
-    const box = pic.getBoundingClientRect();
+  host.addEventListener("pointermove", e => {
+    const box = fixed ? { left: 0, top: 0 } : host.getBoundingClientRect();
     let x = e.clientX - box.left, y = e.clientY - box.top;
     // flip to the left of the pointer near the right edge of the window
     if (e.clientX + tag.offsetWidth > window.innerWidth - 12) x -= tag.offsetWidth;
     tag.style.transform = `translate(${x}px, ${y}px)`;
   });
-});
+};
+document.querySelectorAll(".tile .pic").forEach(el => follow(el, false));
+document.querySelectorAll(".list a").forEach(el => follow(el, true));
 </script>"""
 
 
 def build_index(projects):
     tiles = []
     for i, p in enumerate(projects):
-        tag = f'<span class="tag" aria-hidden="true">{esc(p["tags"])}</span>' if p.get("tags") else ""
+        tag = tag_span(p)
         tiles.append(f"""    <a class="tile" href="work/{p['slug']}.html">
       <span class="pic">{media(p, cover(p), '', p['title'], lazy=i > 2)}{tag}</span>
       <span class="cap"><span>{num(i)}&ensp;{esc(p['title'])}</span><span>{esc(p['date'])}</span></span>
@@ -234,9 +259,23 @@ def build_index(projects):
 {chr(10).join(tiles)}
   </div>
 </main>
-</div>
-{TAG_SCRIPT}"""
+</div>"""
     (ROOT / "index.html").write_text(page(NAME, body), encoding="utf-8")
+
+
+# Project pages: clicking the switch (or the image) shows the next stacked layer.
+TOGGLE_SCRIPT = """<script>
+document.querySelectorAll(".toggle").forEach(fig => {
+  const parts = [".stack > *", ".tcap", ".switch > span"].map(s => fig.querySelectorAll(s));
+  let k = 0;
+  const next = () => {
+    k = (k + 1) % parts[0].length;
+    parts.forEach(list => list.forEach((el, x) => el.classList.toggle("on", x === k)));
+  };
+  fig.querySelector(".switch").addEventListener("click", next);
+  fig.querySelector(".stack").addEventListener("click", next);
+});
+</script>"""
 
 
 def build_project(projects, i):
@@ -244,12 +283,73 @@ def build_project(projects, i):
     n = len(projects)
     prev_p, next_p = projects[i - 1], projects[(i + 1) % n]
 
-    figs = []
+    # group images into blocks: an image marked `Beside/Grid/Toggle: previous` joins the block above
+    blocks = []
     for j, img in enumerate(p["images"]):
-        figs.append(f"""  <figure>
-    {media(p, img, '../', img['caption'], lazy=j > 0)}
-    <figcaption><span class="n">{num(j)}</span>{esc(img['caption'])}</figcaption>
+        join = img.get("join")
+        if join and blocks and blocks[-1]["items"][-1][1]["group"] == img["group"]:
+            blocks[-1]["kind"] = join
+            blocks[-1]["items"].append((j, img))
+        else:
+            blocks.append({"kind": "single", "items": [(j, img)]})
+
+    def ratio(img):
+        size = image_size(p["dir"] / img["web"])
+        return int(size[0]) / int(size[1]) if size else 1
+
+    def fig(j, img, attrs="", pad="  "):
+        return f"""{pad}<figure{attrs}>
+{pad}  {media(p, img, '../', img['caption'], lazy=j > 0)}
+{pad}  <figcaption><span class="n">{num(j)}</span>{esc(img['caption'])}</figcaption>
+{pad}</figure>"""
+
+    figs, group = [], -1
+    for block in blocks:
+        row, kind = block["items"], block["kind"]
+        g = row[0][1]["group"]
+        if g != group and g >= 0:
+            # close the previous section, open this one
+            if group >= 0:
+                figs.append("  </section>")
+            sec = p["groups"][g]
+            text = f'\n    <p class="lede">{esc(sec["text"])}</p>' if sec["text"] else ""
+            figs.append(f'  <section class="set">\n    <h2 class="label">{esc(sec["title"])}</h2>{text}')
+            group = g
+        ratios = [ratio(img) for _, img in row]
+        if kind == "single":
+            figs.append(fig(*row[0]))
+        elif kind == "beside":
+            # side by side at a shared height: each figure's share of the width follows its aspect ratio
+            cells = [fig(j, img, f' style="flex: {r:.3f}"', "    ") for (j, img), r in zip(row, ratios)]
+            figs.append(f'  <div class="row" style="--ar: {sum(ratios):.3f}; --n: {len(row)}">\n'
+                        + "\n".join(cells) + "\n  </div>")
+        elif kind == "grid":
+            # two columns of equal cells, cropped to the images' average shape
+            cells = [fig(j, img, "", "    ") for j, img in row]
+            figs.append(f'  <div class="pairs" style="--cell: {sum(ratios) / len(ratios):.3f}">\n'
+                        + "\n".join(cells) + "\n  </div>")
+        else:
+            # toggle: images stacked, a button cross-dissolves between them.
+            # Button labels come from the caption text before ":" ("On: ..." -> "On").
+            layers = "\n".join(f"      {media(p, img, '../', img['caption'], lazy=j > 0)}" for j, img in row)
+            caps = "".join(f'<span class="tcap{" on" if x == 0 else ""}"><span class="n">{num(j)}</span>'
+                           f'{esc(img["caption"])}</span>' for x, (j, img) in enumerate(row))
+            labels = "".join(f'<span{" class=on" if x == 0 else ""}>'
+                             f'{esc(img["caption"].split(":")[0] if ":" in img["caption"] else num(j))}</span>'
+                             for x, (j, img) in enumerate(row))
+            figs.append(f"""  <figure class="toggle">
+    <div class="tbody">
+      <div class="stack">
+  {layers}
+      </div>
+      <button type="button" class="switch" aria-label="Switch view">{labels}</button>
+    </div>
+    <figcaption>{caps}</figcaption>
   </figure>""")
+    if group >= 0:
+        figs.append("  </section>")
+    if any(b["kind"] == "toggle" for b in blocks):
+        figs.append(TOGGLE_SCRIPT)
 
     desc = f'\n  <p class="desc">{esc(p["description"])}</p>' if p["description"] else ""
     meta = f'\n  <p class="meta">{esc(p["meta"])}</p>' if p.get("meta") else ""

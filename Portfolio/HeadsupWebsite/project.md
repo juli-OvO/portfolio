@@ -15,21 +15,45 @@ A redesign for Heads Up, a student-led nonprofit for healthier screen habits. My
 ## Images
 
 Shown on the site in this order. The index cover is set by `cover:` above.
+A `### Heading` starts a new section; any text under it (before the first image) is shown as the section's description.
 
-1. `web/mentor-page.jpg` — Mentor program page. The whiteboard motif carries the three-step flow.
-   Source: `hu-mentor.png` (from old website)
-2. `web/webflow-helper.jpg` — Helper tool: click any element to read its class, spacing, and type before rebuilding it in Webflow.
-   Source: `headsupWebsiteHelper.png`
-3. `web/donate-page.jpg` — Donate page. Where the money goes on the left, one form on the right.
-   Source: `hu-donate.png` (from old website)
-4. `web/about-tablet.jpg` — About page at tablet width, built from reusable sections.
-   Source: `hu-ipad-about.png` (from old website)
-5. `web/about-phone.jpg` — About page at phone width.
+### Phone view
+
+1. `web/about-phone.jpg` — About page at phone width.
    Source: `phoneview-about copy.png`
-6. `web/chapter-map-phone.jpg` — Chapter map. Every pin is a student-led chapter.
+2. `web/chapter-map-phone.jpg` — Chapter map. Every pin is a student-led chapter.
    Source: `hu-phone-map.png` (from old website)
-7. `web/full-page.jpg` — Full-length page showing the shared type, buttons, and section styles.
+   Beside: previous
+
+### Tablet view
+
+3. `web/about-tablet.jpg` — About page at tablet width, built from reusable sections.
+   Source: `hu-ipad-about-tablet.png` (cropped from `hu-ipad-about.png`)
+
+### Laptop view
+
+4. `web/donate-laptop.jpg` — Donate page. Where the money goes on the left, one form on the right.
+   Source: `hu-donate-laptop.png` (cropped from `hu-donate.png`)
+
+### Helper tool
+
+A small tool I built for the Webflow rebuild. Click any element on the old site to read its class, spacing, and type, so each piece can be rebuilt to match.
+
+5. `web/webflow-helper.jpg` — Click an element to inspect its class, spacing, and type.
+   Source: `headsupWebsiteHelper.png`
+
+### Design guide
+
+One system across every page: stickers that open sections, pills for labels, a highlighter for key words, handwritten notes, and numbered rules.
+
+6. `web/mentor-page.jpg` — Mentor program page.
+   Source: `hu-mentor.png` (from old website)
+7. `web/full-page.jpg` — Full style page.
    Source: `hu-style.png` (from old website)
+   Beside: previous
+8. `web/design-style.jpg` — Components: stickers, pills, buttons, highlighter, hand notes, numbered rules.
+   Source: `designstyle.png`
+   Beside: previous
 
 ## Notes
 

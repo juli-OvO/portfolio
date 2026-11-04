@@ -80,6 +80,26 @@ p { margin: 0; }
   padding-bottom: 10px;
   border-bottom: 1px solid var(--line);
 }
+.overview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.project .overview { color: var(--soft); }
+.project .overview:hover { color: var(--ink); }
+.overview[aria-current]::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
 .list { list-style: none; margin: 0; padding: 0; }
 .list a {
   display: grid;
@@ -136,6 +156,13 @@ p { margin: 0; }
   .js .tile:focus-visible:not(:hover) .tag { transform: translate(10px, 10px) !important; }
 }
 @media (hover: none) { .tile:hover .tag { opacity: 0; } }
+
+/* sidebar rows: same tag, fixed to the window (the sidebar scrolls and would clip it) */
+.list .tag { position: fixed; z-index: 10; }
+@media (hover: hover) {
+  .js .list a { cursor: none; }
+  .js .list a:hover .tag { opacity: 1; }
+}
 .cap { display: flex; justify-content: space-between; gap: 12px; margin-top: 9px; color: var(--soft); }
 .tile:hover .cap { color: var(--ink); }
 
@@ -146,6 +173,73 @@ p { margin: 0; }
   width: auto;
   max-height: calc(100vh - 2 * var(--pad));
 }
+/* side-by-side rows: figures share one height; --ar (sum of aspect ratios) caps it at the viewport */
+.gallery .row {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+  margin-bottom: 56px;
+  max-width: calc(var(--ar) * (100vh - 2 * var(--pad) - 40px) + (var(--n) - 1) * 22px);
+}
+.gallery .row figure { min-width: 0; margin: 0; }
+.gallery .row figure img, .gallery .row figure video { width: 100%; max-height: none; }
+
+/* 2-column grid of equal cells, each row fits the viewport */
+.gallery .pairs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px 22px;
+  margin-bottom: 56px;
+  max-width: calc(2 * var(--cell) * (100vh - 2 * var(--pad) - 40px) + 22px);
+}
+.gallery .pairs figure { margin: 0; min-width: 0; }
+.gallery .pairs img, .gallery .pairs video {
+  width: 100%;
+  max-height: none;
+  aspect-ratio: var(--cell);
+  object-fit: cover;
+}
+
+/* toggle: stacked layers, the upper ones cross-dissolve in and out */
+.tbody { display: flex; align-items: center; gap: 22px; }
+.toggle .stack { display: grid; min-width: 0; cursor: pointer; }
+.toggle .stack > * { grid-area: 1 / 1; opacity: 0; transition: opacity 1.8s ease-in-out; }
+.toggle .stack > :first-child, .toggle .stack > .on { opacity: 1; }
+.tcap { display: none; gap: 12px; }
+.tcap.on { display: flex; }
+
+/* vertical switch to the right of the image */
+.switch {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--soft);
+  font: 500 15px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.switch span { padding: 22px 16px; border-radius: 999px; transition: background 0.4s, color 0.4s; }
+.switch span.on { background: var(--ink); color: var(--bg); }
+.switch:hover { border-color: var(--soft); }
+.switch:hover span:not(.on) { color: var(--ink); }
+
+/* titled sections within a project */
+.set { margin-bottom: 88px; }
+.set > .label { margin-bottom: 18px; }
+.set > .lede {
+  max-width: 640px;
+  margin-bottom: 28px;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+.set > figure:last-child, .set > .row:last-child { margin-bottom: 0; }
 figcaption { display: flex; gap: 12px; margin-top: 9px; max-width: 560px; color: var(--soft); }
 figcaption .n { flex: none; }
 

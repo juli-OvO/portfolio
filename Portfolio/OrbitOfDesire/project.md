@@ -21,9 +21,11 @@ Shown on the site in this order. The first image is the cover on the index page.
    Source: `finished.png` (from old website)
 3. `web/uba-lineart.jpg` — Uba, line art.
    Source: `lineart.png` (from old website)
+   Beside: previous
 4. `web/lab.jpg` — Uba's greenhouse lab, colored background.
    Source: `ubalab.png` (from old website)
 5. `web/lab-lineart.jpg` — The lab, line art.
    Source: `herbalist.png` (from old website)
+   Beside: previous
 6. `web/title-screen.jpg` — Title screen.
    Source: `title.png` (from old website)
