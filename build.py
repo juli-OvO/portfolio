@@ -205,6 +205,13 @@ FONTS = ("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500"
          "&family=Inter+Tight:wght@400;500&display=swap")
 
 
+def css_version():
+    """Short hash of style.css. It goes on the stylesheet link so browsers (and GitHub Pages'
+    10-minute cache) fetch the new stylesheet as soon as it changes."""
+    import hashlib
+    return hashlib.sha1((ROOT / "style.css").read_bytes()).hexdigest()[:8]
+
+
 def page(title, body, prefix="", description=INTRO):
     return f"""<!doctype html>
 <html lang="en">
@@ -216,7 +223,7 @@ def page(title, body, prefix="", description=INTRO):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{esc(FONTS)}">
-<link rel="stylesheet" href="{prefix}style.css">
+<link rel="stylesheet" href="{prefix}style.css?v={css_version()}">
 </head>
 <body>
 {body}
