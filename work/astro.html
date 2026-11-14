@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astro — Julianne Jin</title>
+<meta name="description" content="An augmented-reality HUD for NASA&#x27;s SUITS challenge, designed with the Brown–RISD student team to help astronauts navigate the lunar surface, work at points of interest, and return safely. In progress; full case study coming soon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500&amp;family=Inter+Tight:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="layout project">
+<aside class="side">
+  <div class="id">
+    <a class="name" href="../index.html">Julianne Jin</a>
+    <p>Visual artist and designer studying Art and Computation at the Rhode Island School of Design.</p>
+  </div>
+  <nav aria-label="Projects">
+    <div class="pages">
+      <a class="overview" href="../index.html">Overview</a>
+      <a class="overview" href="../in-progress.html">Works in Progress</a>
+    </div>
+    <h2 class="label">Work</h2>
+    <ol class="list">
+      <li><a href="../work/heads-up.html"><span class="n">01</span><span class="t">Heads Up Website</span><span class="y">2026</span><span class="tag" aria-hidden="true">Web Design · Front-End Development · Design Systems</span></a></li>
+      <li><a href="../work/astro.html" aria-current="page"><span class="n">02</span><span class="t">Astro</span><span class="y">2026</span><span class="tag" aria-hidden="true"><span class="soon">Coming soon</span>AR/VR Design · HUD Interface · NASA SUITS</span></a></li>
+      <li><a href="../work/prosthetic-window.html"><span class="n">03</span><span class="t">Prosthetic Window</span><span class="y">2026</span><span class="tag" aria-hidden="true">Physical Computing · Biomaterials · Spatial Installation</span></a></li>
+      <li><a href="../work/boid-sequencer.html"><span class="n">04</span><span class="t">Boid Sequencer</span><span class="y">2025</span><span class="tag" aria-hidden="true">Creative Coding · Interaction Design · Generative Audio</span></a></li>
+      <li><a href="../work/risd-rover.html"><span class="n">05</span><span class="t">RISD Rover</span><span class="y">2026</span><span class="tag" aria-hidden="true"><span class="soon">Coming soon</span>Rover Design · Fabrication · NASA Challenge</span></a></li>
+      <li><a href="../work/department-display.html"><span class="n">06</span><span class="t">Department Information Display</span><span class="y">2026</span><span class="tag" aria-hidden="true">Information Design · Web Development · Spatial Display</span></a></li>
+      <li><a href="../work/prosthesis.html"><span class="n">07</span><span class="t">Prosthesis</span><span class="y">2026</span><span class="tag" aria-hidden="true">Physical Computing · Wearable Interaction · Digital Fabrication</span></a></li>
+      <li><a href="../work/hell-or-sell.html"><span class="n">08</span><span class="t">Hell or Sell</span><span class="y">2026</span><span class="tag" aria-hidden="true">Game UI · Art Direction · Team Collaboration</span></a></li>
+      <li><a href="../work/orbit-of-desire.html"><span class="n">09</span><span class="t">Orbit of Desire</span><span class="y">2025</span><span class="tag" aria-hidden="true">Game Art · Character Design · Environment Illustration</span></a></li>
+      <li><a href="../work/illustration.html"><span class="n">10</span><span class="t">Illustration &amp; Drawing</span><span class="y">2023–25</span><span class="tag" aria-hidden="true">Illustration · Drawing · Visual Development</span></a></li>
+    </ol>
+  </nav>
+  <p class="links">
+    <a href="mailto:jjin04@risd.edu">Email</a>
+    <a href="https://www.linkedin.com/in/chufan-jin-41b727311/">LinkedIn</a>
+    <a href="../Portfolio/JulianneResume.pdf">CV</a>
+  </p>
+</aside>
+<main class="gallery">
+  <section class="about">
+    <div class="block aside-left">
+      <figure class="aside logos"><div class="imgs"><img src="../Portfolio/Astro/web/nasalogo.png" alt="nasalogo" width="800" height="669" loading="lazy"><img src="../Portfolio/Astro/web/risdlogo.png" alt="risdlogo" width="798" height="800" loading="lazy"></div></figure>
+      <div class="text">
+      <h2 class="label">The challenge</h2>
+      <p>NASA SUITS (Spacesuit User Interface Technologies for Students) asks student teams to design interfaces for astronauts working on the Moon during Artemis missions. Our AR team is designing the heads-up display inside the suit, working from the 2026–2027 mission description.</p>
+      </div>
+    </div>
+    <div class="block aside-right">
+      <figure class="aside"><div class="imgs"><img src="../Portfolio/Astro/web/nasa-suits-field-test.jpg" alt="nasa-suits-field-test" width="1800" height="1008" loading="lazy"></div><figcaption>Image courtesy of NASA.</figcaption></figure>
+      <div class="text">
+      <h2 class="label">Conditions we design for</h2>
+      <ul><li>Low, harsh lunar lighting, seen through passthrough AR</li><li>Limited astronaut attention while walking and working</li><li>Suit consumables, like oxygen and battery, and a safe return to the lander</li></ul>
+      </div>
+    </div>
+    <div class="block">
+      <h2 class="label">What we&#x27;re exploring</h2>
+      <ul><li>What&#x27;s always visible, and what appears only when needed</li><li>Navigation and route guidance</li><li>Alerts for the suit, the body, and points of interest</li><li>Where information lives: the HUD, the wrist, or the world</li></ul>
+    </div>
+    <div class="block">
+      <h2 class="label">My role</h2>
+      <p>As VR/AR designer, I ran the color tests and contributed to the wireframes. Next, the team is collecting interaction references from aviation, automotive HUDs, diving gear, and industrial AR, and sketching a normal navigation state alongside an alert state before settling on one direction.</p>
+    </div>
+  </section>
+  <section class="set">
+    <h2 class="label">Prototype</h2>
+  <div class="row" style="--ar: 2.510; --n: 2">
+    <figure style="flex: 0.832">
+      <img src="../Portfolio/Astro/web/wireframe.jpg" alt="Wireframes: the rover console and route map (top), and the passthrough HUD with a biomedical alert that opens only when needed (bottom)." width="1498" height="1800">
+      <figcaption><span class="n">01</span>Wireframes: the rover console and route map (top), and the passthrough HUD with a biomedical alert that opens only when needed (bottom).</figcaption>
+    </figure>
+    <figure style="flex: 1.678">
+      <img src="../Portfolio/Astro/web/color-test.jpg" alt="Color tests: the same screens in two palettes, checked for legibility in low lunar light." width="1800" height="1073" loading="lazy">
+      <figcaption><span class="n">02</span>Color tests: the same screens in two palettes, checked for legibility in low lunar light.</figcaption>
+    </figure>
+  </div>
+  </section>
+  <section class="about after">
+    <div class="block">
+      <h2 class="label">EV route</h2>
+      <p class="route">Egress → Navigation → Tasks at points of interest → Warnings or changes → Return and ingress</p>
+      <p class="closing">More coming soon!</p>
+    </div>
+  </section>
+</main>
+<section class="info" aria-label="About this project">
+  <p class="count">02 / 10</p>
+  <h1>Astro</h1>
+  <p class="date">2026</p>
+  <p class="soon-note">In progress · Coming soon</p>
+  <ul class="tags" aria-label="Tags"><li>AR/VR Design</li><li>HUD Interface</li><li>NASA SUITS</li></ul>
+  <p class="desc">An augmented-reality HUD for NASA&#x27;s SUITS challenge, designed with the Brown–RISD student team to help astronauts navigate the lunar surface, work at points of interest, and return safely. In progress; full case study coming soon.</p>
+  <dl class="facts"><dt>Role</dt><dd>VR/AR Designer</dd><dt>Team</dt><dd>Brown–RISD NASA SUITS, AR team</dd></dl>
+  <section class="also">
+    <h2 class="label">You might also like</h2>
+    <ul>
+      <li><a href="risd-rover.html">
+        <span class="th"><span class="soon-box"><span>Coming soon</span></span></span>
+        <span class="meta-row"><span class="rt">RISD Rover</span><span class="y">2026</span></span>
+      </a></li>
+      <li><a href="heads-up.html">
+        <span class="th"><img src="../Portfolio/HeadsupWebsite/web/phones-mockup.jpg" alt="" width="1800" height="1337" loading="lazy"></span>
+        <span class="meta-row"><span class="rt">Heads Up Website</span><span class="y">2026</span></span>
+      </a></li>
+      <li><a href="prosthetic-window.html">
+        <span class="th"><img src="../Portfolio/Fake%20Window/web/overview.jpg" alt="" width="1800" height="1200" loading="lazy"></span>
+        <span class="meta-row"><span class="rt">Prosthetic Window</span><span class="y">2026</span></span>
+      </a></li>
+    </ul>
+  </section>
+  <nav class="pager" aria-label="More projects">
+    <a href="heads-up.html">← Heads Up Website</a>
+    <a href="prosthetic-window.html">Prosthetic Window →</a>
+  </nav>
+  <a class="all" href="../index.html">All work</a>
+</section>
+</div>
+<script>
+document.documentElement.classList.add("js");
+const follow = (host, fixed) => {
+  const tag = host.querySelector(".tag");
+  if (!tag) return;
+  host.addEventListener("pointermove", e => {
+    const box = fixed ? { left: 0, top: 0 } : host.getBoundingClientRect();
+    let x = e.clientX - box.left, y = e.clientY - box.top;
+    // flip to the left of the pointer near the right edge of the window
+    if (e.clientX + tag.offsetWidth > window.innerWidth - 12) x -= tag.offsetWidth;
+    tag.style.transform = `translate(${x}px, ${y}px)`;
+  });
+};
+document.querySelectorAll(".tile .pic").forEach(el => follow(el, false));
+document.querySelectorAll(".list a").forEach(el => follow(el, true));
+</script>
+</body>
+</html>

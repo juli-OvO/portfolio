@@ -1,9 +1,11 @@
 ---
 title: Boid Sequencer
 date: 2025
-order: 2
+order: 4
 slug: boid-sequencer
 tags: Creative Coding · Interaction Design · Generative Audio
+role: Sole developer
+team: Solo · two-week class project
 meta: Interactive sound · p5.js, Tone.js
 link: https://juli-ovo.github.io/BoidSequencer1.0/
 link_label: Play it live

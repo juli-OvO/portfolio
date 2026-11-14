@@ -59,7 +59,8 @@ p { margin: 0; }
   overflow-y: auto;
   padding: var(--pad) 24px;
 }
-.side { border-right: 1px solid var(--line); }
+/* the sidebar sits above the gallery so its hover tags (position: fixed inside it) are never covered */
+.side { border-right: 1px solid var(--line); z-index: 20; }
 .info { border-left: 1px solid var(--line); }
 
 .gallery { min-width: 0; padding: var(--pad) clamp(24px, 3vw, 48px) 96px; }
@@ -80,18 +81,17 @@ p { margin: 0; }
   padding-bottom: 10px;
   border-bottom: 1px solid var(--line);
 }
+.pages { margin-bottom: 28px; border-top: 1px solid var(--line); }
 .overview {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 28px;
   padding: 9px 0;
-  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   text-decoration: none;
 }
-.project .overview { color: var(--soft); }
-.project .overview:hover { color: var(--ink); }
+.overview:not([aria-current]) { color: var(--soft); }
+.overview:not([aria-current]):hover { color: var(--ink); }
 .overview[aria-current]::before {
   content: "";
   width: 6px;
@@ -127,10 +127,20 @@ p { margin: 0; }
 
 /* ---------- middle: index gallery ---------- */
 
-.grid { columns: 3 240px; column-gap: 22px; }
-.tile { display: block; break-inside: avoid; margin-bottom: 30px; text-decoration: none; }
+/* three columns, filled left to right (1 2 3 / 4 5 6 ...); tops line up, the rest stagger with image heights;
+   a thumbnail is never taller than it is wide (tall ones crop to a square) */
+.grid { display: flex; gap: 22px; align-items: flex-start; }
+.grid .col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 30px; }
+@media (max-width: 700px) {
+  /* one column on phones: the column wrappers dissolve and each tile's `order` restores 1, 2, 3 ... */
+  .grid { flex-direction: column; gap: 30px; }
+  .grid .col { display: contents; }
+}
+.tile { position: relative; display: block; container-type: inline-size; text-decoration: none; }
+/* a hovered tile rises above its neighbours so its tag isn't covered by the next tile */
+.tile:hover, .tile:focus-visible { z-index: 5; }
 .tile .pic { position: relative; display: block; }
-.tile img { width: 100%; transition: opacity 0.25s; }
+.tile img { width: 100%; max-height: 100cqw; object-fit: cover; transition: opacity 0.25s; }
 .tile:hover img { opacity: 0.82; }
 
 /* tags: pinned bottom-left on keyboard focus; with JS, they follow the pointer in place of the cursor */
@@ -229,6 +239,63 @@ p { margin: 0; }
 .switch:hover { border-color: var(--soft); }
 .switch:hover span:not(.on) { color: var(--ink); }
 
+/* carousel: one main image, arrows, thumbnails underneath (without JS, all images stack) */
+.carousel { margin: 0 0 56px; }
+.carousel .stage { position: relative; display: flex; align-items: center; justify-content: center; }
+.carousel .slide img { width: auto; max-width: 100%; max-height: calc(100vh - 2 * var(--pad) - 150px); margin: 0 auto; }
+/* with JS the stage keeps one height for every image, so the arrows never move */
+.js .carousel .stage { height: calc(100vh - 2 * var(--pad) - 150px); padding: 0 56px; }
+.js .carousel .slide.on { height: 100%; display: flex; align-items: center; justify-content: center; min-width: 0; }
+.js .carousel .slide img { max-height: 100%; }
+.carousel .cnav, .carousel .ccap, .carousel .count, .carousel .thumbs { display: none; }
+.js .carousel .slide:not(.on) { display: none; }
+.js .carousel .ccap.on { display: inline; }
+.js .carousel .count { display: inline; margin-right: 12px; color: var(--ink); }
+.js .carousel .cnav {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink);
+  font: 18px/1 var(--mono);
+  cursor: pointer;
+  z-index: 2;
+}
+.carousel .prev { left: 0; }
+.carousel .next { right: 0; }
+.carousel .cnav:hover { border-color: var(--ink); }
+.carousel .cnav:focus-visible, .carousel .thumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.carousel figcaption { display: block; max-width: none; margin-top: 12px; }
+.js .carousel .thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.carousel .thumb {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.2s;
+}
+.carousel .thumb img { width: auto; height: 72px; }
+.carousel .thumb:hover { opacity: 0.8; }
+.carousel .thumb.on { opacity: 1; box-shadow: 0 0 0 2px var(--accent); }
+@media (max-width: 900px) {
+  .carousel .slide img { max-height: 70vh; }
+  .js .carousel .stage { height: 70vh; padding: 0 48px; }
+}
+
 /* titled sections within a project */
 .set { margin-bottom: 88px; }
 .set > .label { margin-bottom: 18px; }
@@ -248,9 +315,85 @@ figcaption .n { flex: none; }
 .info { display: flex; flex-direction: column; gap: 14px; }
 .info .count, .info .date, .info .meta { color: var(--soft); }
 .info h1 { margin: 0; font-size: 26px; line-height: 1.15; font-weight: 500; letter-spacing: -0.015em; }
+.info .tags { margin: 6px 0 0; padding: 0; list-style: none; font: 500 14px/1.6 var(--mono); }
 .info .desc { margin-top: 6px; }
 .info .meta { line-height: 1.55; }
 .info .ext { text-decoration-color: var(--accent); }
+
+/* related projects under the description */
+.also { margin-top: 22px; }
+.also .label { margin-bottom: 4px; }
+.also ul { list-style: none; margin: 0; padding: 0; }
+.also li { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.also a { display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
+.also .th { display: block; }
+.also .th img, .also .th video, .also .th .soon-box {
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  max-height: 300px;
+  object-fit: cover;
+}
+.also .meta-row { display: flex; justify-content: space-between; gap: 12px; }
+.also .y { color: var(--soft); }
+.also a:hover .rt { color: var(--accent); }
+
+/* role / team lines in the right panel */
+.info .facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 4px 0 0; font: 13px/1.5 var(--mono); }
+.info .facts dt { color: var(--soft); }
+.info .facts dd { margin: 0; }
+
+/* About: context text above a project's images */
+.about { display: grid; gap: 48px; max-width: 960px; margin-bottom: 72px; }
+.about .block { max-width: 640px; }
+
+/* a text section with an image beside it, on the left or right */
+.about .block[class*="aside-"] {
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 36px;
+  align-items: start;
+}
+.about .aside-right { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+.about .aside-right .aside { order: 2; }
+.about .aside { margin: 0; }
+.about .aside img { width: 100%; }
+.about .aside figcaption { margin-top: 8px; }
+/* logos: a small row, no background behind the transparent marks */
+.about .logos { align-self: center; }
+.about .logos .imgs { display: flex; gap: 28px; align-items: center; }
+.about .logos img { width: auto; max-width: 45%; height: 96px; object-fit: contain; background: none; }
+@media (max-width: 900px) {
+  .about .block[class*="aside-"], .about .aside-right { grid-template-columns: 1fr; gap: 18px; }
+  .about .aside-right .aside { order: 0; }
+}
+.about .label { margin-bottom: 14px; }
+.about p { font-size: 17px; line-height: 1.5; }
+.about p + p { margin-top: 10px; }
+.about ul { margin: 0; padding-left: 1.1em; font-size: 17px; line-height: 1.5; }
+.about li + li { margin-top: 4px; }
+.about .route { font: 14px/1.6 var(--mono); }
+.about.after .block { max-width: none; }
+@media (min-width: 1100px) { .about .route { white-space: nowrap; } }
+.about .closing { font-size: 24px; line-height: 1.3; font-weight: 500; letter-spacing: -0.01em; }
+.about.after { margin-top: -40px; gap: 40px; }
+
+/* coming soon: placeholder block, panel note, first row of the hover tag */
+.soon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  background: var(--well);
+  color: var(--soft);
+  font: 500 13px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.soon-box.big { aspect-ratio: auto; height: calc(100vh - 2 * var(--pad)); min-height: 320px; font-size: 15px; }
+.soon-note { color: var(--accent); font: 500 13px/1.4 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; }
+.tag .soon { display: block; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
 .pager {
   display: flex;
   justify-content: space-between;
