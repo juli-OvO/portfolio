@@ -1,7 +1,7 @@
 ---
 title: RISD Rover
 date: 2026
-order: 5
+order: 7
 slug: risd-rover
 status: coming soon
 tags: Rover Design · Fabrication · NASA Challenge

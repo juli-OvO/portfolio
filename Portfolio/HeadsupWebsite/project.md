@@ -14,6 +14,16 @@ meta: Web design + development · Figma, Webflow, HTML/CSS/JS
 
 A redesign for Heads Up, a student-led nonprofit for healthier screen habits. My direction was chosen from three, and I built it in Webflow along with a small helper tool for the rebuild.
 
+## About
+
+### About Heads Up
+
+Founded at Deerfield Academy, Heads Up empowers high school communities across the U.S. to lead more digitally balanced lives through youth-led programming. Its members are students themselves, and they use that firsthand insight to design clubs, campaigns, and programs for maximum impact.
+
+### My role
+
+As a tech intern, I designed the direction the board selected and built it in Webflow. I also coded an inspection tool for the rebuild, so teammates new to Webflow, HTML, and CSS could see how each element is put together and learn as they helped rebuild the site.
+
 ## Images
 
 Shown on the site in this order. The index cover is set by `cover:` above.

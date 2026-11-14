@@ -1,7 +1,7 @@
 ---
 title: Prosthesis
 date: 2026
-order: 7
+order: 5
 slug: prosthesis
 tags: Physical Computing · Wearable Interaction · Digital Fabrication
 role: Concept, fabrication, circuit, and code
