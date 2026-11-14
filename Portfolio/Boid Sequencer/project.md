@@ -1,8 +1,11 @@
 ---
 title: Boid Sequencer
 date: 2025
-order: 2
+order: 4
 slug: boid-sequencer
+tags: Creative Coding · Interaction Design · Generative Audio
+role: Sole developer
+team: Solo · two-week class project
 meta: Interactive sound · p5.js, Tone.js
 link: https://juli-ovo.github.io/BoidSequencer1.0/
 link_label: Play it live
@@ -22,5 +25,7 @@ Shown on the site in this order. The first image is the cover on the index page.
    Source: `boid-process1.png` (from old website)
 3. `web/buttons-adrift.jpg` — The same four instruments, now drifting as a flock.
    Source: `boid-process2.png` (from old website)
+   Grid: previous
 4. `web/readouts.jpg` — Cluster boxes, segment log, and waveform readouts, added last.
    Source: `boid-sound.png` (from old website)
+   Grid: previous

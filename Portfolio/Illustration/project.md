@@ -1,14 +1,16 @@
 ---
-title: Illustration
-date: 2023
-order: 8
+title: Illustration & Drawing
+date: 2023–25
+order: 10
 slug: illustration
-meta: Digital painting · Commissions and personal work
+layout: carousel
+tags: Illustration · Drawing · Visual Development
+meta: Digital painting (commissions and personal work) and charcoal drawing from class
 ---
 
 ## Images
 
-Shown on the site in this order. The first image is the cover on the index page.
+Shown in a carousel in this order, with thumbnails under the main image. The first image is the cover on the index page.
 
 1. `web/illustration-01.jpg` — Figures in a sunlit garden.
    Source: `illustration-1-preview.jpg` (from old website)
@@ -22,7 +24,11 @@ Shown on the site in this order. The first image is the cover on the index page.
    Source: `illus-5-web.jpg` (from old website)
 6. `web/illustration-06.jpg` — Swordsman among pink flowers, oval frame.
    Source: `illus-6-web.jpg` (from old website)
+7. `web/swan-and-figures.jpg` — Charcoal: studio setup with a swan and two seated figures.
+   Source: `drawing-class-1.jpeg` (from old website)
+8. `web/studio-interior.jpg` — Charcoal: studio interior with a reclining figure and plants.
+   Source: `drawing-class-2.jpeg` (from old website)
 
 ## Notes
 
-Not shown on the site. The old website gave these invented titles ("Quiet Hours", "Understory", etc.), which were not used here. Add real titles and years if you have them.
+Not shown on the site. The old website gave these invented titles ("Quiet Hours", "Understory", etc.), which were not used here. Add real titles and years if you have them. Images 7–8 are the former Drawings project (charcoal, from class, 2025).
