@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500&amp;family=Inter+Tight:wght@400;500&amp;display=swap">
-<link rel="stylesheet" href="style.css?v=d7e74937">
+<link rel="stylesheet" href="style.css?v=220f139c">
 </head>
 <body>
 <div class="layout index">
@@ -42,10 +42,57 @@
     <a href="Portfolio/JulianneResume.pdf">CV</a>
   </p>
 </aside>
-<main class="gallery">
-  <h1 class="label">Most recent works in progress</h1>
+<main class="gallery wip">
+  <h1 class="label">Works in progress</h1>
+  <p class="wip-intro">Body, machine, and kinetic art. I coded a bone generator that applies the logic of bone growth to mechanical structures. Some of these are prototypes; others are iterative prints.</p>
+  <div class="board">
+    <figure class="piece" style="left: 1%; top: 0px; width: 47%"><img draggable="false" src="Portfolio/WorkInProgress/web/mechanism-sketch-cad-print.jpg" alt="First mechanism: sketch, CAD model, and print." width="1800" height="665"><figcaption>First mechanism: sketch, CAD model, and print.</figcaption></figure>
+    <figure class="piece" style="left: 52%; top: 60px; width: 45%"><img draggable="false" src="Portfolio/WorkInProgress/web/bone-print-views.jpg" alt="The mechanism regrown as bone, printed in gray." width="1800" height="809"><figcaption>The mechanism regrown as bone, printed in gray.</figcaption></figure>
+    <figure class="piece" style="left: 28%; top: 350px; width: 40%"><img draggable="false" src="Portfolio/WorkInProgress/web/bone-generator-comparison.jpg" alt="Bone generator output next to a reference vertebra." width="1800" height="866"><figcaption>Bone generator output next to a reference vertebra.</figcaption></figure>
+    <figure class="piece" style="left: 2%; top: 410px; width: 21%"><img draggable="false" src="Portfolio/WorkInProgress/web/assembly-cad-vessels.jpg" alt="Full assembly in CAD, with vessel channels." width="1137" height="1800" loading="lazy"><figcaption>Full assembly in CAD, with vessel channels.</figcaption></figure>
+    <figure class="piece" style="left: 72%; top: 390px; width: 26%"><img draggable="false" src="Portfolio/WorkInProgress/web/vessel-network.jpg" alt="Generated vessels inside the vertebrae." width="1800" height="1530" loading="lazy"><figcaption>Generated vessels inside the vertebrae.</figcaption></figure>
+    <figure class="piece" style="left: 47%; top: 650px; width: 27%"><img draggable="false" src="Portfolio/WorkInProgress/web/translucent-vessel-prints.jpg" alt="Translucent test prints with red vessels." width="1350" height="1800" loading="lazy"><figcaption>Translucent test prints with red vessels.</figcaption></figure>
+  </div>
 </main>
 </div>
+<script>
+// Loose pieces: drag any piece anywhere on the board; the one you grab comes to the front.
+(() => {
+  const board = document.querySelector(".board");
+  if (!board || !matchMedia("(min-width: 901px)").matches) return;
+  board.classList.add("loose");
+  const pieces = [...board.querySelectorAll(".piece")];
+  let top = pieces.length;
+  const fit = () => {
+    const bottom = Math.max(...pieces.map(el => el.offsetTop + el.offsetHeight));
+    board.style.height = bottom + 60 + "px";
+  };
+  pieces.forEach(el => {
+    el.addEventListener("pointerdown", e => {
+      e.preventDefault();
+      el.setPointerCapture(e.pointerId);
+      el.style.zIndex = ++top;
+      el.classList.add("held");
+      const dx = e.clientX - el.offsetLeft, dy = e.clientY - el.offsetTop;
+      const move = ev => {
+        const x = Math.min(Math.max(ev.clientX - dx, 0), board.clientWidth - el.offsetWidth);
+        el.style.left = x + "px";
+        el.style.top = Math.max(ev.clientY - dy, 0) + "px";
+      };
+      const up = () => {
+        el.classList.remove("held");
+        el.removeEventListener("pointermove", move);
+        el.removeEventListener("pointerup", up);
+        fit();
+      };
+      el.addEventListener("pointermove", move);
+      el.addEventListener("pointerup", up);
+    });
+  });
+  addEventListener("load", fit);
+  fit();
+})();
+</script>
 <script>
 document.documentElement.classList.add("js");
 const follow = (host, fixed) => {

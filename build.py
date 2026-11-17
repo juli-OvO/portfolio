@@ -391,14 +391,100 @@ document.querySelectorAll(".toggle").forEach(fig => {
 WIP_PAGE = "in-progress.html"
 
 
+WIP_DIR = SRC / "WorkInProgress"
+
+# Starting spots for the loose pieces on Works in Progress: (left %, top px, width %).
+# Pieces past the end of this list reuse it, shifted further down.
+WIP_SPOTS = [(1, 0, 47), (52, 60, 45), (28, 350, 40), (2, 410, 21), (72, 390, 26), (47, 650, 27)]
+
+
+def parse_wip():
+    """Portfolio/WorkInProgress/works.md: an `## Intro` paragraph and a numbered `## Images` list
+    (same format as a project's). Returns a project-like dict, or None if the file is missing."""
+    md = WIP_DIR / "works.md"
+    if not md.exists():
+        return None
+    sections, current = {}, None
+    for line in md.read_text(encoding="utf-8").split("---", 2)[-1].splitlines():
+        h = re.match(r"^##\s+(.+)$", line)
+        if h:
+            current = h.group(1).strip().lower()
+            sections[current] = []
+        elif current:
+            sections[current].append(line)
+    images = []
+    for line in sections.get("images", []):
+        im = IMAGE_LINE.match(line)
+        if im:
+            images.append({"web": im.group(1), "caption": im.group(2).strip(), "source": None})
+        elif SOURCE_LINE.match(line) and images:
+            images[-1]["source"] = SOURCE_LINE.match(line).group(1)
+    intro = " ".join(l.strip() for l in sections.get("intro", []) if l.strip())
+    return {"dir": WIP_DIR, "title": "Works in Progress", "intro": intro, "images": images}
+
+
+WIP_SCRIPT = """<script>
+// Loose pieces: drag any piece anywhere on the board; the one you grab comes to the front.
+(() => {
+  const board = document.querySelector(".board");
+  if (!board || !matchMedia("(min-width: 901px)").matches) return;
+  board.classList.add("loose");
+  const pieces = [...board.querySelectorAll(".piece")];
+  let top = pieces.length;
+  const fit = () => {
+    const bottom = Math.max(...pieces.map(el => el.offsetTop + el.offsetHeight));
+    board.style.height = bottom + 60 + "px";
+  };
+  pieces.forEach(el => {
+    el.addEventListener("pointerdown", e => {
+      e.preventDefault();
+      el.setPointerCapture(e.pointerId);
+      el.style.zIndex = ++top;
+      el.classList.add("held");
+      const dx = e.clientX - el.offsetLeft, dy = e.clientY - el.offsetTop;
+      const move = ev => {
+        const x = Math.min(Math.max(ev.clientX - dx, 0), board.clientWidth - el.offsetWidth);
+        el.style.left = x + "px";
+        el.style.top = Math.max(ev.clientY - dy, 0) + "px";
+      };
+      const up = () => {
+        el.classList.remove("held");
+        el.removeEventListener("pointermove", move);
+        el.removeEventListener("pointerup", up);
+        fit();
+      };
+      el.addEventListener("pointermove", move);
+      el.addEventListener("pointerup", up);
+    });
+  });
+  addEventListener("load", fit);
+  fit();
+})();
+</script>"""
+
+
 def build_wip(projects):
-    """Most recent works in progress. Empty for now: add content inside <main>."""
+    """Works in Progress: loose, draggable pieces from Portfolio/WorkInProgress/works.md."""
+    w = parse_wip()
+    pieces, intro = [], ""
+    if w:
+        intro = f'\n  <p class="wip-intro">{esc(w["intro"])}</p>' if w["intro"] else ""
+        for j, img in enumerate(w["images"]):
+            left, top, width = WIP_SPOTS[j % len(WIP_SPOTS)]
+            top += 1300 * (j // len(WIP_SPOTS))
+            pic = media(w, img, "", img["caption"], lazy=j > 2).replace("<img ", '<img draggable="false" ', 1)
+            pieces.append(f'    <figure class="piece" style="left: {left}%; top: {top}px; width: {width}%">'
+                          f'{pic}<figcaption>{esc(img["caption"])}</figcaption></figure>')
     body = f"""<div class="layout index">
 {sidebar(projects, here="wip")}
-<main class="gallery">
-  <h1 class="label">Most recent works in progress</h1>
+<main class="gallery wip">
+  <h1 class="label">Works in progress</h1>{intro}
+  <div class="board">
+{chr(10).join(pieces)}
+  </div>
 </main>
-</div>"""
+</div>
+{WIP_SCRIPT}"""
     (ROOT / WIP_PAGE).write_text(page(f"Works in Progress — {NAME}", body), encoding="utf-8")
 
 
@@ -649,6 +735,11 @@ def main():
         for img in p["images"] + p["about_images"]:
             make_web_copy(p["dir"], img)
 
+    w = parse_wip()
+    if w:
+        print("Works in Progress")
+        for img in w["images"]:
+            make_web_copy(w["dir"], img)
     build_index(projects)
     build_wip(projects)
     for i in range(len(projects)):

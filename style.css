@@ -406,6 +406,21 @@ figcaption .n { flex: none; }
 .pager a:last-child { text-align: right; }
 .all { color: var(--soft); }
 
+/* ---------- works in progress: loose pieces ---------- */
+
+.wip-intro { max-width: 620px; margin: 18px 0 40px; font-size: 17px; line-height: 1.5; }
+.board { display: grid; gap: 40px; }
+.piece { margin: 0; }
+.piece img { width: 100%; }
+.piece figcaption { margin-top: 8px; }
+/* with JS on a wide screen, pieces float free and can be dragged */
+.board.loose { display: block; position: relative; isolation: isolate; min-height: 80vh; }
+.board.loose .piece { position: absolute; cursor: grab; touch-action: none; user-select: none; }
+.board.loose .piece.held { cursor: grabbing; }
+.board.loose .piece.held img { box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55); }
+/* without the loose layout the inline positions are ignored */
+.board:not(.loose) .piece { position: static !important; width: auto !important; }
+
 /* ---------- narrow screens: one column, nothing sticky ---------- */
 
 @media (max-width: 900px) {
